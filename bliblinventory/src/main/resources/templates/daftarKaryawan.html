@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link type="text/css" rel="stylesheet" href="../css/styles.css">
+	<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"	media="screen,projection"/>
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../js/daftarKaryawan.js"></script>
+	<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+	<title>Daftar Karyawan</title>
+</head>
+<body>
+	<div style="display:flex; margin-top: 20px;">
+		<div class="containerSelectLogo valign-wrapper">
+			<i class="material-icons">search</i>
+			<p style="margin-right:3px;">Cari :</p>
+			<div class="input-field containerSearch valign-wrapper z-depth-1">
+				<input type="text" placeholder="Ketik yang ingin dicari"/>
+			</div>	
+		</div>
+		<div class="containerSelectLogo valign-wrapper">
+			<i class="material-icons">sort</i>
+			<p>Urutkan :</p>
+			<div class="input-field containerSelect valign-wrapper z-depth-1">
+				<select>
+					<option value="1">Nama</option>
+					<option value="2">ID Barang</option>
+				</select>
+			</div>
+		</div>
+		<div class="containerSelectLogo valign-wrapper">
+			<i class="material-icons">dashboard</i>
+			<p>Kategori :</p>
+			<div class="input-field containerSelect valign-wrapper z-depth-1">
+				<select>
+					<option value="1">Semua Kategori</option>
+					<option value="2">Elektronik</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<a class="col s6 l2 m3 modal-trigger" href="#modalDetailKaryawan">
+			<div class="card">
+				<div class="card-image" style="padding:15px">
+					<img src="../images/employeephoto.jpg" style="border-radius:2px; border: 1px solid rgb(212, 212, 212)">
+				</div>
+				<div class="card-content">
+					<p>KR29482US</p>
+					<h6 style="margin-top:0">Dwight Schrute</h6>
+				</div>
+			</div>
+		</a>
+	</div>
+  <div id="modalDetailKaryawan" class="modal modal-fixed-footer">
+    <div id="detailBarangCard" class="modal-content valign-wrapper" style="display:flex">
+			<div style="margin-right:20px;">
+				<img class="imgEmployee" src="../images/employeephoto.jpg"/>
+			</div>
+			<div>
+				<table class="tableNoBorder smallPadding">
+					<tr>
+						<td class="tdAtrib" width="120">ID</td>
+						<td class="tdInfo">KASR2178US</td>
+					</tr>
+					<tr>
+						<td class="tdAtrib">Nama</td>
+						<td class="tdInfo">Dwight Schrute</td>
+					</tr>
+					<tr>
+						<td class="tdAtrib">Jenis Kelamin</td>
+						<td class="tdInfo">Perempuan</td>
+					</tr>
+					<tr>
+						<td class="tdAtrib">Alamat</td>
+						<td class="tdInfo">Jalan Dunder Mifflin km 10, Yogyakarta</td>
+					</tr>
+					<tr>
+						<td class="tdAtrib">Tanggal Lahir</td>
+						<td class="tdInfo">25 Maret 1990</td>
+					</tr>
+					<tr>
+						<td class="tdAtrib">Jabatan</td>
+						<td class="tdInfo">Staff</td>
+					</tr>
+					<tr>
+						<td class="tdAtrib">No HP</td>
+						<td class="tdInfo">085628726725</td>
+					</tr>
+					<tr>
+						<td class="tdAtrib">email</td>
+						<td class="tdInfo">dwight@mail.com</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div id="ubahDetailKaryawan" class="modal-content valign-wrapper">
+				<table class="tableNoBorder smallPadding">
+						<tr>
+							<td class="tdAtrib" width="120">ID</td>
+							<td class="tdInfo">KASR2178US</td>
+						</tr>
+						<tr>
+							<td class="tdAtrib">Nama</td>
+							<td class="tdInfo">Dwight Schrute</td>
+						</tr>
+						<tr>
+							<td class="tdAtrib">Jenis Kelamin</td>
+							<td class="tdInfo">Perempuan</td>
+						</tr>
+						<tr>
+							<td class="tdAtrib">Alamat</td>
+							<td class="tdInfo">Jalan Dunder Mifflin km 10, Yogyakarta</td>
+						</tr>
+						<tr>
+							<td class="tdAtrib">Tanggal Lahir</td>
+							<td class="tdInfo">25 Maret 1990</td>
+						</tr>
+						<tr>
+							<td class="tdAtrib">Jabatan</td>
+							<td class="tdInfo">Staff</td>
+						</tr>
+						<tr>
+							<td class="tdAtrib">No HP</td>
+							<td class="tdInfo">085628726725</td>
+						</tr>
+						<tr>
+							<td class="tdAtrib">email</td>
+							<td class="tdInfo">dwight@mail.com</td>
+						</tr>
+					</table>
+			</div>
+    <div class="modal-footer">
+			<a href="#!" class="modal-close btn-flat left">tutup</a>
+			<a id="buttonBackToDetailCard" href="#" class="btn-flat left">kembali</a>
+			<a id="buttonUbahDetail" href="#ubahDetailKaryawan" class="waves-effect waves-light btn" style="margin-right: 4px;">ubah</a>
+			<a id="buttonRequestPinjam" class="waves-effect waves-light btn" style="margin-right: 4px;">simpan</a>
+    </div>
+	</div>	
+</body>
+</html>

@@ -1,6 +1,5 @@
 $( document ).ready(function() {
   $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
-  $('.sidenav').sidenav();
   $("#includeDaftarBarangTable").load("daftarBarangTable.html"); 
   $("#includeDaftarKaryawan").load("daftarKaryawan.html"); 
   $("#includeDaftarKaryawan").hide(); 

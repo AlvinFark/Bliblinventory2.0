@@ -12,12 +12,15 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/").setViewName("LoginPage.html");
-        registry.addViewController("/homeEmployee").setViewName("homeEmployee.html");
-        registry.addViewController("/homeSuperior").setViewName("homeSuperior.html");
-        registry.addViewController("/homeAdmin").setViewName("homeAdmin.html");
+        registry.addViewController("/employee").setViewName("basePage.html");
+        registry.addViewController("/superior").setViewName("basePage.html");
+        registry.addViewController("/admin").setViewName("basePage.html");
+        registry.addViewController("/homeEmployee.html").setViewName("homeEmployee.html");
+        registry.addViewController("/homeSuperior.html").setViewName("homeSuperior.html");
+        registry.addViewController("/homeAdmin.html").setViewName("homeAdmin.html");
         registry.addViewController("/daftarBarangCard.html").setViewName("daftarBarangCard.html");
-        registry.addViewController("/orderList.html").setViewName("orderList.html");
         registry.addViewController("/daftarBarangTable.html").setViewName("daftarBarangTable.html");
+        registry.addViewController("/orderList.html").setViewName("orderList.html");
         registry.addViewController("/daftarKaryawan.html").setViewName("daftarKaryawan.html");
         registry.addViewController("/permintaanKaryawan.html").setViewName("permintaanKaryawan.html");
         registry.addViewController("/pengembalianBarang.html").setViewName("pengembalianBarang.html");

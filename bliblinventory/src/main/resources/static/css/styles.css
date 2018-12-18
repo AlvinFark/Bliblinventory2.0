@@ -1,11 +1,16 @@
 /*HTML*/
 html {
-  overflow: scroll;
-  overflow-x: hidden;
   background-color: #0095da;
 }
-::-webkit-scrollbar {
-  width: 0px;
+
+/*TEXT*/
+h4{
+  color: white;
+  text-align: center;
+}
+.headerModal{
+  color: black !important;
+  text-align: center;
 }
 
 /*SELECTOR*/
@@ -83,8 +88,12 @@ table td textarea.formLarge, table td input.formLarge{
 .btn{
   background-color: #0095da !important;
 }
+.btn-white{
+  color: #004666 !important;
+  background-color: white !important;
+}
 .kananBawah{
-  margin: 10px 0 0 10px;
+  margin: 5px 0 0 5px;
 }
 .kotak-small{
   padding: 0 !important;

@@ -12,23 +12,20 @@
 			</ul>
 		</div>
 	</nav>
-
 	<ul id="menuDropdownEmployee" class="dropdown-content">
 		<li><a id="klikDaftarBarang">Daftar Barang inventaris</a></li>
 		<li class="divider"></li>
 		<li><a class="modal-trigger" href="#modalTambahBatch">Tambah Barang secara Batch</a></li>
 		<li class="divider"></li>
-		<li><a href="#">Pengembalian Barang Inventaris</a></li>
+		<li><a id="klikPengembalianBarang">Pengembalian Barang Inventaris</a></li>
 		<li class="divider"></li>
 		<li><a class="modal-trigger" href="#modalBeliProduk">Buat Permintaan Pembelian Barang Inventaris</a></li>
 		<li class="divider"></li>
 		<li><a id="klikDaftarKaryawan" href="#">Daftar Karyawan</a></li>
 		<li class="divider"></li>
-		<li><a href="#">Tambah Karyawan</a></li>
+		<li><a id="klikPermintaanKaryawan" href="#">Daftar Permintaan Peminjaman Karyawan</a></li>
 		<li class="divider"></li>
-		<li><a href="#">Daftar Permintaan Peminjaman Karyawan</a></li>
-		<li class="divider"></li>
-		<li><a href="#">Backup dan Restore</a></li>
+		<li><a class="modal-trigger" href="#modalBackup">Backup dan Restore</a></li>
 		<li class="divider"></li>
 		<li><a href="../loginPage.html">Logout</a></li>
 	</ul>
@@ -37,11 +34,15 @@
 <div class="kontainer">
 	<div id="includeDaftarBarangTable" style="position:absolute; width:inherit"></div>
 	<div id="includeDaftarKaryawan" style="position:absolute; width:inherit"></div>
+	<div id="includePengembalianBarang" style="position:absolute; width:inherit"></div>
+	<div id="includePermintaanKaryawan" style="position:absolute; width:inherit"></div>
 </div>
 <div id="modalTambahBatch" class="modal modal-fixed-footer">
-	<div class="modal-content" style="padding-top: 170px">
-		<p> File : &ensp;<input id="fileupload" type="file" name="files[]" style="padding:0"> </p>
-		<p> Catatan : <br> File Excel yang dipilih harus menggunakan format penulisan untuk penambahan produk yang sudah ditetapkan. </p>
+	<div class="modal-content">
+		<h4 class="headerModal">Tambah Barang secara Batch</h4>
+		<p style="padding-top:80px;"> File : &ensp;<input id="fileupload" type="file" name="files[]" style="padding:0"> </p>
+		<p> Catatan : <br> File Excel yang dipilih harus menggunakan format penulisan untuk penambahan produk yang sudah ditetapkan.
+		<br> Format file dapat diunduh <a href="#">disini</a></p>
 	</div>
 	<div class="modal-footer">
 		<a href="#!" class="modal-close btn-flat left">tutup</a>
@@ -49,7 +50,8 @@
 	</div>
 </div>
 <div id="modalBeliProduk" class="modal modal-fixed-footer">
-	<div class="modal-content valign-wrapper">
+	<div class="modal-content">
+		<h4 class="headerModal">Request Pembelian Barang</h4>
 		<table class="tableNoBorder smallPadding">
 			<tr>
 				<td class="tdAtrib">ID Request</td>
@@ -76,7 +78,7 @@
 							<option disabled value="0">Pilih Kategori</option>
 							<option value="1">Elektronik</option>
 						</select>
-					</div>
+					</div>					
 				</td>
 			</tr>
 			<tr>
@@ -102,5 +104,24 @@
 	<div class="modal-footer">
 		<a href="#!" class="modal-close btn-flat left">tutup</a>
 		<a id="buttonRequestPinjam" class="waves-effect waves-light btn" style="margin-right: 4px;">kirim</a>
+	</div>
+</div>
+<div id="modalBackup" class="modal">
+	<div class="modal-content">
+		<h4 class="headerModal">Backup dan Restore Database</h4>
+		<table class="tableNoBorder" style="padding: 10px 0 0 100px">
+			<tr>
+				<td class="tdAtrib">Backup</td>
+				<td>
+					<a class="waves-effect waves-light btn btn-small">unduh</a>
+				</td>
+			</tr>
+			<tr>
+				<td class="tdAtrib">Restore</td>
+				<td>
+					<input class="" id="fileupload" type="file" name="files[]" style="padding:0">
+				</td>
+			</tr>
+		</table>
 	</div>
 </div>

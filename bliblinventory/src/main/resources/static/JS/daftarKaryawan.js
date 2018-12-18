@@ -7,31 +7,20 @@ $( document ).ready(function() {
         $(this).addClass('z-depth-3');}, function(){$(this).removeClass('z-depth-3');
     });
 
-    $("#buttonRequestPinjam").hide();
-    $("#buttonBackToDetailCard").hide();
-    $("#ubahDetailKaryawan").hide();
-
-    $(".card").click(function(){
-        $("#pinjamBarang").hide();
-        $("#buttonRequestPinjam").hide();
-        $("#buttonBackToDetailCard").hide();
-        $("#buttonPinjam").show();
-        $("#detailBarangCard").show();
+    $(".card, #buttonBackToDetailKaryawan").click(function(){
+        $("#detailKaryawan").fadeIn();
+        $("#ubahDetailKaryawan").hide();
+        $("#buttonUbahDetailKaryawan").show();
+        $("#buttonBackToDetailKaryawan").hide();
+        $("#buttonSimpanUbahanKaryawan").hide();
     });
 
-    $("#buttonUbahDetail").click(function(){
+    $("#buttonUbahDetailKaryawan").click(function(){
+        $("#detailKaryawan").hide();
         $("#ubahDetailKaryawan").fadeIn();
-        $("#buttonRequestPinjam").show();
-        $("#buttonBackToDetailCard").fadeIn();
-        $("#buttonUbahDetail").hide();
-        $("#detailBarangCard").fadeOut();
-    });
+        $("#buttonUbahDetailKaryawan").hide();
+        $("#buttonBackToDetailKaryawan").fadeIn();
+        $("#buttonSimpanUbahanKaryawan").show();
+    })
 
-    $("#buttonBackToDetailCard").click(function(){
-        $("#ubahDetailKaryawan").fadeOut();
-        $("#buttonRequestPinjam").hide();
-        $("#buttonBackToDetailCard").fadeOut();
-        $("#buttonPinjam").show();
-        $("#detailBarangCard").fadeIn();
-    });
 });

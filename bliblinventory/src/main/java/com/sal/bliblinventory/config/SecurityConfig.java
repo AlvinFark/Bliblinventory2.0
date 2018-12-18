@@ -73,9 +73,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/JS/**",
                         "/materialize/**").permitAll()
                 .antMatchers(HttpMethod.GET, "/api/bliblinventory/**", "/api/users/**").permitAll()
-                //.antMatchers("/Employee").hasRole("EMPLOYEE")
-                //.antMatchers("/Admin").hasAuthority("ROLE_ADMIN")
-                //.antMatchers("/Superior").hasAuthority("ROLE_SUPERIOR")
+                //.antMatchers("/employee").hasRole("EMPLOYEE")
+                //.antMatchers("/admin").hasAuthority("ROLE_ADMIN")
+                //.antMatchers("/superior").hasAuthority("ROLE_SUPERIOR")
                 .anyRequest().permitAll();
 
         http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

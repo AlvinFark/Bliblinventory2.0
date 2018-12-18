@@ -3,25 +3,38 @@ $( document ).ready(function() {
     $('.modal').modal();
     $('.datepicker').datepicker();
 
-    $("#includeDetailBarangAdmin").load("detailBarangAdmin.html"); 
-    $("#includeTambahBarang").load("tambahBarang.html"); 
-    $("#includeDetailBarangAdmin").hide();
-    $("#includeTambahBarang").hide();
-    $("#closeDetailBarangAdmin").hide();
- 
-    $("#clickDetailAdmin").click(function(){
-        $("#includeDetailBarangAdmin").fadeIn();
-        $("#closeDetailBarangAdmin").fadeIn();
+    $(".clickDetailTable").click(function(){
+        $("#editBarangTable").hide();
+        $("#tambahSatuanTable").hide();
+        $("#detailBarangTable").show();
+        $("#backToDetailTable").hide();
+        $("#tombolSimpanEditan").hide();
+        $("#tombolSimpanSatuan").hide();
+        $("#tombolEditBarang").show();
+        $("#clickTambahSatuan").show();
     });
 
-    $("#tombolAdd").click(function(){
-        $("#includeTambahBarang").fadeIn();
-        $("#closeDetailBarangAdmin").fadeIn();
-    });
+    $(".clickEditTable").click(function(){
+        $("#editBarangTable").show();
+        $("#tambahSatuanTable").hide();
+        $("#detailBarangTable").hide();
+        $("#backToDetailTable").show();
+        $("#tombolSimpanEditan").show();
+        $("#tombolSimpanSatuan").hide();
+        $("#tombolEditBarang").hide();
+        $("#clickTambahSatuan").hide();
+    })
+
+    $("#clickTambahSatuan").click(function(){
+        $("#editBarangTable").hide();
+        $("#tambahSatuanTable").show();
+        $("#detailBarangTable").hide();
+        $("#backToDetailTable").show();
+        $("#tombolSimpanEditan").hide();
+        $("#tombolSimpanSatuan").show();
+        $("#tombolEditBarang").hide();
+        $("#clickTambahSatuan").hide();
+    })
     
-    $("#closeDetailBarangAdmin").click(function(){
-        $("#includeDetailBarangAdmin").fadeOut();
-        $("#includeTambahBarang").fadeOut();
-        $("#closeDetailBarangAdmin").fadeOut();
-    });
+
 });

@@ -1,7 +1,8 @@
 $( document ).ready(function() {
   $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
+  $('.sidenav').sidenav();
   $('.datepicker').datepicker();
-  $("#includeDaftarBarangCard").load("daftarBarangCard.html");
+  $("#includeDaftarBarangCard").load("daftarBarangCard.html"); 
   $("#includeOrderList").load("orderList.html"); 
   $("#includeManualOrder").load("buatPermintaanPeminjamanManual.html"); 
   $("#includeOrderList").hide();

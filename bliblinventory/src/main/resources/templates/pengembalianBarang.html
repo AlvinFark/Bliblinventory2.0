@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<link type="text/css" rel="stylesheet" href="../css/styles.css">
+	<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"	media="screen,projection"/>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+	<script type="text/javascript" src="../JS/pengembalianBarang.js"></script>
+	<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
+	<title>bliblinventory</title>
+</head>
+<body class="kontainer">
+  <h4>Pengembalian Barang Inventaris</h4>
+	<div style="display:flex; margin-top: 20px;">
+		<div class="containerSelectLogo valign-wrapper">
+			<i class="material-icons">search</i>
+			<p>Cari :</p>
+			<div class="input-field containerSelect valign-wrapper z-depth-1">
+				<select>
+					<option value="1">Nama Karyawan</option>
+					<option value="2">Nama Barang</option>
+				</select>
+			</div>
+			<div class="input-field containerSearch valign-wrapper z-depth-1">
+					<input type="text" placeholder="Ketik yang ingin dicari"/>
+			</div>	
+		</div>
+		<div class="containerSelectLogo valign-wrapper">
+			<i class="material-icons">sort</i>
+			<p>Urutkan :</p>
+			<div class="input-field containerSelect valign-wrapper z-depth-1">
+				<select>
+					<option value="1">Nama</option>
+					<option value="2">ID Barang</option>
+				</select>
+			</div>
+		</div>
+		<div class="containerSelectLogo valign-wrapper">
+			<i class="material-icons">dashboard</i>
+			<p>Kategori :</p>
+			<div class="input-field containerSelect valign-wrapper z-depth-1">
+				<select>
+					<option value="1">Semua Kategori</option>
+					<option value="2">Elektronik</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div id="whiteBoard"  class="z-depth-2"  style="position:absolute">
+		<table class="highlight noPadding">
+			<thead>
+				<tr>
+					<th><p><label><input type="checkbox" /><span></span></label></p></th>
+					<th>ID Satuan</th>
+					<th>ID Barang</th>
+					<th>Nama Barang</th>
+					<th>Nama Karyawan</th>
+					<th>Tanggal Peminjaman</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<td><p><label><input type="checkbox" /><span></span></label></p></td>
+					<td>OST0001</td>
+					<td>KBN0284OST</td>
+					<td>Samsung Galaxy Tab S2</td>
+					<td>Budhe Sumiyati</td>
+					<td>3 Januari 2019</td>
+					<td width=10px><a class="waves-effect waves-light btn btn-small right modal-trigger" href="#modalTerimaConfirm">terima</a></td>
+				</tr>
+			</tbody>
+		</table>
+		<a class="waves-effect waves-light btn right kananBawah disabled">terima terpilih</a>
+  </div>
+  <div class="modal" id="modalTerimaConfirm">
+    <div class="modal-content valign-wrapper" style="flex-direction:column">
+      <p>barang sudah dikembalikan?</p>
+      <div>
+        <a class="waves-effect waves-light btn">Ya</a>
+        <a class="waves-effect waves-light btn modal-close">tidak</a>
+      </div>
+    </div>
+  </div>
+</body>

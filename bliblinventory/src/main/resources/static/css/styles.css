@@ -1,0 +1,177 @@
+/*HTML*/
+html {
+  background-color: #0095da;
+}
+
+/*TEXT*/
+h4{
+  color: white;
+  text-align: center;
+}
+.headerModal{
+  color: black !important;
+  text-align: center;
+}
+
+/*SELECTOR*/
+.containerSelectLogo{
+  display: flex;
+  margin: 0  25px 0 10px;
+}
+.containerSelectLogo i{
+  color: white;
+  font-size: 30px;
+}
+.containerSelectLogo p{
+  color: white;
+  margin: 0 15px 0 0;
+}
+.containerSelect{
+  background-color: white;
+  width: 150px;
+  border-radius: 2px;
+  height: 35px;
+  margin: 0 0 5px 0 !important;
+}
+.select-dropdown{
+  margin: 0 0 0 5px !important;
+  border-bottom: 0px !important;
+  width: 145px !important;
+  font-size: 15px !important;
+}
+
+/*FORM*/
+.containerSearch{
+  background-color: white;
+  width: 250px;
+  border-radius: 2px;
+  height: 35px;
+  margin: 0 0 5px 10px !important;
+  padding: 7px 5px 0 5px;
+}
+table td textarea, table td input{
+  height: 30px;
+  padding: 5px 0 0 5px;
+}
+table td textarea.formLarge, table td input.formLarge{
+  height: 45px !important;
+  padding: 5px 0 0 5px;
+}
+
+/*CARDS*/
+.card{
+  cursor: pointer;
+}
+.card-content{
+  padding: 0 8px 18px 8px !important;
+  color: black;
+  text-align: center;
+}
+#cardOrderList{
+  width: 98%;
+  margin-left: 1%;
+  display: flex;
+  height: 150px;
+  align-items: center;
+}
+#tanggalOrderList{
+  width:200px;
+  margin: 14px 10px;
+  align-self: flex-start;
+}
+#imageOrderList{
+  height: 150px;
+  width: auto;
+}
+
+/*BUTTON*/
+.btn{
+  background-color: #0095da !important;
+}
+.btn-white{
+  color: #004666 !important;
+  background-color: white !important;
+}
+.kananBawah{
+  margin: 5px 0 0 5px;
+}
+.kotak-small{
+  padding: 0 !important;
+  height: 30px !important;
+  width: 30px !important;
+  margin-left: 3px;
+}
+.kotak-small i{
+  margin: -3px 0 0 1px !important;
+}
+
+/*TABLE*/
+.tableNoBorder{
+  border-collapse: unset  !important;
+}
+.smallPadding td, .smallPadding th{
+  padding: 5px 0 5px 0;
+}
+.noPadding td, .noPadding th{
+  padding: 0;
+}
+#infoOrderList td{
+  padding: 0;
+}
+.tdAtrib{
+  font-size: 14px;
+  color: #5a5a5a;
+}
+.tdInfo{
+  font-size: 17px;
+}
+
+/*TAB*/
+#tabOrderList{
+  background-color: #0095da;
+  position: fixed;
+  z-index: 1;
+  height: auto;
+  padding: 5px 0 10px 0;
+  width: inherit;
+}
+#tabOrderList .tab{
+  height: 100%;
+  line-height: 12px;
+  width: 33.3333%;
+}
+#tabOrderList .tab a{
+  color: black;
+}
+#tabOrderList .tab a:focus, #tabOrderList .tab a:focus.active {
+  color: white;
+}
+#tabOrderList .tab a:hover, #tabOrderList .tab a.active {
+  color: white; 
+}
+
+/*MODALS*/
+.datepicker{
+  z-index: 6000 !important;
+}
+
+/*CONTAINER*/
+#whiteBoard{
+  background-color: white;
+  width: 98%;
+  margin-left: 1%;
+  margin: 5px 1%;
+  border-radius: 2px;
+  padding: 5px 15px 15px 15px;
+}
+.kontainer{
+  width: 90%;
+  margin-left: 5%;
+}
+
+/*DETAIL PAGE*/
+.imgEmployee{
+  height:250px;
+  width:auto;
+  border-radius: 2px;
+}

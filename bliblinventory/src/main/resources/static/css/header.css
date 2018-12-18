@@ -1,0 +1,52 @@
+header{
+    height: 10%;
+    margin-bottom: 20px;
+    position: fixed;
+    width: 100%;
+    z-index: 2;
+}
+
+header nav{
+    background-color:white;
+    color: #0095da;
+}
+
+header nav a{
+    color: #0095da;
+}
+header nav img.imgLogo{
+    width: 220px;
+}
+
+header nav #menuDropdownEmployee{
+    width: 308px;
+    top: 100% !important;
+}
+
+header nav input{
+    color: #0095da;
+}
+
+header nav #imgPerson{
+    width: 40px;
+    background-color: #0095da;
+    margin-top: 12px;
+    margin-left: 20vw;
+}
+
+header nav #inputSearch{
+    background-color: rgb(240, 240, 240);
+    border-bottom: 0;
+    padding-left: 15px;
+    border-radius: 3px;
+    width: 30vw;
+}
+
+header nav #inputSearch::placeholder{
+    color: #014b6d65;
+}
+
+#iconMenu{
+    color: #0095da;
+    font-size: 30px !important;
+}

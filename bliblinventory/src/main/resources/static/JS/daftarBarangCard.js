@@ -1,11 +1,12 @@
 $( document ).ready(function() {
     $('select').formSelect();
     $('.modal').modal();
-    $('.datepicker').datepicker();
  
     $(".card").hover(function(){
         $(this).addClass('z-depth-3');}, function(){$(this).removeClass('z-depth-3');
     });
+
+
 
     $("#buttonRequestPinjam").hide();
     $("#buttonBackToDetailCard").hide();

@@ -112,7 +112,11 @@ function ajaxGetProductDetail(idBarang) {
                 '</tr>\n' +
                 '<tr>\n' +
                 '<td class="tdAtrib">Kuantitas</td>\n' +
-                '<td class="tdInfo">7</td>\n' +
+                '<td class="tdInfo">'+result.jumlahSubBarang+' unit</td>\n' +
+                '</tr>\n' +
+                '<tr>\n' +
+                '<td class="tdAtrib">Kuantitas Tersedia</td>\n' +
+                '<td class="tdInfo">'+result.jumlahSubBarangTersedia+' unit</td>\n' +
                 '</tr>\n' +
                 '<tr>\n' +
                 '<td class="tdAtrib">Deskripsi</td>\n' +

@@ -16,12 +16,13 @@
 </head>
 <body>
 -->
+	<script type="text/javascript" src="../js/daftarBarangCard.js"></script>
 	<div style="display:flex; margin-top: 20px;">
 		<div class="containerSelectLogo valign-wrapper">
 			<i class="material-icons">sort</i>
 			<p>Urutkan :</p>
 			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select>
+				<select id="selectUrutkan">
 					<option value="1">Nama</option>
 					<option value="2">ID Barang</option>
 				</select>
@@ -208,7 +209,7 @@
 		<div id="pinjamBarang" class="modal-content valign-wrapper">
 			<table class="tableNoBorder">
 				<tr>
-					<td class="tdAtrib">No. Order</td>r</td>
+					<td class="tdAtrib">No. Order</td></td>
 					<td>82738264</td>
 				</tr>
 				<tr>
@@ -236,9 +237,9 @@
 			</table>
 		</div>
     <div class="modal-footer">
-			<a href="#!" class="modal-close btn-flat left">tutup</a>
+			<a href="" class="modal-close btn-flat left">tutup</a>
 			<a id="buttonBackToDetailCard" href="#" class="btn-flat left">kembali</a>
-			<a id="buttonPinjam" href="#pinjamBarang" class="waves-effect waves-light btn" style="margin-right: 4px;">pinjam</a>
+			<a id="buttonPinjam" href="#peminjaman" class="waves-effect waves-light btn" style="margin-right: 4px;">pinjam</a>
 			<a id="buttonRequestPinjam" class="waves-effect waves-light btn" style="margin-right: 4px;">kirim</a>
     </div>
 	</div>

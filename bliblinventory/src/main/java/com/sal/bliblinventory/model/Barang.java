@@ -5,6 +5,8 @@ public class Barang {
     private String nama;
     private String gambar;
     private String deskripsi;
+    private int jumlahSubBarang;
+    private int jumlahSubBarangTersedia;
 
     public Barang(String kode, String nama, String gambar, String deskripsi){
         this.kode=kode;
@@ -44,5 +46,21 @@ public class Barang {
 
     public void setDeskripsi(String deskripsi) {
         this.deskripsi = deskripsi;
+    }
+
+    public int getJumlahSubBarang() {
+        return jumlahSubBarang;
+    }
+
+    public void setJumlahSubBarang(int jumlahSubBarang) {
+        this.jumlahSubBarang = jumlahSubBarang;
+    }
+
+    public int getJumlahSubBarangTersedia() {
+        return jumlahSubBarangTersedia;
+    }
+
+    public void setJumlahSubBarangTersedia(int jumlahSubBarangTersedia) {
+        this.jumlahSubBarangTersedia = jumlahSubBarangTersedia;
     }
 }

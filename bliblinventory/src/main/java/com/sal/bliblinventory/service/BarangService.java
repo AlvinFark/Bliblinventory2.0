@@ -120,4 +120,18 @@ public class BarangService {
         };
         return template.query(sql, rm);
     }
+
+    public List<Barang> getJumlahSubBarang(Barang barang, String keyword) {
+        String sql = "select COUNT(kode_sub_barang) as JumlahSubBarang, sub_barang_tersedia.total as JumlahTersedia from sub_barang, (SELECT COUNT(kode_sub_barang) AS total FROM sub_barang where kode_barang='"+barang.getKode()+"' AND status_sub_barang=1) AS sub_barang_tersedia where kode_barang='"+barang.getKode()+"'";
+        //String sql = "select COUNT(kode_sub_barang) as JumlahSubBarang from sub_barang where kode_barang='"+barang.getKode()+"'";
+        RowMapper<Barang> rm = new RowMapper<Barang>() {
+            @Override
+            public Barang mapRow(ResultSet resultSet, int i) throws SQLException {
+                barang.setJumlahSubBarang(resultSet.getInt("JumlahSubBarang"));
+                barang.setJumlahSubBarangTersedia(resultSet.getInt("JumlahTersedia"));
+                return barang;
+            }
+        };
+        return template.query(sql, rm);
+    }
 }

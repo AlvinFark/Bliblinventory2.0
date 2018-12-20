@@ -6,5 +6,5 @@ $( document ).ready(function() {
         $("body").load("homeAdmin.html");
     else
         $("body").load("homeSuperior.html");
-    
+
 });

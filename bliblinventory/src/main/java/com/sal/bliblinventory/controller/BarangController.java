@@ -41,8 +41,6 @@ public class BarangController {
 
     @RequestMapping(value = "employee/getDetailProduct/{param1}", method = RequestMethod.GET)
     public Barang getDetailBarang(Model md, @PathVariable(value = "param1") String param1){
-        //tambah hitung sub barang juga
         return barangRepository.findBarangByKode(param1);
     }
-
 }

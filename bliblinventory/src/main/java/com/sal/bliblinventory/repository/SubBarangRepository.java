@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface SubBarangRepository extends JpaRepository<SubBarang, String> {
     int countSubBarangByBarangKode(String kodeBarang);
+    int countSubBarangByBarangKodeAndStatusSubBarang(String kodeBarang, Boolean status);
 }

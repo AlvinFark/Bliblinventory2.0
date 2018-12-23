@@ -91,6 +91,7 @@ function ajaxGetAllProduct(){
 
 //dapatkan detail barang (lewat kode barang)
 function ajaxGetProductDetail(idBarang) {
+    //tampilkan popup detail barang
     $.ajax({
         type : "GET",
         url : window.location + "/getDetailProduct/" + idBarang,
@@ -110,11 +111,11 @@ function ajaxGetProductDetail(idBarang) {
                 '</tr>\n' +
                 '<tr>\n' +
                 '<td class="tdAtrib">Kuantitas</td>\n' +
-                '<td class="tdInfo">'+result.jumlahSubBarang+' unit</td>\n' +
+                '<td class="tdInfo" id="totalSubBarang"></td>\n' +
                 '</tr>\n' +
                 '<tr>\n' +
                 '<td class="tdAtrib">Kuantitas Tersedia</td>\n' +
-                '<td class="tdInfo">'+result.jumlahSubBarangTersedia+' unit</td>\n' +
+                '<td class="tdInfo" id="totalSubBarangTersedia"></td>\n' +
                 '</tr>\n' +
                 '<tr>\n' +
                 '<td class="tdAtrib">Deskripsi</td>\n' +
@@ -123,6 +124,32 @@ function ajaxGetProductDetail(idBarang) {
                 '</table>\n' +
                 '</div>');
 
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error");
+        }
+    });
+
+    //tampilkan total sub kuantitas barang
+    $.ajax({
+        type : "GET",
+        url : window.location + "/countAllSubBarang/" + idBarang,
+        success: function(result){
+            $("#totalSubBarang").html(result + ' unit');
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error");
+        }
+    });
+
+    //tampilkan total kuantitas sub barang yang TERSEDIA
+    $.ajax({
+        type : "GET",
+        url : window.location + "/countReadySubBarang/" + idBarang,
+        success: function(result){
+            $("#totalSubBarangTersedia").html(result + ' unit');
         },
         error : function(e) {
             console.log("ERROR: ", e);

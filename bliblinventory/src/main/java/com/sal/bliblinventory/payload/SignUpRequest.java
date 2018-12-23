@@ -1,6 +1,7 @@
 package com.sal.bliblinventory.payload;
 
 import javax.validation.constraints.*;
+import java.sql.Date;
 
 public class SignUpRequest {
     @NotBlank
@@ -19,6 +20,22 @@ public class SignUpRequest {
     @NotBlank
     @Size(min = 6, max = 20)
     private String password;
+
+    private long roleId;
+
+    private long superiorId;
+
+    @NotBlank
+    private String gender;
+
+    @NotBlank
+    private String address;
+
+    private Date dateOfBirth;
+
+    @NotBlank
+    private String phoneNumber;
+
 
     public String getName() {
         return name;
@@ -51,4 +68,52 @@ public class SignUpRequest {
     public void setPassword(String password) {
         this.password = password;
     }
+
+  public String getPhoneNumber() {
+    return phoneNumber;
+  }
+
+  public String getAddress() {
+    return address;
+  }
+
+  public Date getDateOfBirth() {
+    return dateOfBirth;
+  }
+
+  public String getGender() {
+    return gender;
+  }
+
+  public long getRoleId() {
+    return roleId;
+  }
+
+  public long getSuperiorId() {
+    return superiorId;
+  }
+
+  public void setGender(String gender) {
+    this.gender = gender;
+  }
+
+  public void setPhoneNumber(String phoneNumber) {
+    this.phoneNumber = phoneNumber;
+  }
+
+  public void setDateOfBirth(Date dateOfBirth) {
+    this.dateOfBirth = dateOfBirth;
+  }
+
+  public void setAddress(String address) {
+    this.address = address;
+  }
+
+  public void setRoleId(int roleId) {
+    this.roleId = roleId;
+  }
+
+  public void setSuperiorId(int superiorId) {
+    this.superiorId = superiorId;
+  }
 }

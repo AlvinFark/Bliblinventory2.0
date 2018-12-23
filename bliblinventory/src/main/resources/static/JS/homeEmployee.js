@@ -1,28 +1,41 @@
 $( document ).ready(function() {
-    $("#includePageContent").load("daftarBarangCard.html");
-
     $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
     $('.datepicker').datepicker();
-    $("#includeOrderList").load("orderList.html");
     $("#includeManualOrder").load("buatPermintaanPeminjamanManual.html");
-    $("#includeOrderList").hide();
-    $("#includeManualOrder").hide();
+
+    //session penanda tiap page, supaya kalau refresh, tetap berada di page-nya
+    var page = $.session.get('page');
+    if(page == null || page == 1) {
+        page1();
+    }
+    else if(page == 2){
+        page2();
+    }
 
     $("#klikDaftarBarang").click(function(){
-        $("#includeDaftarBarangCard").fadeIn();
-        $("#includeOrderList").fadeOut();
-        $("#includeManualOrder").fadeOut();
+        $.session.set('page','1');
+       page1();
     });
 
     $("#klikDaftarOrder").click(function(){
-        $("#includeDaftarBarangCard").fadeOut();
-        $("#includeOrderList").fadeIn();
-        $("#includeManualOrder").fadeOut();
+        $.session.set('page','2');
+        page2();
     });
 
-    $("#imgLogo").click(function(){
-        $("#includeDaftarBarangCard").fadeIn();
-        $("#includeOrderList").fadeOut();
-        $("#includeManualOrder").fadeOut();
+    $(".imgLogo").click(function(){
+        $.session.set('page','1');
+        page1();
     });
 });
+
+function page1(){
+    $("#includePageContent").load("daftarBarangCard.html");
+    $("#inputSearch").show();
+    $("#iconSearch").show();
+}
+
+function page2(){
+    $("#includePageContent").load("orderList.html");
+    $("#inputSearch").hide();
+    $("#iconSearch").hide();
+}

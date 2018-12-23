@@ -27,9 +27,7 @@ $( document ).ready(function() {
     });
 
     //ketika ada card barang yang diklik
-    $( document ).on("click",".modal-trigger",function (event) {
-       event.preventDefault();
-       jQuery.noConflict();
+    $( document ).on("click",".modal-trigger",function () {
        var idBarang = jQuery(this).children(".card").children(".card-content").children("p:first-child").text();
        ajaxGetProductDetail(idBarang);
     });

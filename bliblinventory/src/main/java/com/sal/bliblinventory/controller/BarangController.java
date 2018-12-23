@@ -1,7 +1,7 @@
 package com.sal.bliblinventory.controller;
 
 import com.sal.bliblinventory.model.Barang;
-import com.sal.bliblinventory.service.BarangService;
+import com.sal.bliblinventory.repository.BarangRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,47 +11,36 @@ import java.util.List;
 @RestController
 public class BarangController {
 
-    private BarangService barangService;
     @Autowired
-    public void setBarangService(BarangService barangService){
-        this.barangService = barangService;
+    BarangRepository barangRepository;
+
+    @RequestMapping(value = "employee/getAllProduct", method = RequestMethod.GET)
+    public List<Barang> listBarangAll(){
+        return barangRepository.findAllByOrderByNama();
     }
 
-    @GetMapping(value = "employee/sortByName")
-    public List<Barang> listBarangSortByName(Model md){
-        List<Barang> listBarang = barangService.sortByName();
-        return listBarang;
+    @RequestMapping(value = "employee/sortByName", method = RequestMethod.GET)
+    public List<Barang> listBarangSortByName(){
+        return barangRepository.findAllByOrderByNama();
+    }
+
+    @RequestMapping(value = "employee/sortByCode", method = RequestMethod.GET)
+    public List<Barang> listBarangSortByCode(){
+        return barangRepository.findAllByOrderByKode();
     }
 
     @RequestMapping(value = "employee/sortByName/{param1}", method = RequestMethod.GET)
-    public List<Barang> listBarangSortByNameAndSeachKeyword(Model md, @PathVariable(value = "param1") String param1){
-        List<Barang> listBarang = barangService.sortByNameAndSeachKeyword(param1);
-        return listBarang;
-    }
-
-    @GetMapping(value = "employee/sortByCode")
-    public List<Barang> listBarangSortByCode(Model md){
-        List<Barang> listBarang = barangService.sortByCode();
-        return listBarang;
+    public List<Barang> listBarangByKeywordAndSortByName(Model md, @PathVariable(value = "param1") String param1){
+        return barangRepository.findByNamaContainingOrderByNama(param1);
     }
 
     @RequestMapping(value = "employee/sortByCode/{param1}", method = RequestMethod.GET)
-    public List<Barang> listBarangSortByCodeAndSeachKeyword(Model md, @PathVariable(value = "param1") String param1){
-        List<Barang> listBarang = barangService.sortByCodeAndSeachKeyword(param1);
-        return listBarang;
-    }
-
-    @RequestMapping(value = "employee/getAllProduct", method = RequestMethod.GET)
-    public List<Barang> listBarangAll(Model md){
-        List<Barang> listBarang = barangService.sortByName();
-        return listBarang;
+    public List<Barang> listBarangByKeywordAndSortByCode(Model md, @PathVariable(value = "param1") String param1){
+        return barangRepository.findByNamaContainingOrderByKode(param1);
     }
 
     @RequestMapping(value = "employee/getDetailProduct/{param1}", method = RequestMethod.GET)
-    public Barang detailBarang(Model md, @PathVariable(value = "param1") String param1){
-        List<Barang> listBarang = barangService.getDetailBarang(param1);
-        Barang barang = listBarang.get(0);
-        List<Barang> listBarang1 = barangService.getJumlahSubBarang(barang, param1);
-        return listBarang1.get(0);
+    public Barang getDetailBarang(Model md, @PathVariable(value = "param1") String param1){
+        return barangRepository.findBarangByKode(param1);
     }
 }

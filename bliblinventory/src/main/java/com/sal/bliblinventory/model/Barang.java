@@ -1,19 +1,24 @@
 package com.sal.bliblinventory.model;
 
-public class Barang {
-    private String kode;
-    private String nama;
-    private String gambar;
-    private String deskripsi;
-    private int jumlahSubBarang;
-    private int jumlahSubBarangTersedia;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
-    public Barang(String kode, String nama, String gambar, String deskripsi){
-        this.kode=kode;
-        this.nama=nama;
-        this.gambar=gambar;
-        this.deskripsi=deskripsi;
-    }
+@Entity
+@Table(name = "barang")
+public class Barang {
+    @Id
+    private String kode;
+
+    @NotBlank
+    private String nama;
+
+    @NotBlank
+    private String gambar;
+
+    @NotBlank
+    private String deskripsi;
 
     //gettersetter
     public String getKode() {
@@ -48,19 +53,4 @@ public class Barang {
         this.deskripsi = deskripsi;
     }
 
-    public int getJumlahSubBarang() {
-        return jumlahSubBarang;
-    }
-
-    public void setJumlahSubBarang(int jumlahSubBarang) {
-        this.jumlahSubBarang = jumlahSubBarang;
-    }
-
-    public int getJumlahSubBarangTersedia() {
-        return jumlahSubBarangTersedia;
-    }
-
-    public void setJumlahSubBarangTersedia(int jumlahSubBarangTersedia) {
-        this.jumlahSubBarangTersedia = jumlahSubBarangTersedia;
-    }
 }

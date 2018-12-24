@@ -16,8 +16,13 @@ public class UserController {
   UserRepository userRepository;
 
   @GetMapping
-  public List<User> getAllUser(){
-    return userRepository.getAllUserByNameIsNotNull();
+  public List<User> listAllUser(){
+    return userRepository.findAllByOrderByName();
+  }
+
+  @GetMapping("/{param}")
+  public List<User> listSearchUser(@PathVariable String param){
+    return userRepository.findAllByNameContainingOrderByName(param);
   }
 
   @GetMapping("/id/{id}")

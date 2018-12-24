@@ -33,6 +33,10 @@ $( document ).ready(function() {
         $.session.set('page','3');
         page3();
     });
+
+    $("#klikLogout").click(function(){
+        $.session.remove('page');
+    });
 });
 
 function page1(){

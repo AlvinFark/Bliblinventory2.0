@@ -13,12 +13,12 @@ public class SubBarangController {
     @Autowired
     SubBarangRepository subBarangRepository;
 
-    @RequestMapping(value = "employee/countAllSubBarang/{param1}", method = RequestMethod.GET)
+    @RequestMapping(value = {"employee/countAllSubBarang/{param1}", "superior/countAllSubBarang/{param1}"}, method = RequestMethod.GET)
     public int countSubBarang(Model md, @PathVariable(value = "param1") String param1){
         return subBarangRepository.countSubBarangByBarangKode(param1);
     }
 
-    @RequestMapping(value = "employee/countReadySubBarang/{param1}", method = RequestMethod.GET)
+    @RequestMapping(value = {"employee/countReadySubBarang/{param1}", "superior/countReadySubBarang/{param1}"}, method = RequestMethod.GET)
     public int countReadySubBarang(Model md, @PathVariable(value = "param1") String param1){
         return subBarangRepository.countSubBarangByBarangKodeAndStatusSubBarang(param1, true);
     }

@@ -1,40 +1,54 @@
 $( document ).ready(function() {
-  $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
-  $('.sidenav').sidenav();
-  $('.datepicker').datepicker();
-  $("#includeDaftarBarangCard").load("daftarBarangCard.html"); 
-  $("#includeOrderList").load("orderList.html"); 
-  $("#includeOrderListKaryawan").load("permintaanKaryawan.html"); 
-  $("#includeManualOrder").load("buatPermintaanPeminjamanManual.html"); 
-  $("#includeOrderList").hide();
-  $("#includeOrderListKaryawan").hide();
-  $("#includeManualOrder").hide();
-  
-  $("#klikDaftarBarang").click(function(){
-    $("#includeDaftarBarangCard").fadeIn();
-    $("#includeOrderList").fadeOut();
-    $("#includeOrderListKaryawan").fadeOut();
-    $("#includeManualOrder").fadeOut();
-  });
-  
-  $("#klikDaftarOrder").click(function(){
-    $("#includeDaftarBarangCard").fadeOut();
-    $("#includeOrderList").fadeIn();
-    $("#includeOrderListKaryawan").fadeOut();
-    $("#includeManualOrder").fadeOut();
-  });
+    $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
+    $('.datepicker').datepicker();
+    //$("#includeManualOrder").load("buatPermintaanPeminjamanManual.html");
 
-  $("#imgLogo").click(function(){
-    $("#includeDaftarBarangCard").fadeIn();
-    $("#includeOrderList").fadeOut();
-    $("#includeOrderListKaryawan").fadeOut();
-    $("#includeManualOrder").fadeOut();
-  });
+    var page = $.session.get('page');
+    if(page == null || page == 1) {
+        page1();
+    }
+    else if(page == 2){
+        page2();
+    }
+    else if(page == 3){
+        page3();
+    }
 
-  $("#klikDaftarOrderKaryawan").click(function(){
-    $("#includeDaftarBarangCard").fadeOut();
-    $("#includeOrderList").fadeOut();
-    $("#includeOrderListKaryawan").fadeIn();
-    $("#includeManualOrder").fadeOut();
-  });
+    $("#klikDaftarBarang").click(function(){
+        $.session.set('page','1');
+        page1();
+    });
+
+    $("#klikDaftarOrder").click(function(){
+        $.session.set('page','2');
+        page2();
+    });
+
+    $("#imgLogo").click(function(){
+        $.session.set('page','1');
+        page1();
+    });
+
+    $("#klikDaftarOrderKaryawan").click(function(){
+        $.session.set('page','3');
+        page3();
+    });
 });
+
+function page1(){
+    $("#includePageContent").load("daftarBarangCard.html");
+    $("#inputSearch").show();
+    $("#iconSearch").show();
+}
+
+function page2(){
+    $("#includePageContent").load("orderList.html");
+    $("#inputSearch").hide();
+    $("#iconSearch").hide();
+}
+
+function page3(){
+    $("#includePageContent").load("permintaanKaryawan.html");
+    $("#inputSearch").hide();
+    $("#iconSearch").hide();
+}

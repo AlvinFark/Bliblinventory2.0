@@ -14,32 +14,32 @@ public class BarangController {
     @Autowired
     BarangRepository barangRepository;
 
-    @RequestMapping(value = "employee/getAllProduct", method = RequestMethod.GET)
+    @RequestMapping(value = {"employee/getAllProduct", "superior/getAllProduct"}, method = RequestMethod.GET)
     public List<Barang> listBarangAll(){
         return barangRepository.findAllByOrderByNama();
     }
 
-    @RequestMapping(value = "employee/sortByName", method = RequestMethod.GET)
+    @RequestMapping(value = {"employee/sortByName", "superior/sortByName"}, method = RequestMethod.GET)
     public List<Barang> listBarangSortByName(){
         return barangRepository.findAllByOrderByNama();
     }
 
-    @RequestMapping(value = "employee/sortByCode", method = RequestMethod.GET)
+    @RequestMapping(value = {"employee/sortByCode", "superior/sortByCode"}, method = RequestMethod.GET)
     public List<Barang> listBarangSortByCode(){
         return barangRepository.findAllByOrderByKode();
     }
 
-    @RequestMapping(value = "employee/sortByName/{param1}", method = RequestMethod.GET)
+    @RequestMapping(value = {"employee/sortByName/{param1}", "superior/sortByName/{param1}"}, method = RequestMethod.GET)
     public List<Barang> listBarangByKeywordAndSortByName(Model md, @PathVariable(value = "param1") String param1){
         return barangRepository.findByNamaContainingOrderByNama(param1);
     }
 
-    @RequestMapping(value = "employee/sortByCode/{param1}", method = RequestMethod.GET)
+    @RequestMapping(value = {"employee/sortByCode/{param1}", "superior/sortByCode/{param1}"}, method = RequestMethod.GET)
     public List<Barang> listBarangByKeywordAndSortByCode(Model md, @PathVariable(value = "param1") String param1){
         return barangRepository.findByNamaContainingOrderByKode(param1);
     }
 
-    @RequestMapping(value = "employee/getDetailProduct/{param1}", method = RequestMethod.GET)
+    @RequestMapping(value = {"employee/getDetailProduct/{param1}", "superior/getDetailProduct/{param1}"}, method = RequestMethod.GET)
     public Barang getDetailBarang(Model md, @PathVariable(value = "param1") String param1){
         return barangRepository.findBarangByKode(param1);
     }

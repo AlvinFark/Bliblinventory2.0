@@ -38,9 +38,10 @@ $( document ).ready(function() {
     });
 
     //ketika ada card barang yang diklik
-    $( document ).on("click",".modal-trigger",function () {
+    $( document ).on("click",".productCard",function () {
         var idBarang = jQuery(this).children(".card").children(".card-content").children("p:first-child").text();
         ajaxGetProductDetail(idBarang);
+        ajaxGetFormOrder(idBarang);
     });
 
     //ketika merubah dropdown urutkan
@@ -79,7 +80,7 @@ function ajaxGetAllProduct(){
             //tampilkan setiap barang dalam bentuk card
             for(var i = 0; i < result.length; i++){
                 $("#daftarProduk").append('' +
-                    '<a class="col s6 l2 m3 modal-trigger" href="#modalDetailPinjam">\n' +
+                    '<a class="col s6 l2 m3 modal-trigger productCard" href="#modalDetailPinjam">\n' +
                     '<div class="card">\n' +
                     '<div class="card-image">\n' +
                     '<img src="'+result[i].gambar+'" style="height:203px; width:100%">\n' +
@@ -162,6 +163,32 @@ function ajaxGetProductDetail(idBarang) {
             $("#totalSubBarangTersedia").html(result + ' unit');
         },
         error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error");
+        }
+    });
+}
+
+//menyiapkan form untuk order (tg skrg dan banyak maksimum pinjam)
+function ajaxGetFormOrder(idBarang) {
+    $("#dateOrderNow").text(changeDateFormat(getDateNow())); //fungsi changeDateFormat() dan getDateNow() ada di basePage.js
+    $('#inputDate').val(getDateNow());
+    $.ajax({
+        type: "GET",
+        url : window.location + "/countReadySubBarang/" + idBarang,
+        success: function (result) {
+            $(":input").bind('keyup mouseup blur focusout', function () {
+                if($('#inputTotalOrder').val() > result){
+                    window.alert("Barang yang tersedia hanya "+result.toString()+" unit");
+                    $('#inputTotalOrder').val(result);
+                }
+                if(new Date($('#inputDate').val()) < new Date(getDateNow())) {
+                    window.alert("Tanggal peminjaman tidak bisa dilakukan sebelum hari ini (" + changeDateFormat(getDateNow())+ ")");
+                    $('#inputDate').val(getDateNow());
+                }
+            });
+        },
+        error: function (e) {
             console.log("ERROR: ", e);
             window.alert("error");
         }

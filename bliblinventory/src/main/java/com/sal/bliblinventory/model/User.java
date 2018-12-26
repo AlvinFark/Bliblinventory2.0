@@ -1,7 +1,6 @@
 package com.sal.bliblinventory.model;
 
 import lombok.Data;
-import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -26,7 +25,6 @@ public class User {
     @NotBlank
     private String username;
 
-    @NaturalId
     @NotBlank
     @Email
     private String email;
@@ -55,6 +53,8 @@ public class User {
     @JoinColumn(name = "superiorId")
     private User superior;
 
+    private boolean isActive;
+
     public User() {
 
     }
@@ -68,6 +68,7 @@ public class User {
       this.dateOfBirth = dateOfBirth;
       this.gender = gender;
       this.phoneNumber = phoneNumber;
+      this.isActive = true;
     }
 
     public Long getId() {
@@ -157,5 +158,14 @@ public class User {
   public User getSuperior() {
     return superior;
   }
+
+  public void setIsActive(boolean isActive) {
+    this.isActive = isActive;
+  }
+
+  public boolean getIsActive(){
+      return this.isActive;
+  }
+
 }
 

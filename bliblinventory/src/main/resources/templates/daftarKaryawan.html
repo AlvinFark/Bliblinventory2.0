@@ -20,159 +20,26 @@
 			<i class="material-icons">search</i>
 			<p style="margin-right:3px;">Cari :</p>
 			<div class="input-field containerSearch valign-wrapper z-depth-1">
-				<input type="text" placeholder="Ketik yang ingin dicari"/>
+				<input id="searchKaryawan" type="text" placeholder="Ketik nama karyawan"/>
 			</div>	
 		</div>
 		<div class="containerSelectLogo valign-wrapper">
-			<i class="material-icons">sort</i>
-			<p>Urutkan :</p>
-			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select>
-					<option value="1">Nama</option>
-					<option value="2">ID Karyawan</option>
-				</select>
-			</div>
-		</div>
-		<div class="containerSelectLogo valign-wrapper">
 			<i class="material-icons">dashboard</i>
-			<p>Jabatan :</p>
+			<p>Filter berdasarkan Jabatan :</p>
 			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select>
-					<option value="1">Semua Jabatan</option>
+				<select id="filterKaryawan">
+					<option value="0">Semua Jabatan</option>
+					<option value="1">Staff</option>
 					<option value="2">Superior</option>
-					<option value="2">Staff</option>
+          <option value="3">Admin</option>
 				</select>
 			</div>
 		</div>
 	</div>
-	<div class="row">
-		<a class="col s6 l2 m3 modal-trigger" href="#modalDetailKaryawan">
-			<div class="card">
-				<div class="card-image" style="padding:15px">
-					<img src="../images/employeephoto.jpg" style="border-radius:2px; border: 1px solid rgb(212, 212, 212)">
-				</div>
-				<div class="card-content">
-					<h6 style="margin-bottom:0">Dwight Schrute</h6>
-					<p>Staff</p>
-				</div>
-			</div>
-		</a>
+	<div class="row" id="daftarKaryawan">
 	</div>
-	<a class="waves-effect waves-light btn btn-white right modal-trigger" href="#modalTambahKaryawan" style="margin: 10px 10px 0 0;">tambah</a>	
+	<a class="waves-effect waves-light btn btn-white right modal-trigger" id="triggerTambahKaryawan" href="#modalTambahKaryawan" style="margin: 10px 10px 0 0;">tambah</a>
   <div id="modalDetailKaryawan" class="modal modal-fixed-footer">
-		<div id="detailKaryawan" class="modal-content">
-			<h4 class="headerModal">Detail Karyawan</h4>
-			<div class="valign-wrapper">
-				<div style="margin-right:20px;">
-					<img class="imgEmployee" src="../images/employeephoto.jpg"/>
-				</div>
-				<div>
-					<table class="tableNoBorder smallPadding">
-						<tr>
-								<td class="tdAtrib" width="120">ID</td>
-								<td class="tdInfo">KASR2178US</td>
-						</tr>
-						<tr>
-							<td class="tdAtrib">Nama</td>
-							<td class="tdInfo">Dwight Schrute</td>
-						</tr>
-						<tr>
-							<td class="tdAtrib">Jenis Kelamin</td>
-							<td class="tdInfo">Perempuan</td>
-						</tr>
-						<tr>
-							<td class="tdAtrib">Alamat</td>
-							<td class="tdInfo">Jalan Dunder Mifflin km 10, Yogyakarta</td>
-						</tr>
-						<tr>
-							<td class="tdAtrib">Tanggal Lahir</td>
-							<td class="tdInfo">25 Maret 1990</td>
-						</tr>
-						<tr>
-							<td class="tdAtrib">Jabatan</td>
-							<td class="tdInfo">Staff</td>
-						</tr>
-						<tr>
-							<td class="tdAtrib">No HP</td>
-							<td class="tdInfo">085628726725</td>
-						</tr>
-						<tr>
-							<td class="tdAtrib">email</td>
-							<td class="tdInfo">dwight@mail.com</td>
-						</tr>
-					</table>
-				</div>
-			</div>
-		</div>
-		<div id="ubahDetailKaryawan" class="modal-content">
-			<h4 class="headerModal">Ubah Detail Karyawan</h4>
-			<div class="valign-wrapper" style="width:100%">
-				<table class="tableNoBorder smallPadding">
-					<tr>
-						<td class="tdAtrib" width="120">ID</td>
-						<td class="tdInfo">KASR2178US</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">Nama</td>
-						<td>
-							<textarea name="NamaKaryawan" cols="30" rows="1">Dwight Schrute</textarea>
-						</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">Jenis Kelamin</td>
-						<td>
-							<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
-								<select>
-									<option disabled value="0">Jenis Kelamin</option>
-									<option value="1">Perempuan</option>
-									<option value="1">Laki-laki</option>
-								</select>
-							</div>					
-						</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">Alamat</td>
-						<td>
-								<textarea class="formLarge" name="AlamatKaryawan" cols="30" rows="1">Jalan Dunder</textarea>
-							</td>
-						</tr>
-					<tr>
-						<td class="tdAtrib">Tanggal Lahir</td>
-						<td class="tdInfo">25 Maret 1990</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">Jabatan</td>
-						<td>
-							<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
-								<select>
-									<option disabled value="0">Jabatan</option>
-									<option value="1">Staff</option>
-									<option value="1">Superior</option>
-								</select>
-							</div>					
-						</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">No HP</td>
-						<td>
-							<textarea name="hpKaryawan" cols="30" rows="1">08724925121</textarea>
-						</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">email</td>
-						<td>
-							<textarea name="emailKaryawan" cols="30" rows="1">dwight@mifflin.com</textarea>
-						</td>
-					</tr>
-				</table>
-			</div>
-		</div>
-    <div class="modal-footer">
-			<a href="#!" class="modal-close btn-flat left">tutup</a>
-			<a id="buttonBackToDetailKaryawan" href="#" class="btn-flat left">kembali</a>
-			<a id="buttonUbahDetailKaryawan" href="#ubahDetailKaryawan" class="waves-effect waves-light btn" style="margin-right: 4px;">ubah</a>
-			<a id="buttonSimpanUbahanKaryawan" class="waves-effect waves-light btn" style="margin-right: 4px;">simpan</a>
-    </div>
 	</div>
 	<div id="modalTambahKaryawan" class="modal modal-fixed-footer">
 		<div class="modal-content">
@@ -180,79 +47,105 @@
 			<div class="valign-wrapper" style="width:100%">
 				<table class="tableNoBorder smallPadding">
 					<tr>
-						<td class="tdAtrib" width="120">ID</td>
+						<td class="tdAtrib" width="120">Nama</td>
 						<td>
-							<textarea name="NamaKaryawan" cols="30" rows="1"></textarea>
+              <form>
+                <input id="namaKaryawanBaru" type="text" name="name">
+              </form>
 						</td>
 					</tr>
 					<tr>
-						<td class="tdAtrib">Nama</td>
+						<td class="tdAtrib">Username</td>
 						<td>
-							<textarea name="NamaKaryawan" cols="30" rows="1"></textarea>
-						</td>
+              <form>
+                <input id="usernameKaryawanBaru" type="text" name="uname">
+              </form>
+            </td>
 					</tr>
+          <tr>
+            <td class="tdAtrib">Password</td>
+            <td>
+              <form>
+                <input id="passwordKaryawanBaru" type="password" name="pwd">
+              </form>
+            </td>
+          </tr>
 					<tr>
 						<td class="tdAtrib">Jenis Kelamin</td>
 						<td>
 							<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
-								<select>
-									<option disabled value="0">Jenis Kelamin</option>
-									<option value="1">Perempuan</option>
-									<option value="1">Laki-laki</option>
+								<select id="genderKaryawanBaru">
+									<option value="Wanita">Wanita</option>
+									<option value="Pria">Pria</option>
 								</select>
-							</div>					
+							</div>
 						</td>
 					</tr>
 					<tr>
 						<td class="tdAtrib">Foto</td>
 						<td>
-							<input id="fileupload" type="file" name="files[]" style="padding:0">
+							<input id="fileuploadFoto" type="file" name="files[]" style="padding:0">
 						</td>
-					</tr>		
-					<tr>
-						<td class="tdAtrib">Alamat</td>
-						<td>
-							<textarea class="formLarge" name="AlamatKaryawan" cols="30" rows="1"></textarea>
-						</td>
-						</tr>
+					</tr>
 					<tr>
 						<td class="tdAtrib">Tanggal Lahir</td>
 						<td class="tdInfo">
-							<textarea name="TanggalLahir" cols="30" rows="1"></textarea>
-						</td>
+              <form>
+                <input id="dobKaryawanBaru" type="date" name="dob">
+              </form>
+            </td>
 					</tr>
 					<tr>
 						<td class="tdAtrib">Jabatan</td>
 						<td>
 							<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
-								<select>
-									<option disabled value="0">Jabatan</option>
-									<option value="1">Staff</option>
+								<select id="roleKaryawanBaru">
+									<option value="2">Staff</option>
 									<option value="1">Superior</option>
+                  <option value="3">Admin</option>
 								</select>
-							</div>					
+							</div>
 						</td>
 					</tr>
-					<tr>
+          <tr>
+            <td class="tdAtrib tambahSuperior">ID Superior</td>
+            <td>
+              <form class="tambahSuperior">
+                <input class="tambahSuperior" id="IdSuperiorKaryawanBaru" type="text" name="idsup">
+              </form>
+            </td>
+          </tr>
+          <tr>
+          <tr>
 						<td class="tdAtrib">No HP</td>
 						<td>
-							<textarea name="hpKaryawan" cols="30" rows="1"></textarea>
+              <form>
+                <input id="hpKaryawanBaru" type="text" name="hp">
+              </form>
 						</td>
 					</tr>
 					<tr>
 						<td class="tdAtrib">email</td>
 						<td>
-							<textarea name="emailKaryawan" cols="30" rows="1"></textarea>
+              <form>
+                <input id="emailKaryawanBaru" type="text" name="email">
+              </form>
 						</td>
 					</tr>
-				</table>
+          <tr>
+            <td class="tdAtrib">Alamat</td>
+            <td>
+              <form>
+                <input id="alamatKaryawanBaru" type="text" name="alamat">
+              </form>
+            </td>
+          </tr>
+        </table>
 			</div>
 		</div>
     <div class="modal-footer">
-			<a href="#!" class="modal-close btn-flat left">tutup</a>
-			<a id="buttonBackToDetailKaryawan" href="#" class="btn-flat left">kembali</a>
-			<a id="buttonUbahDetailKaryawan" href="#ubahDetailKaryawan" class="waves-effect waves-light btn" style="margin-right: 4px;">ubah</a>
-			<a id="buttonSimpanUbahanKaryawan" class="waves-effect waves-light btn" style="margin-right: 4px;">simpan</a>
+			<a href="#" class="modal-close btn-flat left">tutup</a>
+      <a id="btnKirimKaryawanBaru" class="modal-close waves-effect waves-light btn">kirim</a>
     </div>
 	</div>
 </body>

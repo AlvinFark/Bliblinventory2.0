@@ -48,8 +48,13 @@ $( document ).ready(function() {
             url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + null;
         else
             url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + keteranganPinjam;
+
         ajaxSendRequestPinjam(url);
-        
+
+        //kalau superior, requestnya langsung di-approve, dan sub barang langsung dipesankan
+        if(window.location.pathname == "/superior"){
+            ajaxBookingSubBarang(kodeBarang, jumlahBarang);
+        }
         $('#modalDetailPinjam').modal('close');
     });
 
@@ -189,6 +194,8 @@ function ajaxGetProductDetail(idBarang) {
 function ajaxGetFormOrder(idBarang) {
     $("#dateOrderNow").text(changeDateFormat(getDateNow())); //fungsi changeDateFormat() dan getDateNow() ada di basePage.js
     $('#inputDate').val(getDateNow());
+    $('#inputTotalOrder').val(1);
+    $('#keteranganPinjam').val("");
     $("#formKodePinjam").text(idBarang);
     $.ajax({
         type: "GET",
@@ -253,6 +260,20 @@ function ajaxSendRequestPinjam(url) {
         url : url,
         success: function(result){
             window.alert(result);
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error");
+        },
+        async: false
+    });
+}
+
+function ajaxBookingSubBarang(kodeBarang, jumlahBarang) {
+    $.ajax({
+        type : "POST",
+        url : window.location + "/createDetailTransaksi/" + kodeBarang + "/" +jumlahBarang,
+        success: function(result){
         },
         error : function(e) {
             console.log("ERROR: ", e);

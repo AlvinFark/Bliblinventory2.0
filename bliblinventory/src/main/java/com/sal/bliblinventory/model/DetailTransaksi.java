@@ -11,17 +11,25 @@ public class DetailTransaksi {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idDetailTransaksi;
 
-    @NotBlank
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_transaksi", nullable=false)
     private Transaksi transaksi;
 
-    @NotBlank
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "kode_sub_barang", nullable=false)
     private SubBarang subBarang;
 
     private Instant tgKembali;
+
+    //constructor
+    public DetailTransaksi(){
+
+    }
+
+    public DetailTransaksi(Transaksi transaksi, SubBarang subBarang){
+        this.transaksi = transaksi;
+        this.subBarang = subBarang;
+    }
 
     //getter setter
     public Long getIdDetailTransaksi() {

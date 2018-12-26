@@ -8,4 +8,5 @@ import java.util.List;
 
 @Repository
 public interface TransaksiRepository extends JpaRepository<Transaksi, Long> {
+    Transaksi findFirstByUser_IdOrderByIdTransaksiDesc(Long userId);
 }

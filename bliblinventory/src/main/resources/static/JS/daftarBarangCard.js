@@ -37,10 +37,32 @@ $( document ).ready(function() {
         $("#detailBarangCard").fadeIn();
     });
 
+    //tombol KIRIM diklik (mengirim request peminjaman barang)
+    $("#buttonRequestPinjam").click(function(){
+        var kodeBarang = $("#formKodePinjam").text();
+        var tgPinjam = $("#inputDate").val();
+        var jumlahBarang = $("#inputTotalOrder").val();
+        var keteranganPinjam = $("#keteranganPinjam").val();
+        var url;
+        if(keteranganPinjam=="")
+            url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + null;
+        else
+            url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + keteranganPinjam;
+
+        ajaxSendRequestPinjam(url);
+
+        //kalau superior, requestnya langsung di-approve, dan sub barang langsung dipesankan
+        if(window.location.pathname == "/superior"){
+            ajaxBookingSubBarang(kodeBarang, jumlahBarang);
+        }
+        $('#modalDetailPinjam').modal('close');
+    });
+
     //ketika ada card barang yang diklik
-    $( document ).on("click",".modal-trigger",function () {
+    $( document ).on("click",".productCard",function () {
         var idBarang = jQuery(this).children(".card").children(".card-content").children("p:first-child").text();
         ajaxGetProductDetail(idBarang);
+        ajaxGetFormOrder(idBarang);
     });
 
     //ketika merubah dropdown urutkan
@@ -79,7 +101,7 @@ function ajaxGetAllProduct(){
             //tampilkan setiap barang dalam bentuk card
             for(var i = 0; i < result.length; i++){
                 $("#daftarProduk").append('' +
-                    '<a class="col s6 l2 m3 modal-trigger" href="#modalDetailPinjam">\n' +
+                    '<a class="col s6 l2 m3 modal-trigger productCard" href="#modalDetailPinjam">\n' +
                     '<div class="card">\n' +
                     '<div class="card-image">\n' +
                     '<img src="'+result[i].gambar+'" style="height:203px; width:100%">\n' +
@@ -168,6 +190,40 @@ function ajaxGetProductDetail(idBarang) {
     });
 }
 
+//menyiapkan form untuk order (tg skrg dan banyak maksimum pinjam)
+function ajaxGetFormOrder(idBarang) {
+    $("#dateOrderNow").text(changeDateFormat(getDateNow())); //fungsi changeDateFormat() dan getDateNow() ada di basePage.js
+    $('#inputDate').val(getDateNow());
+    $('#inputTotalOrder').val(1);
+    $('#keteranganPinjam').val("");
+    $("#formKodePinjam").text(idBarang);
+    $.ajax({
+        type: "GET",
+        url : window.location + "/countReadySubBarang/" + idBarang,
+        success: function (result) {
+            $(":input").bind('keyup mouseup blur focusout', function () {
+                if($('#inputTotalOrder').val() > result){
+                    window.alert("Barang yang tersedia hanya "+result.toString()+" unit");
+                    $('#inputTotalOrder').val(result);
+                }
+                else if($('#inputTotalOrder').val() <= 0){
+                    window.alert("Jumlah minimal untuk dipinjam 1 unit");
+                    $('#inputTotalOrder').val(1);
+                }
+
+                if(new Date($('#inputDate').val()) < new Date(getDateNow())) {
+                    window.alert("Tanggal peminjaman tidak bisa dilakukan sebelum hari ini (" + changeDateFormat(getDateNow())+ ")");
+                    $('#inputDate').val(getDateNow());
+                }
+            });
+        },
+        error: function (e) {
+            console.log("ERROR: ", e);
+            window.alert("error");
+        }
+    });
+}
+
 //tampilkan hasil sorting maupun searching product
 function ajaxGetProductCustom(url){
     $.ajax({
@@ -190,6 +246,34 @@ function ajaxGetProductCustom(url){
                     '</div>\n' +
                     '</a>');
             }
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error");
+        }
+    });
+}
+
+function ajaxSendRequestPinjam(url) {
+    $.ajax({
+        type : "POST",
+        url : url,
+        success: function(result){
+            window.alert(result);
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error");
+        },
+        async: false
+    });
+}
+
+function ajaxBookingSubBarang(kodeBarang, jumlahBarang) {
+    $.ajax({
+        type : "POST",
+        url : window.location + "/createDetailTransaksi/" + kodeBarang + "/" +jumlahBarang,
+        success: function(result){
         },
         error : function(e) {
             console.log("ERROR: ", e);

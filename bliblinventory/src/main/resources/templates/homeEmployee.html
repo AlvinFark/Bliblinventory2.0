@@ -2,7 +2,7 @@
 <header>
 	<nav>
 		<div class="nav-wrapper">
-			<a href="#"><img class="brand-logo imgLogo" src="../../images/logo2.png"/></a>
+			<a><img class="brand-logo imgLogo" src="../../images/logo2.png"/></a>
 			<a data-target="mobileEmployee" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 			<ul class="right hide-on-med-and-down">
 				<li><input type="text" id="inputSearch" placeholder="Ketik barang yang ingin anda cari"/></li>
@@ -14,19 +14,19 @@
 	</nav>
 
 	<ul id="menuDropdownEmployee" class="dropdown-content">
-		<li><a href="#" id="klikDaftarBarang">Daftar Barang inventaris</a></li>
+		<li><a id="klikDaftarBarang">Daftar Barang inventaris</a></li>
 		<li class="divider"></li>
-		<li><a href="#" id="klikDaftarOrder">Daftar Permintaan Peminjaan saya</a></li>
+		<li><a id="klikDaftarOrder">Daftar Permintaan Peminjaan saya</a></li>
 		<li class="divider"></li>
 		<li><a class="modal-trigger" href="#modalManualOrder" id="klikBuatManual">Buat Permintaan Peminjaman Secara Manual</a></li>
 		<li class="divider"></li>
-		<li><a href="LoginPage.html">Logout</a></li>
+		<li><a href="http://localhost:8080/" id="klikLogout">Logout</a></li>
 	</ul>
 </header>
 <div style="height:64px;"></div>
 <div class="kontainer">
 	<div id="includePageContent" style="position:absolute; width: inherit"></div>
-	<div id="includeOrderList" style="position:absolute; width: inherit"></div>
+	<!--<div id="includeOrderList" style="position:absolute; width: inherit"></div>-->
 	<div id="modalManualOrder" class="modal modal-fixed-footer">
 		<div class="modal-content valign-wrapper">
 		<table class="tableNoBorder smallPadding">
@@ -76,7 +76,7 @@
 		</table>
 	</div>
 	<div class="modal-footer">
-		<a href="#!" class="modal-close btn-flat left">tutup</a>
+		<a class="modal-close btn-flat left">tutup</a>
 		<a id="buttonRequestPinjam" class="waves-effect waves-light btn" style="margin-right: 4px;">kirim</a>
 	</div>
 	</div>

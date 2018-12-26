@@ -4,6 +4,8 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.time.Instant;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "transaksi")
@@ -12,27 +14,40 @@ public class Transaksi {
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long idTransaksi;
 
-    @NotBlank
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "id_peminjam", nullable=false)
     private User user;
 
-    @NotBlank
-    private Timestamp tgOrder;
+    private Instant tgOrder = Instant.now();
 
-    @NotBlank
-    private Date tgPinjam;
+    private LocalDate tgPinjam;
 
-    @NotBlank
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "kode_barang", nullable=false)
     private Barang barang;
 
+    private int jumlah;
+
     private String keterangan;
 
-    @NotBlank
     @Enumerated(EnumType.STRING)
-    private StatusTransaksi statusTransaksi = StatusTransaksi.menunggu;
+    private StatusTransaksi statusTransaksi;
+
+    //constructor
+    public Transaksi(){
+
+    }
+
+    public Transaksi(User user, String tgPinjam, Barang barang, int jumlah, String keterangan, StatusTransaksi statusTransaksi){
+        this.user = user;
+        this.tgPinjam = LocalDate.parse(tgPinjam);
+        this.barang = barang;
+        this.jumlah = jumlah;
+        this.keterangan = keterangan;
+        this.statusTransaksi = statusTransaksi;
+
+        this.tgOrder = Instant.now();
+    }
 
     //getter setter
     public Long getIdTransaksi() {
@@ -51,19 +66,19 @@ public class Transaksi {
         this.user = user;
     }
 
-    public Timestamp getTgOrder() {
+    public Instant getTgOrder() {
         return tgOrder;
     }
 
-    public void setTgOrder(Timestamp tgOrder) {
+    public void setTgOrder(Instant tgOrder) {
         this.tgOrder = tgOrder;
     }
 
-    public Date getTgPinjam() {
+    public LocalDate getTgPinjam() {
         return tgPinjam;
     }
 
-    public void setTgPinjam(Date tgPinjam) {
+    public void setTgPinjam(LocalDate tgPinjam) {
         this.tgPinjam = tgPinjam;
     }
 
@@ -73,6 +88,14 @@ public class Transaksi {
 
     public void setBarang(Barang barang) {
         this.barang = barang;
+    }
+
+    public int getJumlah() {
+        return jumlah;
+    }
+
+    public void setJumlah(int jumlah) {
+        this.jumlah = jumlah;
     }
 
     public String getKeterangan() {

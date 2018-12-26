@@ -2,8 +2,7 @@ package com.sal.bliblinventory.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.time.Instant;
 
 @Entity
 @Table(name = "detailTransaksi")
@@ -22,8 +21,9 @@ public class DetailTransaksi {
     @JoinColumn(name = "kode_sub_barang", nullable=false)
     private SubBarang subBarang;
 
-    private Timestamp tgKembali;
+    private Instant tgKembali;
 
+    //getter setter
     public Long getIdDetailTransaksi() {
         return idDetailTransaksi;
     }
@@ -48,11 +48,11 @@ public class DetailTransaksi {
         this.subBarang = subBarang;
     }
 
-    public Timestamp getTgKembali() {
+    public Instant getTgKembali() {
         return tgKembali;
     }
 
-    public void setTgKembali(Timestamp tgKembali) {
+    public void setTgKembali(Instant tgKembali) {
         this.tgKembali = tgKembali;
     }
 }

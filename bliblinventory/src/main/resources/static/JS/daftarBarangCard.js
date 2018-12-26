@@ -37,6 +37,22 @@ $( document ).ready(function() {
         $("#detailBarangCard").fadeIn();
     });
 
+    //tombol KIRIM diklik (mengirim request peminjaman barang)
+    $("#buttonRequestPinjam").click(function(){
+        var kodeBarang = $("#formKodePinjam").text();
+        var tgPinjam = $("#inputDate").val();
+        var jumlahBarang = $("#inputTotalOrder").val();
+        var keteranganPinjam = $("#keteranganPinjam").val();
+        var url;
+        if(keteranganPinjam=="")
+            url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + null;
+        else
+            url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + keteranganPinjam;
+        ajaxSendRequestPinjam(url);
+        
+        $('#modalDetailPinjam').modal('close');
+    });
+
     //ketika ada card barang yang diklik
     $( document ).on("click",".productCard",function () {
         var idBarang = jQuery(this).children(".card").children(".card-content").children("p:first-child").text();
@@ -173,6 +189,7 @@ function ajaxGetProductDetail(idBarang) {
 function ajaxGetFormOrder(idBarang) {
     $("#dateOrderNow").text(changeDateFormat(getDateNow())); //fungsi changeDateFormat() dan getDateNow() ada di basePage.js
     $('#inputDate').val(getDateNow());
+    $("#formKodePinjam").text(idBarang);
     $.ajax({
         type: "GET",
         url : window.location + "/countReadySubBarang/" + idBarang,
@@ -182,6 +199,11 @@ function ajaxGetFormOrder(idBarang) {
                     window.alert("Barang yang tersedia hanya "+result.toString()+" unit");
                     $('#inputTotalOrder').val(result);
                 }
+                else if($('#inputTotalOrder').val() <= 0){
+                    window.alert("Jumlah minimal untuk dipinjam 1 unit");
+                    $('#inputTotalOrder').val(1);
+                }
+
                 if(new Date($('#inputDate').val()) < new Date(getDateNow())) {
                     window.alert("Tanggal peminjaman tidak bisa dilakukan sebelum hari ini (" + changeDateFormat(getDateNow())+ ")");
                     $('#inputDate').val(getDateNow());
@@ -217,6 +239,20 @@ function ajaxGetProductCustom(url){
                     '</div>\n' +
                     '</a>');
             }
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error");
+        }
+    });
+}
+
+function ajaxSendRequestPinjam(url) {
+    $.ajax({
+        type : "POST",
+        url : url,
+        success: function(result){
+            window.alert(result);
         },
         error : function(e) {
             console.log("ERROR: ", e);

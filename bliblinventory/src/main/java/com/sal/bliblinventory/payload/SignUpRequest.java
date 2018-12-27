@@ -36,6 +36,7 @@ public class SignUpRequest {
     @NotBlank
     private String phoneNumber;
 
+    private boolean isActive;
 
     public String getName() {
         return name;
@@ -116,4 +117,13 @@ public class SignUpRequest {
   public void setSuperiorId(int superiorId) {
     this.superiorId = superiorId;
   }
+
+  public void setIsActive(boolean isActive) {
+    this.isActive = isActive;
+  }
+
+  public boolean getIsActive(){
+    return this.isActive;
+  }
+
 }

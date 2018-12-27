@@ -3,22 +3,16 @@ package com.sal.bliblinventory.controller;
 import com.sal.bliblinventory.exception.AppException;
 import com.sal.bliblinventory.exception.ResourceNotFoundException;
 import com.sal.bliblinventory.model.Role;
-import com.sal.bliblinventory.model.RoleName;
 import com.sal.bliblinventory.model.User;
 import com.sal.bliblinventory.payload.SignUpRequest;
 import com.sal.bliblinventory.repository.RoleRepository;
 import com.sal.bliblinventory.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @RestController
 @RequestMapping("/api/users")
@@ -59,6 +53,7 @@ public class UserController {
     user.setRoles(Collections.singleton(userRole));
     user.setSuperior(superior);
     user.setId(id);
+    user.setIsActive(userRequest.getIsActive());
 
     return userRepository.findById(id).map(u -> {
       u = user;

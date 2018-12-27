@@ -1,19 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link type="text/css" rel="stylesheet" href="../css/styles.css">
-	<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"	media="screen,projection"/>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="../js/daftarBarangTable.js"></script>
-	<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
-	<title>Daftar Barang</title>
-</head>
-<body class="kontainer">
+<script type="text/javascript" src="../js/daftarBarangTable.js"></script>
 	<h4>Daftar Barang Inventaris</h4>
 	<div style="display:flex; margin-top: 20px;">
 		<div class="containerSelectLogo valign-wrapper">
@@ -22,16 +7,6 @@
 			<div class="input-field containerSearch valign-wrapper z-depth-1">
 					<input type="text" placeholder="Ketik yang ingin dicari"/>
 			</div>	
-		</div>
-		<div class="containerSelectLogo valign-wrapper">
-			<i class="material-icons">sort</i>
-			<p>Urutkan :</p>
-			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select>
-					<option value="1">Nama</option>
-					<option value="2">ID Barang</option>
-				</select>
-			</div>
 		</div>
 		<div class="containerSelectLogo valign-wrapper">
 			<i class="material-icons">dashboard</i>
@@ -58,7 +33,7 @@
 					<th></th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="tabelDaftarBarang">
 				<tr>
 					<td><p><label><input type="checkbox" /><span></span></label></p></td>
 					<td>PZNF9248MF</td>
@@ -186,7 +161,7 @@
 							<tr>
 								<td class="tdAtrib">Gambar Produk</td>
 								<td>
-									<input id="fileupload" type="file" name="files[]" style="padding:0">
+									<input id="flkafkla" type="file" name="files[]" style="padding:0">
 								</td>
 							</tr>
 							<tr>
@@ -264,7 +239,7 @@
 				<tr>
 					<td class="tdAtrib">Gambar Produk</td>
 					<td>
-						<input id="fileupload" type="file" name="files[]" style="padding:0">
+						<input id="asfas" type="file" name="files[]" style="padding:0">
 					</td>
 				</tr>
 				<tr>
@@ -280,5 +255,3 @@
 			<a class="waves-effect waves-light btn" style="margin-right: 4px;">kirim</a>
     </div>
 	</div>
-</body>
-</html>

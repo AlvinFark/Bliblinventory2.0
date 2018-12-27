@@ -20,6 +20,14 @@ public class Barang {
     @NotBlank
     private String deskripsi;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "categoryId")
+    private Category category;
+
+    private Long hargaBeli;
+
+    private boolean isExist;
+
     //gettersetter
     public String getKode() {
         return kode;
@@ -53,4 +61,27 @@ public class Barang {
         this.deskripsi = deskripsi;
     }
 
+    public Category getCategory() {
+      return category;
+    }
+
+    public void setCategory(Category category) {
+      this.category = category;
+    }
+
+  public Long getHargaBeli() {
+    return hargaBeli;
+  }
+
+  public void setHargaBeli(Long hargaBeli) {
+    this.hargaBeli = hargaBeli;
+  }
+
+  public void setIsExist(boolean exist) {
+    isExist = exist;
+  }
+
+  public boolean getisExist(){
+      return this.isExist;
+  }
 }

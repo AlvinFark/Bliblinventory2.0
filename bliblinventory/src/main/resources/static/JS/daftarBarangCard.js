@@ -49,12 +49,13 @@ $( document ).ready(function() {
         else
             url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + keteranganPinjam;
 
-        ajaxSendRequestPinjam(url);
+        var sukses = ajaxSendRequestPinjam(url);
 
-        //kalau superior, requestnya langsung di-approve, dan sub barang langsung dipesankan
-        if(window.location.pathname == "/superior"){
+        //kalau superior dan request pinjamnya berhasil, requestnya langsung di-approve, dan sub barang langsung dipesankan
+        if(window.location.pathname == "/superior" && sukses==1){
             ajaxBookingSubBarang(kodeBarang, jumlahBarang);
         }
+
         $('#modalDetailPinjam').modal('close');
     });
 
@@ -255,11 +256,13 @@ function ajaxGetProductCustom(url){
 }
 
 function ajaxSendRequestPinjam(url) {
+    var sukses = 0;
     $.ajax({
         type : "POST",
         url : url,
         success: function(result){
             window.alert(result);
+            sukses = 1;
         },
         error : function(e) {
             console.log("ERROR: ", e);
@@ -267,17 +270,40 @@ function ajaxSendRequestPinjam(url) {
         },
         async: false
     });
+
+    return sukses;
 }
 
 function ajaxBookingSubBarang(kodeBarang, jumlahBarang) {
+    var sukses = 0;
+    var listSubBarang;
     $.ajax({
         type : "POST",
         url : window.location + "/createDetailTransaksi/" + kodeBarang + "/" +jumlahBarang,
         success: function(result){
+            sukses=1;
+            listSubBarang= result; //result berisi list subBarang yang akan dibooking
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
-        }
+            window.alert("error createDetailTransaksi");
+        },
+        async: false
     });
+
+    //kalau bookingnya sukses, ubah status subBarang menjadi dipinjam (Boolean false)
+    if(sukses ==1){
+        for(var i =0;i<listSubBarang.length;i++){
+            $.ajax({
+                type: "PUT",
+                url: window.location + "/changeStateSubBarangToBorrowed/" +listSubBarang[i].kodeSubBarang,
+                success: function (result) {
+                },
+                error : function(e) {
+                    console.log("ERROR: ", e);
+                    window.alert("error changeStateSubBarangToBorrowed");
+                }
+            });
+        }
+    }
 }

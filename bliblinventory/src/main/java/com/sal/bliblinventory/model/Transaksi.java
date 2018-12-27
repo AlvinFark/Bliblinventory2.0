@@ -1,11 +1,9 @@
 package com.sal.bliblinventory.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Entity
 @Table(name = "transaksi")
@@ -18,7 +16,7 @@ public class Transaksi {
     @JoinColumn(name = "id_peminjam", nullable=false)
     private User user;
 
-    private Instant tgOrder = Instant.now();
+    private LocalDateTime tgOrder;
 
     private LocalDate tgPinjam;
 
@@ -45,8 +43,7 @@ public class Transaksi {
         this.jumlah = jumlah;
         this.keterangan = keterangan;
         this.statusTransaksi = statusTransaksi;
-
-        this.tgOrder = Instant.now();
+        this.tgOrder = LocalDateTime.now(ZoneId.of("Asia/Jakarta"));
     }
 
     //getter setter
@@ -66,11 +63,11 @@ public class Transaksi {
         this.user = user;
     }
 
-    public Instant getTgOrder() {
+    public LocalDateTime getTgOrder() {
         return tgOrder;
     }
 
-    public void setTgOrder(Instant tgOrder) {
+    public void setTgOrder(LocalDateTime tgOrder) {
         this.tgOrder = tgOrder;
     }
 

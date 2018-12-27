@@ -25,7 +25,7 @@ public class DetailTransaksiController {
     TransaksiRepository transaksiRepository;
 
     @RequestMapping(value = {"employee/createDetailTransaksi/{kodeBarang}/{jumlahBarang}", "superior/createDetailTransaksi/{kodeBarang}/{jumlahBarang}"}, method = RequestMethod.POST)
-    public String createDetailTransaksi(Model md, @PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "jumlahBarang") int jumlahBarang){
+    public List<SubBarang> createDetailTransaksi(Model md, @PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "jumlahBarang") int jumlahBarang){
         Pageable limit = new PageRequest(0, jumlahBarang);
         List<SubBarang> subBarangList = subBarangRepository.findAllByBarang_KodeAndStatusSubBarang(kodeBarang, true, limit);
         for(int i=0; i<subBarangList.size(); i++){
@@ -33,6 +33,6 @@ public class DetailTransaksiController {
             DetailTransaksi detailTransaksi = new DetailTransaksi(transaksiRepository.findFirstByUser_IdOrderByIdTransaksiDesc(1L), subBarangList.get(i));
             detailTransaksiRepository.save(detailTransaksi);
         }
-        return "berhasil";
+        return subBarangList;
     }
 }

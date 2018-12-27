@@ -2,6 +2,7 @@ package com.sal.bliblinventory.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "subBarang")
@@ -9,13 +10,20 @@ public class SubBarang {
     @Id
     private String kodeSubBarang;
 
-    @NotBlank
     private Boolean statusSubBarang;
 
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "kode_barang", nullable=false)
     private Barang barang;
 
+    //constructor
+    public SubBarang(){}
+
+    public SubBarang(String kodeSubBarang, Barang barang){
+        this.kodeSubBarang = kodeSubBarang;
+        this.barang = barang;
+        this.statusSubBarang = true;
+    }
 
     //getter and setter
     public String getKodeSubBarang() {

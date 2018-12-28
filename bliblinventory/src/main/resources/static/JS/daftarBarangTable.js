@@ -20,7 +20,7 @@ $( document ).ready(function() {
       var count=0;
       $.ajax({
         type : "GET",
-        url : "employee/sortByName/"+keyword,
+        url : "employee/sortByName/"+ filter + "/" +keyword,
         success: function(result) {
           count=result.length;
           $("#tabelDaftarBarang").html('');
@@ -148,7 +148,42 @@ $( document ).ready(function() {
           $("#unitTersediaTable").html(result2);
         }
       });
-
+      $.ajax({
+        type: "GET",
+        url: "/api/barang/" + kode + "/subbarang",
+        success: function (result3) {
+          $("#tabelDaftarBarangSatuan").html('');
+          for (var i=0; i<result3.length; i++){
+            var status;
+            var peminjam = '';
+            if (result3[i].statusSubBarang){status="Tersedia"; peminjam='-'} else {status="Dipinjam"};
+            $("#tabelDaftarBarangSatuan").append('' +
+              '<tr class="rowDetailSubBarang">\n' +
+              '  <td class="idDetailSubBarang">'+ result3[i].kodeSubBarang+'</td>\n' +
+              '  <td>'+ status +'</td>\n' +
+              '  <td class="namaPeminjam">'+ peminjam +'</td>\n' +
+              '  <td class="tanggalPinjam">'+ peminjam +'</td>\n' +
+              '  <td width=100px>\n' +
+              '    <a class="waves-effect waves-light btn right btn-small modal-trigger" href="#modalDetailRequest"><i class="material-icons">delete</i></a>\n' +
+              '  </td>\n' +
+              '</tr>')
+          }
+          $( ".rowDetailSubBarang" ).each(function() {
+            if ($(this).children(".namaPeminjam").text()!="-") {
+              var kodeDetailSubBarang = $(this).children(".idDetailSubBarang").text();
+              $.ajax({
+                type: "GET",
+                url: "api/transaksi/subbarang/" + kodeDetailSubBarang,
+                success: function (result4) {
+                  var nama = ((result4 || {}).user || {}).name;
+                  $('td.idDetailSubBarang:contains("'+ kodeDetailSubBarang +'")').parent('tr').children('.namaPeminjam').html(nama);
+                  $('td.idDetailSubBarang:contains("'+ kodeDetailSubBarang +'")').parent('tr').children('.tanggalPinjam').html(result4.tgPinjam);
+                }
+              });
+            }
+          });
+        }
+      });
     });
 
     $("#triggerTambahBarangSatuan").click(function () {

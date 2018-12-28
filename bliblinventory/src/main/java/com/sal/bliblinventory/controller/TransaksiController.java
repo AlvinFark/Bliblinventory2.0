@@ -1,11 +1,10 @@
 package com.sal.bliblinventory.controller;
 
+import com.sal.bliblinventory.model.DetailTransaksi;
 import com.sal.bliblinventory.model.StatusTransaksi;
+import com.sal.bliblinventory.model.SubBarang;
 import com.sal.bliblinventory.model.Transaksi;
-import com.sal.bliblinventory.repository.BarangRepository;
-import com.sal.bliblinventory.repository.DetailTransaksiRepository;
-import com.sal.bliblinventory.repository.TransaksiRepository;
-import com.sal.bliblinventory.repository.UserRepository;
+import com.sal.bliblinventory.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +24,9 @@ public class TransaksiController {
 
     @Autowired
     DetailTransaksiRepository detailTransaksiRepository;
+
+    @Autowired
+    SubBarangRepository subBarangRepository;
 
     //employee mengirim request pinjam
     @RequestMapping(value = {"employee/requestPinjam/{kodeBarang}/{tgPinjam}/{jumlahBarang}/{keteranganPinjam}"}, method = RequestMethod.POST)
@@ -62,5 +64,13 @@ public class TransaksiController {
             //sementara user id nya statis pakai 1L
             return transaksiRepository.findAllByUser_IdAndStatusTransaksi(1L, StatusTransaksi.ditolak);
         }
+    }
+
+    @GetMapping("api/transaksi/subbarang/{kodesubbarang}")
+    public Transaksi transaksiPerSubBarang(@PathVariable String kodesubbarang){
+      SubBarang subBarang = subBarangRepository.getSubBarangByKodeSubBarang(kodesubbarang);
+      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarang(subBarang);
+      Transaksi transaksi = detailTransaksi.getTransaksi();
+      return transaksi;
     }
 }

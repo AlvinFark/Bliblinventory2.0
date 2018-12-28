@@ -46,4 +46,10 @@ public class SubBarangController {
       subBarangRequest.setStatusSubBarang(true);
       return subBarangRepository.save(subBarangRequest);
     }
+
+    @GetMapping("/api/barang/{kodebarang}/subbarang")
+    public List<SubBarang> listSubBarang(@PathVariable String kodebarang){
+      Barang barang = barangRepository.findBarangByKode(kodebarang);
+      return subBarangRepository.findAllByBarangAndIsExistOrderByStatusSubBarangDesc(barang,true);
+    }
 }

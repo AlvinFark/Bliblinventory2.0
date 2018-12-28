@@ -31,6 +31,8 @@ public class Transaksi {
     @Enumerated(EnumType.STRING)
     private StatusTransaksi statusTransaksi;
 
+    private boolean isExist;
+
     //constructor
     public Transaksi(){
 
@@ -44,6 +46,7 @@ public class Transaksi {
         this.keterangan = keterangan;
         this.statusTransaksi = statusTransaksi;
         this.tgOrder = LocalDateTime.now(ZoneId.of("Asia/Jakarta"));
+        this.isExist=true;
     }
 
     //getter setter

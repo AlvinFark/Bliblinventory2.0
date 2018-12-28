@@ -31,7 +31,7 @@ public class DetailTransaksiController {
         //tambahkan subBarang ke detail_transaksi sejumlah yang diminta
         for(int i=0; i<subBarangList.size(); i++){
             //sementara usernya masih static (pakai user dg id 1L)
-            DetailTransaksi detailTransaksi = new DetailTransaksi(transaksiRepository.findFirstByUser_IdOrderByIdTransaksiDesc(1L), subBarangList.get(i));
+            DetailTransaksi detailTransaksi = new DetailTransaksi(transaksiRepository.findFirstByUser_IdAndIsExistOrderByIdTransaksiDesc(1L, true), subBarangList.get(i));
             detailTransaksiRepository.save(detailTransaksi);
         }
         return subBarangList;

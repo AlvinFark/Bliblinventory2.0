@@ -1,7 +1,4 @@
 $( document ).ready(function() {
-    if(window.location.pathname == "/admin"){
-        window.alert("Belum ada controller untuk ajax dari pathname ADMIN");
-    }
 
     if(window.location.pathname == "/superior")
         ajaxSetAllPermintaanPinjam();
@@ -38,7 +35,7 @@ function ajaxSetAllPermintaanPinjam() {
                         '<td>'+changeDateFormat(result[i].tgPinjam)+'</td>\n' +
                         '<td>'+result[i].jumlah+'</td>\n' +
                         '<td>'+changeDateFormat((result[i].tgOrder).substring(0,10))+'</td>\n' +
-                        '<td width=1px><a class="waves-effect waves-light btn right modal-trigger kotak-small" href="#modalDetailRequest"><i class="material-icons">search</i></a></td>\n' +
+                        '<td width=1px><a class="waves-effect waves-light btn right modal-trigger kotak-small" href="#modalDetailRequest">Detail</a></td>\n' +
                     '</tr>'
                 );
             }

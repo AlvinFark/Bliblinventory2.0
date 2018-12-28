@@ -9,6 +9,7 @@ import java.util.List;
 
 @Repository
 public interface TransaksiRepository extends JpaRepository<Transaksi, Long> {
+    Transaksi findByIdTransaksi(Long idTransaksi);
     Transaksi findFirstByUser_IdAndIsExistOrderByIdTransaksiDesc(Long userId, boolean isExist);
     List<Transaksi> findAllByUser_IdAndStatusTransaksiAndIsExist(Long userId, StatusTransaksi statusTransaksi, boolean isExist);
 

@@ -1,4 +1,5 @@
 $( document ).ready(function() {
+    //YG UNTUK ADMIN BELUM
 
     if(window.location.pathname == "/superior")
         ajaxSetAllPermintaanPinjam();
@@ -18,6 +19,7 @@ $( document ).ready(function() {
             ajaxGetRequestListBySortAndSearch();
     });
 
+    //ketika ada checkbox yang diklik
     $( document ).on("click",".cbx",function (){
         //kalau checkbox All di klik, semua ikut checked / unchecked
         if(this.id == "cbxAll"){
@@ -43,6 +45,12 @@ $( document ).ready(function() {
             $("#btnTolak").addClass("disabled");
         }
     });
+
+    //ketika klik button detail
+    $( document ).on("click",".btnDetail",function (){
+        var idTransaksi = (this.id).substring(6);
+        ajaxGetDetailRequestOrder(idTransaksi);
+    });
 });
 
 function ajaxSetAllPermintaanPinjam() {
@@ -61,7 +69,7 @@ function ajaxSetAllPermintaanPinjam() {
                         '<td>'+changeDateFormat(result[i].tgPinjam)+'</td>\n' +
                         '<td>'+result[i].jumlah+'</td>\n' +
                         '<td>'+changeDateFormat((result[i].tgOrder).substring(0,10))+'</td>\n' +
-                        '<td width=1px><a class="waves-effect waves-light btn right modal-trigger" href="#modalDetailRequest">Detail</a></td>\n' +
+                        '<td width=1px><a id="detail'+result[i].idTransaksi+'" class="waves-effect waves-light btn right modal-trigger btnDetail" href="#modalDetailRequest">Detail</a></td>\n' +
                     '</tr>'
                 );
             }
@@ -97,6 +105,30 @@ function ajaxGetRequestListBySortAndSearch(){
                     '</tr>'
                 );
             }
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error");
+        }
+    });
+}
+
+function ajaxGetDetailRequestOrder(idTransaksi) {
+    $.ajax({
+        type : "GET",
+        url : window.location + "/getDetailRequest/" + idTransaksi,
+        success: function(result){
+            $("#detailNamaKaryawan").html(result.user.name);
+            $("#detailIdTransaksi").html(result.idTransaksi);
+            $("#detailTgOrder").html(changeDateFormat((result.tgOrder).substring(0,10)) + " " + (result.tgOrder).substring(11));
+            $("#detailNamaBarang").html(result.barang.nama);
+            $("#detailNamaKategori").html(result.barang.category.name);
+            $("#detailTgPinjam").html(changeDateFormat(result.tgPinjam));
+            $("#detailJumlah").html(result.jumlah);
+            if(result.keterangan == "null")
+                $("#detailKeterangan").html("-");
+            else
+                $("#detailKeterangan").html(result.keterangan);
         },
         error : function(e) {
             console.log("ERROR: ", e);

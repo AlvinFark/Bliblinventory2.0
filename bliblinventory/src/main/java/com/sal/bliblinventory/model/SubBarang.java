@@ -53,7 +53,7 @@ public class SubBarang {
         this.barang = barang;
     }
 
-    public boolean isExist() {
+    public boolean getExist() {
         return isExist;
     }
 

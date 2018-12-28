@@ -5,37 +5,6 @@ $( document ).ready(function() {
 
   ajaxGetBarangTable('',0);
 
-  $("#editBarangTable").hide();
-  $("#tambahSatuanTable").hide();
-  $("#detailBarangTable").show();
-  $("#backToDetailTable").hide();
-  $("#tombolSimpanEditan").hide();
-  $("#tombolSimpanSatuan").hide();
-  $("#tombolEditBarang").show();
-  $("#clickTambahSatuan").show();
-
-    $(".clickDetailTable").click(function(){
-        $("#editBarangTable").hide();
-        $("#tambahSatuanTable").hide();
-        $("#detailBarangTable").show();
-        $("#backToDetailTable").hide();
-        $("#tombolSimpanEditan").hide();
-        $("#tombolSimpanSatuan").hide();
-        $("#tombolEditBarang").show();
-        $("#clickTambahSatuan").show();
-    });
-
-    $(".clickEditTable").click(function(){
-        $("#editBarangTable").show();
-        $("#tambahSatuanTable").hide();
-        $("#detailBarangTable").hide();
-        $("#backToDetailTable").show();
-        $("#tombolSimpanEditan").show();
-        $("#tombolSimpanSatuan").hide();
-        $("#tombolEditBarang").hide();
-        $("#clickTambahSatuan").hide();
-    });
-
     var indexSatuan = 0;
 
     $("#clickTambahSatuan").click(function(){
@@ -50,10 +19,12 @@ $( document ).ready(function() {
     });
 
     function ajaxGetBarangTable(keyword, filter) {
+      var count=0;
       $.ajax({
         type : "GET",
         url : "employee/sortByName/"+keyword,
         success: function(result) {
+          count=result.length;
           $("#tabelDaftarBarang").html('');
           for (var i = 0; i < result.length; i++) {
             var kategoriBarang;
@@ -62,45 +33,111 @@ $( document ).ready(function() {
               case 1 : {kategoriBarang="Elektronik"; break;}
               case 2 : {kategoriBarang="Perkakas Kantor"; break;}
             }
-            var totalSubBarang;
-            var subBarangTersedia;
             document.getElementById("tabelDaftarBarang").innerHTML += '' +
               '<tr>\n' +
               '  <td><p><label><input id="checkBoxBarang' + i + '" type="checkbox"/><span></span></label></p></td>\n' +
-              '  <td>' + result[i].kode + '</td>\n' +
+              '  <td id="kodeBarang'+i+'" class="kodeBarangTable">' + result[i].kode + '</td>\n' +
               '  <td>' + result[i].nama + '</td>\n' +
               '  <td>' + kategoriBarang + '</td>\n' +
               '  <td>' + result[i].hargaBeli + '</td>\n' +
-              '  <td id="totalSubBarang' + i + '">a</td>\n' +
-              '  <td id="subBarangTersedia' + i + '">a</td>\n' +
               '  <td width=100px>\n' +
-              '    <a class="waves-effect waves-light btn right modal-trigger kotak-small clickEditTable" href="#modalDetailBarangTable"><i class="material-icons">edit</i></a>\n' +
-              '    <a class="waves-effect waves-light btn right modal-trigger kotak-small clickDetailTable" href="#modalDetailBarangTable"><i class="material-icons">search</i></a>\n' +
+              '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickEditTable" href="#modalDetailBarangTable"><i class="material-icons">edit</i></a>\n' +
+              '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickDetailTable" href="#modalDetailBarangTable"><i class="material-icons">search</i></a>\n' +
               '  </td>\n' +
               '</tr>\n';
           }
-          setTimeout(function () {
-            for (var i = 0; i < result.length; i++) {
-              $.ajax({
-                type: "GET",
-                url: "/employee/countAllSubBarang/" + result[i].kode,
-                success: function (result1) {
-                  $("td[id=" + "totalSubBarang" + i + "]").append(result1);
-                }
-              });
-              $.ajax({
-                type: "GET",
-                url: "/employee/countReadySubBarang/" + result[i].kode,
-                success: function (result2) {
-                  $("td[id=" + "subBarangTersedia" + i + "]").append(result2);
-                }
-              });
-            }
-          }, 5000);
+          $(".clickDetailTable").click(function(){
+            $("#editBarangTable").hide();
+            $("#tambahSatuanTable").hide();
+            $("#detailBarangTable").show();
+            $("#backToDetailTable").hide();
+            $("#tombolSimpanEditan").hide();
+            $("#tombolSimpanSatuan").hide();
+            $("#tombolEditBarang").show();
+            $("#clickTambahSatuan").show();
+          });
+
+          $(".clickEditTable").click(function(){
+            $("#editBarangTable").show();
+            $("#tambahSatuanTable").hide();
+            $("#detailBarangTable").hide();
+            $("#backToDetailTable").show();
+            $("#tombolSimpanEditan").show();
+            $("#tombolSimpanSatuan").hide();
+            $("#tombolEditBarang").hide();
+            $("#clickTambahSatuan").hide();
+          });
+        }
+      });
+    }
+
+    $(document).on("click", ".triggerModalTable", function(){
+      kode = jQuery(this).parent("td").parent("tr"). children(".kodeBarangTable").text();
+      $.ajax({
+        type : "GET",
+        url : "employee/getDetailProduct/"+kode,
+        success: function(result) {
+          $("#imgModalBarang").css({
+            'background-image': 'url("images/barang/'+result.gambar+'")'
+          });
+          var kategoriBarang;
+          var idKategoriBarang = ((result || {}).category || {}).id;
+          switch (idKategoriBarang) {
+            case 1 : {kategoriBarang="Elektronik"; break;}
+            case 2 : {kategoriBarang="Perkakas Kantor"; break;}
+          }
+          $("#kodeBarangTable").html(kode);
+          $("#namaBarangTable").html(result.nama);
+          $("#kategoriBarangTable").html(kategoriBarang);
+          $("#hargaBeliBarangTable").html(result.hargaBeli);
+          $("#deskripsiBarangTable").html(result.deskripsi);
+
+          $("#ubahNamaBarang").val(result.nama);
+          $("#ubahHargaBeliBarang").val(result.hargaBeli);
+          $("#ubahdeskripsiBarang").val(result.deskripsi);
+          $("#ubahKategoriBarang").val(kategoriBarang);
+
+          $("#tombolSimpanEditan").click(function () {
+            var keyword = $("#ubahKategoriBarang").val();
+            var jsonUbahKaryawan = {
+              "kode" : $("#kodeBarangTable").text(),
+              "nama" : $("#ubahNamaBarang").val(),
+              "hargaBeli" : $("#ubahHargaBeliBarang").val(),
+              "deskripsi" : $("#ubahdeskripsiBarang").val(),
+              "gambar" : "default.jpg"
+            };
+            $.ajax({
+              type : "PUT",
+              url : "/api/barang/"+keyword,
+              contentType: 'application/json',
+              data: JSON.stringify(jsonUbahKaryawan),
+              success: function(result) {
+                alert('data barang berhasil diubah, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
+              },
+              error: function (result) {
+                alert(JSON.stringify(result))
+              }
+            });
+          });
+
+        }
+      });
+      $.ajax({
+        type: "GET",
+        url: "/employee/countAllSubBarang/" + kode,
+        success: function (result1) {
+          $("#totalUnitTable").html(result1);
+        }
+      });
+      $.ajax({
+        type: "GET",
+        url: "/employee/countReadySubBarang/" + kode,
+        success: function (result2) {
+          $("#unitTersediaTable").html(result2);
         }
       });
 
-    }
+    });
 
     $("#triggerTambahBarangSatuan").click(function () {
       indexSatuan++;
@@ -125,7 +162,5 @@ $( document ).ready(function() {
     $("#btnRefreshListList").click(function() {
       ajaxGetBarangTable($("#searchBarang").val(),$("#filterBarang").prop('selectedIndex'));
     });
-
-
 
 });

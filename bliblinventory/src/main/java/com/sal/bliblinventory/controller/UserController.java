@@ -61,6 +61,5 @@ public class UserController {
     }).orElseThrow(() -> new ResourceNotFoundException("user","id", id));
   }
 
-
 }
 

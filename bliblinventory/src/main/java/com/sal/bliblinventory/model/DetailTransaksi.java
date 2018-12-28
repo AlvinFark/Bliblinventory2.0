@@ -20,6 +20,8 @@ public class DetailTransaksi {
 
     private LocalDateTime tgKembali;
 
+    private boolean isExist;
+
     //constructor
     public DetailTransaksi(){
 
@@ -28,6 +30,7 @@ public class DetailTransaksi {
     public DetailTransaksi(Transaksi transaksi, SubBarang subBarang){
         this.transaksi = transaksi;
         this.subBarang = subBarang;
+        this.isExist = true;
     }
 
     //getter setter
@@ -61,5 +64,13 @@ public class DetailTransaksi {
 
     public void setTgKembali(LocalDateTime tgKembali) {
         this.tgKembali = tgKembali;
+    }
+
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public void setExist(boolean exist) {
+        isExist = exist;
     }
 }

@@ -3,19 +3,22 @@ $( document ).ready(function() {
         window.alert("Belum ada controller untuk ajax dari pathname ADMIN");
     }
 
-    ajaxSetAllPermintaanPinjam();
+    if(window.location.pathname == "/superior")
+        ajaxSetAllPermintaanPinjam();
 
     $('select').formSelect();
     $('.modal').modal();
 
     //ketika merubah dropdown urutkan
     $( document ).on("change","#selectSortBy",function (){
-        ajaxGetRequestListBySortAndSearch();
+        if(window.location.pathname == "/superior")
+            ajaxGetRequestListBySortAndSearch();
     });
 
     //ketika klik icon search
     $( document ).on("click","#iconSearch",function (){
-        ajaxGetRequestListBySortAndSearch();
+        if(window.location.pathname == "/superior")
+            ajaxGetRequestListBySortAndSearch();
     });
 });
 

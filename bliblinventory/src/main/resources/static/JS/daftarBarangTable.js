@@ -5,8 +5,6 @@ $( document ).ready(function() {
 
   ajaxGetBarangTable('',0);
 
-    var indexSatuan = 0;
-
     $("#clickTambahSatuan").click(function(){
         $("#editBarangTable").hide();
         $("#tambahSatuanTable").show();
@@ -120,6 +118,20 @@ $( document ).ready(function() {
             });
           });
 
+          $("#tombolSimpanSatuan").click(function (){
+            var kodebarang = $("#kodeBarangTable").text();
+            $( ".barangSatuan" ).each(function() {
+              var kodesubbarang = $(this).val();
+              $.ajax({
+                type: "POST",
+                url: "/api/barang/" +kodebarang + "/" + kodesubbarang,
+                success: function(result) {
+                  alert('barang satuan berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
+                }
+
+              });
+            });
+          })
         }
       });
       $.ajax({
@@ -140,11 +152,10 @@ $( document ).ready(function() {
     });
 
     $("#triggerTambahBarangSatuan").click(function () {
-      indexSatuan++;
       $("#tambahBarangSatuan").append('' +
         '  <div class="valign-wrapper" style="margin-top: 5px">\n' +
         '    <div class="tdAtrib" style="width:100px;">ID Satuan</div>\n' +
-        '    <textarea id="barangSatuan'+ indexSatuan +'" name="satuan" cols="30" rows="1" style="height:30px; padding: 5px 0 0 5px;"></textarea>\n' +
+        '    <textarea class="barangSatuan" name="satuan" cols="30" rows="1" style="height:30px; padding: 5px 0 0 5px;"></textarea>\n' +
         '  </div>\n');
     });
 

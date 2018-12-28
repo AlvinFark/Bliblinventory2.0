@@ -158,7 +158,7 @@
 				<div id="tambahBarangSatuan" style="margin-top: 10px">
           <div class="valign-wrapper">
             <div class="tdAtrib" style="width:100px;">ID Satuan</div>
-            <textarea id="barangSatuan0" name="satuan" cols="30" rows="1" style="height:30px; padding: 5px 0 0 5px;"></textarea>
+            <textarea class="barangSatuan" name="satuan" cols="30" rows="1" style="height:30px; padding: 5px 0 0 5px;"></textarea>
           </div>
 				</div>
 				<a class="waves-effect waves-light btn" id="triggerTambahBarangSatuan" style="margin: 10px 0 0 285px;">tambah lagi</a>
@@ -179,7 +179,11 @@
 			<table class="tableNoBorder smallPadding">
 				<tr>
 					<td class="tdAtrib">ID Barang</td>
-					<td>82738264</td>
+					<td>
+            <form>
+              <input id="namaBarangBaru" name="id" value="">
+            </form>
+          </td>
 				</tr>
 				<tr>
 					<td class="tdAtrib">Nama Barang</td>

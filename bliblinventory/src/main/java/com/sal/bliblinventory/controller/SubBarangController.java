@@ -1,5 +1,6 @@
 package com.sal.bliblinventory.controller;
 
+import com.sal.bliblinventory.exception.AppException;
 import com.sal.bliblinventory.exception.ResourceNotFoundException;
 import com.sal.bliblinventory.model.Barang;
 import com.sal.bliblinventory.model.SubBarang;
@@ -45,5 +46,18 @@ public class SubBarangController {
       SubBarang subBarangRequest = new SubBarang(kodesubbarang, barang);
       subBarangRequest.setStatusSubBarang(true);
       return subBarangRepository.save(subBarangRequest);
+    }
+
+    @GetMapping("/api/barang/{kodebarang}/subbarang")
+    public List<SubBarang> listSubBarang(@PathVariable String kodebarang){
+      Barang barang = barangRepository.findBarangByKode(kodebarang);
+      return subBarangRepository.findAllByBarangAndIsExistOrderByStatusSubBarangDesc(barang,true);
+    }
+
+    @PutMapping("/api/subbarang/{kodeSubBarang}")
+    public SubBarang editSubBarang(@PathVariable String kodeSubBarang, @Valid @RequestBody SubBarang subBarang) {
+      SubBarang sub = subBarangRepository.getSubBarangByKodeSubBarang(kodeSubBarang);
+      sub.setExist(subBarang.getExist());
+      return subBarangRepository.save(sub);
     }
 }

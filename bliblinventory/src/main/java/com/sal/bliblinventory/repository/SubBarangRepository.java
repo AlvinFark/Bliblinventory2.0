@@ -1,5 +1,6 @@
 package com.sal.bliblinventory.repository;
 
+import com.sal.bliblinventory.model.Barang;
 import com.sal.bliblinventory.model.SubBarang;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -14,4 +15,8 @@ public interface SubBarangRepository extends JpaRepository<SubBarang, String> {
     int countSubBarangByBarangKodeAndStatusSubBarangAndIsExist(String kodeBarang, Boolean status, boolean isExist);
 
     List<SubBarang> findAllByBarang_KodeAndStatusSubBarangAndIsExist(String kodeBarang, boolean statusSubBarang, Pageable jumlahBarang, boolean isExist);
+
+    List<SubBarang> findAllByBarangAndIsExistOrderByStatusSubBarangDesc(Barang barang, boolean exist);
+
+    SubBarang getSubBarangByKodeSubBarang(String kodesubbarang);
 }

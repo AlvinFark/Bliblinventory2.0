@@ -16,6 +16,8 @@ public class SubBarang {
     @JoinColumn(name = "kode_barang", nullable=false)
     private Barang barang;
 
+    private boolean isExist;
+
     //constructor
     public SubBarang(){}
 
@@ -23,6 +25,7 @@ public class SubBarang {
         this.kodeSubBarang = kodeSubBarang;
         this.barang = barang;
         this.statusSubBarang = true;
+        this.isExist = true;
     }
 
     //getter and setter
@@ -48,5 +51,13 @@ public class SubBarang {
 
     public void setBarang(Barang barang) {
         this.barang = barang;
+    }
+
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public void setExist(boolean exist) {
+        isExist = exist;
     }
 }

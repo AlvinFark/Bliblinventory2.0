@@ -10,8 +10,8 @@ import java.util.List;
 
 @Repository
 public interface SubBarangRepository extends JpaRepository<SubBarang, String> {
-    int countSubBarangByBarangKode(String kodeBarang);
-    int countSubBarangByBarangKodeAndStatusSubBarang(String kodeBarang, Boolean status);
+    int countSubBarangByBarangKodeAndIsExist(String kodeBarang, boolean isExist);
+    int countSubBarangByBarangKodeAndStatusSubBarangAndIsExist(String kodeBarang, Boolean status, boolean isExist);
 
-    List<SubBarang> findAllByBarang_KodeAndStatusSubBarang(String kodeBarang, boolean statusSubBarang, Pageable jumlahBarang);
+    List<SubBarang> findAllByBarang_KodeAndStatusSubBarangAndIsExist(String kodeBarang, boolean statusSubBarang, Pageable jumlahBarang, boolean isExist);
 }

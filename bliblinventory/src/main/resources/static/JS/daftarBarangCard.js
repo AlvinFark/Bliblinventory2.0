@@ -1,9 +1,15 @@
 $( document ).ready(function() {
     //tampilkan semua produk
     ajaxGetAllProduct();
+    //buat dropdown sesuai kategori yang ada di DB
+    ajaxGetSelectKategori();
 
     $('select').formSelect();
     $('.modal').modal();
+
+    $('select').on('contentChanged', function() {
+        $(this).formSelect();
+    });
  
     $(".card").hover(function(){
         $(this).addClass('z-depth-3');}, function(){$(this).removeClass('z-depth-3');
@@ -71,23 +77,50 @@ $( document ).ready(function() {
         getProductBySortAndSearch();
     });
 
+    //ketika merubah dropdown kategori
+    $( document ).on("change","#selectKategori",function (){
+        getProductBySortAndSearch();
+    });
+
     //ketika search barang
     $( document ).on("click","#iconSearch",function (){
         getProductBySortAndSearch();
     });
 });
 
+//menampilkan kategori yang tersedia
+function ajaxGetSelectKategori(){
+    $.ajax({
+        type : "GET",
+        url : window.location + "/getAllCategory",
+        success: function(result){
+            $("#selectKategori").html('<option value="0">Semua Kategori</option>');
+            //tampilkan semua kategori dalam dropdown
+            for(var i = 0; i < result.length; i++){
+                $("#selectKategori").append(
+                    '<option value="'+result[i].id+'">'+result[i].name+'</option>'
+                );
+            }
+            $("#selectKategori").trigger('contentChanged');
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error ajaxGetSelectKategori");
+        }
+    });
+}
 
 //membuat url untuk sorting dan searching
 function getProductBySortAndSearch() {
     var url;
     var keyword = $("#inputSearch").val();
-    var indexSelected = $("#selectUrutkan").prop('selectedIndex');
-    if(indexSelected==0){
-        url = window.location+"/sortByName/" + keyword;
+    var indexSortSelected = $("#selectUrutkan").prop('selectedIndex');
+    var indexCategorySelected = $("#selectKategori").prop('selectedIndex');
+    if(indexSortSelected==0){
+        url = window.location+"/sortByName/" + indexCategorySelected + "/" + keyword;
     }
-    else if(indexSelected==1){
-        url = window.location+"/sortByCode/" + keyword;
+    else if(indexSortSelected==1){
+        url = window.location+"/sortByCode/" + indexCategorySelected + "/" + keyword;
     }
     ajaxGetProductCustom(url);
 }
@@ -142,6 +175,10 @@ function ajaxGetProductDetail(idBarang) {
                 '<td class="tdAtrib">Nama Barang</td>\n' +
                 '<td class="tdInfo">'+result.nama+'</td>\n' +
                 '</tr>\n' +
+                '<tr>\n' +
+                '<td class="tdAtrib">Kategori</td>\n' +
+                '<td class="tdInfo">'+result.category.name+'</td>\n' +
+                '</tr>' +
                 '<tr>\n' +
                 '<td class="tdAtrib">Kuantitas</td>\n' +
                 '<td class="tdInfo" id="totalSubBarang"></td>\n' +

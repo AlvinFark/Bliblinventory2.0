@@ -25,9 +25,10 @@ public class DetailTransaksiController {
     TransaksiRepository transaksiRepository;
 
     @RequestMapping(value = {"employee/createDetailTransaksi/{kodeBarang}/{jumlahBarang}", "superior/createDetailTransaksi/{kodeBarang}/{jumlahBarang}"}, method = RequestMethod.POST)
-    public List<SubBarang> createDetailTransaksi(Model md, @PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "jumlahBarang") int jumlahBarang){
+    public List<SubBarang> createDetailTransaksi(@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "jumlahBarang") int jumlahBarang){
         Pageable limit = new PageRequest(0, jumlahBarang);
-        List<SubBarang> subBarangList = subBarangRepository.findAllByBarang_KodeAndStatusSubBarang(kodeBarang, true, limit);
+        List<SubBarang> subBarangList = subBarangRepository.findAllByBarang_KodeAndStatusSubBarangAndIsExist(kodeBarang, true, limit, true);
+        //tambahkan subBarang ke detail_transaksi sejumlah yang diminta
         for(int i=0; i<subBarangList.size(); i++){
             //sementara usernya masih static (pakai user dg id 1L)
             DetailTransaksi detailTransaksi = new DetailTransaksi(transaksiRepository.findFirstByUser_IdOrderByIdTransaksiDesc(1L), subBarangList.get(i));

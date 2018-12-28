@@ -3,7 +3,6 @@ package com.sal.bliblinventory.controller;
 import com.sal.bliblinventory.model.StatusTransaksi;
 import com.sal.bliblinventory.model.Transaksi;
 import com.sal.bliblinventory.repository.BarangRepository;
-import com.sal.bliblinventory.repository.DetailTransaksiRepository;
 import com.sal.bliblinventory.repository.TransaksiRepository;
 import com.sal.bliblinventory.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,9 +20,6 @@ public class TransaksiController {
 
     @Autowired
     BarangRepository barangRepository;
-
-    @Autowired
-    DetailTransaksiRepository detailTransaksiRepository;
 
     //employee mengirim request pinjam
     @RequestMapping(value = {"employee/requestPinjam/{kodeBarang}/{tgPinjam}/{jumlahBarang}/{keteranganPinjam}"}, method = RequestMethod.POST)

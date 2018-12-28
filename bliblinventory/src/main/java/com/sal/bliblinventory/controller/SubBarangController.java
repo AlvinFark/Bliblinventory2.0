@@ -20,14 +20,14 @@ public class SubBarangController {
     @Autowired
     BarangRepository barangRepository;
 
-    @RequestMapping(value = {"employee/countAllSubBarang/{param1}", "superior/countAllSubBarang/{param1}"}, method = RequestMethod.GET)
-    public int countSubBarang(@PathVariable(value = "param1") String param1){
-        return subBarangRepository.countSubBarangByBarangKode(param1);
+    @RequestMapping(value = {"employee/countAllSubBarang/{kodeBarang}", "superior/countAllSubBarang/{kodeBarang}"}, method = RequestMethod.GET)
+    public int countSubBarang(@PathVariable(value = "kodeBarang") String kodeBarang){
+        return subBarangRepository.countSubBarangByBarangKodeAndIsExist(kodeBarang, true);
     }
 
-    @RequestMapping(value = {"employee/countReadySubBarang/{param1}", "superior/countReadySubBarang/{param1}"}, method = RequestMethod.GET)
-    public int countReadySubBarang(@PathVariable(value = "param1") String param1){
-        return subBarangRepository.countSubBarangByBarangKodeAndStatusSubBarang(param1, true);
+    @RequestMapping(value = {"employee/countReadySubBarang/{kodeBarang}", "superior/countReadySubBarang/{kodeBarang}"}, method = RequestMethod.GET)
+    public int countReadySubBarang(@PathVariable(value = "kodeBarang") String kodeBarang){
+        return subBarangRepository.countSubBarangByBarangKodeAndStatusSubBarangAndIsExist(kodeBarang, true, true);
     }
 
     @RequestMapping(value = {"superior/changeStateSubBarangToBorrowed/{kodeSubBarang}"}, method = RequestMethod.PUT)

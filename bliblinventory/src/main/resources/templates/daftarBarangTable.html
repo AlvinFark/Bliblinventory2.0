@@ -28,25 +28,10 @@
 					<th>Nama Barang</th>
 					<th>Kategori</th>
 					<th>Harga Beli</th>
-					<th>Jumlah Unit</th>
-					<th>Tersedia</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody id="tabelDaftarBarang">
-				<tr>
-					<td><p><label><input type="checkbox" /><span></span></label></p></td>
-					<td>PZNF9248MF</td>
-					<td>Samsung Galaxy Tab S2</td>
-					<td>Elektronik</td>
-					<td>Rp 5200000</td>
-					<td>12</td>
-					<td>3</td>
-					<td width=100px>
-						<a class="waves-effect waves-light btn right modal-trigger kotak-small clickEditTable" href="#modalDetailBarangTable"><i class="material-icons">edit</i></a>
-						<a class="waves-effect waves-light btn right modal-trigger kotak-small clickDetailTable" href="#modalDetailBarangTable"><i class="material-icons">search</i></a>
-					</td>
-				</tr>
 			</tbody>
 		</table>
 		<a class="waves-effect waves-light btn right kananBawah modal-trigger" href="#modalTambahProduk">tambah</a>
@@ -56,36 +41,40 @@
 		<div class="modal-content">
 			<div id="detailBarangTable">
 				<h4 class="headerModal">Detail Barang</h4>
-				<div class="valign-wrapper" style="display:flex">
-					<div>
-						<img src="../../images/samsungTab.png" style="height:300px; width:auto"/>
-					</div>
+				<div class="valign-wrapper">
+          <div class="kontainerImgModal" id="imgModalBarang" style="background-image: url('/a.jpg');">
+          </div>
 					<div>
 						<table class="tableNoBorder">
 							<tr>
 								<td class="tdAtrib" width="120">Kode</td>
-								<td class="tdInfo">TBL0003</td>
+								<td class="tdInfo" id="kodeBarangTable"></td>
 							</tr>
 							<tr>
 								<td class="tdAtrib">Nama Barang</td>
-								<td class="tdInfo">Samsung Galaxy Tab S3</td>
+								<td class="tdInfo" id="namaBarangTable"></td>
+							</tr>
+              <tr>
+                <td class="tdAtrib">Kategori</td>
+                <td class="tdInfo" id="kategoriBarangTable"></td>
+              </tr>
+              <tr>
+                <td class="tdAtrib">Harga Beli</td>
+                <td class="tdInfo" id="hargaBeliBarangTable"></td>
+              </tr>
+							<tr>
+								<td class="tdAtrib">Jumlah Unit</td>
+								<td class="tdInfo" id="totalUnitTable"></td>
 							</tr>
 							<tr>
-								<td class="tdAtrib">Kuantitas</td>
-								<td class="tdInfo">7</td>
+								<td class="tdAtrib">Unit Tersedia</td>
+								<td class="tdInfo" id="unitTersediaTable"></td>
 							</tr>
-							<tr>
-								<td class="tdAtrib">Deskripsi</td>
-								<td class="tdInfo">
-									2.15GHz, 1.6GHz CPU Speed.
-									9.7 (245.8mm) Ukuran (Main Display)
-									CMOS 13.0 MP Main Camera - Resolution.
-									434 Weight (g)
-									Up to 12 Video Playback Time (Hours)
-									6000 Standard Battery Capacity (mAh)
-								</td>
-							</tr>
-						</table>
+              <tr>
+                <td class="tdAtrib">Deskripsi</td>
+                <td class="tdInfo" id="deskripsiBarangTable"></td>
+              </tr>
+            </table>
 					</div>
 				</div>
 				<div class="" style="border-radius: 2px; border: 1px solid rgb(221, 221, 221); padding: 5px;">
@@ -93,24 +82,24 @@
 						<thead>
 							<tr>
 								<th>ID Satuan</th>
-							<th>Status</th>
-							<th>Nama Peminjam</th>
-							<th>Tanggal Peminjaman</th>
-							<th></th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>PZ000001</td>
-							<td>Dipinjam</td>
-							<td>Rodrygo</td>
-							<td>2 Januari 2019</td>
-							<td width=100px>
-								<a class="waves-effect waves-light btn right modal-trigger kotak-small" href="#modalDetailRequest"><i class="material-icons">delete</i></a>
-							</td>
-						</tr>
+                <th>Status</th>
+                <th>Nama Peminjam</th>
+                <th>Tanggal Peminjaman</th>
+                <th></th>
+              </tr>
+  					</thead>
+	  				<tbody>
+              <tr>
+                <td>PZ000001</td>
+                <td>Dipinjam</td>
+                <td>Rodrygo</td>
+                <td>2 Januari 2019</td>
+                <td width=100px>
+  								<a class="waves-effect waves-light btn right btn-small modal-trigger" href="#modalDetailRequest">terima</a>
+  							</td>
+  						</tr>
 					</tbody>
-				</table>
+          </table>
 				</div>
 			</div>
 			<div id="editBarangTable">
@@ -119,44 +108,32 @@
 					<div style="width: 100%;">
 						<table class="tableNoBorder smallPadding">
 							<tr>
-								<td class="tdAtrib">ID Barang</td>
-								<td>82738264</td>
-							</tr>
-							<tr>
 								<td class="tdAtrib">Nama Barang</td>
-								<td>
-									<textarea name="NamaBarang" cols="30" rows="1">Samsung Galaxy</textarea>
-								</td>
+                <td class="tdInfo">
+                  <form>
+                    <input id="ubahNamaBarang" name="id" value="">
+                  </form>
+                </td>
 							</tr>
-							<tr>
-								<td class="tdAtrib">Brand</td>
-								<td>
-									<textarea name="NamaBrand" cols="30" rows="1"></textarea>
-								</td>
-							</tr>
-							<tr>
 							<tr>
 								<td class="tdAtrib">Kategori</td>
 								<td>
 									<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
-										<select>
-											<option disabled value="0">Pilih Kategori</option>
-											<option value="1">Elektronik</option>
+										<select id="ubahKategoriBarang">
+											<option disabled value="">Pilih Kategori</option>
+											<option value="Elektronik">Elektronik</option>
+                      <option value="Perkakas Kantor">Peralatan Kantor</option>
 										</select>
 									</div>					
 								</td>
 							</tr>
 							<tr>
-								<td class="tdAtrib">Supplier</td>
-								<td>
-									<textarea name="NamaSupplier" cols="30" rows="1"></textarea>
-								</td>
-							</tr>
-							<tr>
 								<td class="tdAtrib">Harga Beli</td>
-								<td style="display:flex">
-									Rp &ensp; <textarea name="NamaSupplier" cols="30" rows="1"></textarea>
-								</td>
+                <td class="tdInfo">
+                  <form>
+                    <input id="ubahHargaBeliBarang" name="id" value="">
+                  </form>
+                </td>
 							</tr>
 							<tr>
 								<td class="tdAtrib">Gambar Produk</td>
@@ -166,9 +143,11 @@
 							</tr>
 							<tr>
 								<td class="tdAtrib">Deskripsi</td>
-								<td>
-									<textarea class="formLarge" name="Deskripsi" cols="30" rows="1" placeholder="(opsional)"></textarea>
-								</td>
+                <td class="tdInfo">
+                  <form>
+                    <input id="ubahdeskripsiBarang" name="id" value="">
+                  </form>
+                </td>
 							</tr>
 						</table>
 					</div>
@@ -176,11 +155,13 @@
 			</div>
 			<div id="tambahSatuanTable">
 				<h4 class="headerModal">Tambah Barang Satuan</h4>
-				<div class="valign-wrapper" style="display:flex; margin-top: 10px">
-					<div class="tdAtrib" style="width:100px;">ID Satuan</div>
-					<textarea name="satuan" cols="30" rows="1" style="height:30px; padding: 5px 0 0 5px;"></textarea>
+				<div id="tambahBarangSatuan" style="margin-top: 10px">
+          <div class="valign-wrapper">
+            <div class="tdAtrib" style="width:100px;">ID Satuan</div>
+            <textarea id="barangSatuan0" name="satuan" cols="30" rows="1" style="height:30px; padding: 5px 0 0 5px;"></textarea>
+          </div>
 				</div>
-				<a class="waves-effect waves-light btn" style="margin: 10px 0 0 285px;">tambah lagi</a>
+				<a class="waves-effect waves-light btn" id="triggerTambahBarangSatuan" style="margin: 10px 0 0 285px;">tambah lagi</a>
 			</div>
 		</div>
     <div class="modal-footer">

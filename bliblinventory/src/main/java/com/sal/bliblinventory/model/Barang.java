@@ -29,6 +29,18 @@ public class Barang {
     private boolean isExist;
 
     //gettersetter
+
+    public Barang(){}
+
+    public Barang(String kode, String nama, String gambar, String deskripsi, Long hargaBeli, boolean isExist){
+      this.kode = kode;
+      this.nama = nama;
+      this.gambar = gambar;
+      this.deskripsi = deskripsi;
+      this.isExist = isExist;
+      this.hargaBeli = hargaBeli;
+    }
+
     public String getKode() {
         return kode;
     }

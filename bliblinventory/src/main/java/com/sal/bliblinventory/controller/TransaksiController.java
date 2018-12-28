@@ -63,4 +63,11 @@ public class TransaksiController {
             return transaksiRepository.findAllByUser_IdAndStatusTransaksi(1L, StatusTransaksi.ditolak);
         }
     }
+
+    //mendapatkan list permintaan pinjaman employee (dari superior)
+    @RequestMapping(value = "superior/getAllEmployeeRequest", method = RequestMethod.GET)
+    public List<Transaksi> getAllEmployeeRequestFromSuperior() {
+        //sementara pakai user id statis 3L
+        return transaksiRepository.findAllByUser_Superior_IdOrderByTgPinjam(3L);
+    }
 }

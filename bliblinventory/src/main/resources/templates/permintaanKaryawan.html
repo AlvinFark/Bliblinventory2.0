@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
@@ -13,38 +13,32 @@
 	<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
 	<title>bliblinventory</title>
 </head>
-<body class="kontainer">
+<body class="kontainer"> -->
+	<script type="text/javascript" src="../JS/permintaanKaryawan.js"></script>
 	<div style="display:flex; margin-top: 20px;">
 		<div class="containerSelectLogo valign-wrapper">
-			<i class="material-icons">search</i>
 			<p>Cari :</p>
 			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select>
+				<select id="selectSearchBy">
 					<option value="1">Nama Karyawan</option>
 					<option value="2">Nama Barang</option>
 				</select>
 			</div>
 			<div class="input-field containerSearch valign-wrapper z-depth-1">
-					<input type="text" placeholder="Ketik yang ingin dicari"/>
-			</div>	
+					<input type="text" id="inputCari" placeholder="Ketik yang ingin dicari"/>
+			</div>
+            <i class="material-icons" id="iconSearch">search</i>
 		</div>
 		<div class="containerSelectLogo valign-wrapper">
 			<i class="material-icons">sort</i>
 			<p>Urutkan :</p>
 			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select>
-					<option value="1">Nama</option>
-					<option value="2">ID Barang</option>
-				</select>
-			</div>
-		</div>
-		<div class="containerSelectLogo valign-wrapper">
-			<i class="material-icons">dashboard</i>
-			<p>Kategori :</p>
-			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select>
-					<option value="1">Semua Kategori</option>
-					<option value="2">Elektronik</option>
+				<select id="selectSortBy">
+					<option value="1">Tg Pinjam Barang</option>
+                    <option value="2">No Order</option>
+					<option value="3">Nama Karyawan</option>
+                    <option value="4">Nama Barang</option>
+                    <option value="5">Tg Order</option>
 				</select>
 			</div>
 		</div>
@@ -57,13 +51,13 @@
 					<th>No Order</th>
 					<th>Nama Karyawan</th>
 					<th>Nama Barang</th>
-					<th>Periode Peminjaman</th>
+					<th>Tg Pinjam Barang</th>
 					<th>Jumlah</th>
 					<th>Tanggal Order</th>
 					<th></th>
 				</tr>
 			</thead>
-			<tbody>
+			<tbody id="listPermintaanPinjam">
 				<tr>
 					<td><p><label><input type="checkbox" /><span></span></label></p></td>
 					<td>PZNF9248MF</td>
@@ -173,5 +167,6 @@
 			<a id="buttonPinjam" href="#pinjamBarang" class="waves-effect waves-light btn" style="margin-right: 4px;">tolak</a>
 			<a id="buttonRequestPinjam" class="waves-effect waves-light btn" style="margin-right: 4px;">setujui</a>
     </div>
-	</div>	
-</body>
+	</div>
+<!--
+</body>-->

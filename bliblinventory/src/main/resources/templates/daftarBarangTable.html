@@ -28,8 +28,6 @@
 					<th>Nama Barang</th>
 					<th>Kategori</th>
 					<th>Harga Beli</th>
-					<th>Jumlah Unit</th>
-					<th>Tersedia</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -44,7 +42,7 @@
 			<div id="detailBarangTable">
 				<h4 class="headerModal">Detail Barang</h4>
 				<div class="valign-wrapper">
-          <div class="kontainerImgModal" style="background-image: url('/a.jpg');">
+          <div class="kontainerImgModal" id="imgModalBarang" style="background-image: url('/a.jpg');">
           </div>
 					<div>
 						<table class="tableNoBorder">
@@ -59,6 +57,10 @@
               <tr>
                 <td class="tdAtrib">Kategori</td>
                 <td class="tdInfo" id="kategoriBarangTable"></td>
+              </tr>
+              <tr>
+                <td class="tdAtrib">Harga Beli</td>
+                <td class="tdInfo" id="hargaBeliBarangTable"></td>
               </tr>
 							<tr>
 								<td class="tdAtrib">Jumlah Unit</td>
@@ -106,14 +108,6 @@
 					<div style="width: 100%;">
 						<table class="tableNoBorder smallPadding">
 							<tr>
-								<td class="tdAtrib">ID Barang</td>
-                <td class="tdInfo">
-                  <form>
-                    <input id="ubahIdBarang" name="id" value="">
-                  </form>
-                </td>
-							</tr>
-							<tr>
 								<td class="tdAtrib">Nama Barang</td>
                 <td class="tdInfo">
                   <form>
@@ -127,8 +121,8 @@
 									<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
 										<select id="ubahKategoriBarang">
 											<option disabled value="">Pilih Kategori</option>
-											<option value="1">Elektronik</option>
-                      <option value="2">Peralatan Kantor</option>
+											<option value="Elektronik">Elektronik</option>
+                      <option value="Perkakas Kantor">Peralatan Kantor</option>
 										</select>
 									</div>					
 								</td>

@@ -120,4 +120,10 @@ public class TransaksiController {
             default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByIdTransaksi(3L,true, StatusTransaksi.menunggu);
         }
     }
+
+    //mendapatkan detail dari daftar Permintaan Karyawan
+    @RequestMapping(value = {"superior/getDetailRequest/{idTransaksi}", "admin/getDetailRequest/{idTransaksi}"}, method = RequestMethod.GET)
+    public Transaksi getDetailRequest(@PathVariable(value = "idTransaksi") Long idTransaksi) {
+        return transaksiRepository.findByIdTransaksi(idTransaksi);
+    }
 }

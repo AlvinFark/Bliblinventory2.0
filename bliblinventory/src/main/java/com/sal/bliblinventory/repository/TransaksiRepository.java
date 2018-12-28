@@ -11,4 +11,5 @@ import java.util.List;
 public interface TransaksiRepository extends JpaRepository<Transaksi, Long> {
     Transaksi findFirstByUser_IdOrderByIdTransaksiDesc(Long userId);
     List<Transaksi> findAllByUser_IdAndStatusTransaksi(Long userId, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_Superior_IdOrderByTgPinjam(Long superiorId);
 }

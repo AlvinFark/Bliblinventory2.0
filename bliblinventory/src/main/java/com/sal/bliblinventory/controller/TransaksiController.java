@@ -60,61 +60,64 @@ public class TransaksiController {
     }
 
     //mendapatkan list permintaan pinjaman employee (dari superior)
+    //hanya tampilkan yang statusnya menunggu
     @RequestMapping(value = "superior/getAllEmployeeRequest", method = RequestMethod.GET)
     public List<Transaksi> getAllEmployeeRequestFromSuperior() {
         //sementara pakai user id statis 3L
-        return transaksiRepository.findAllByUser_Superior_IdAndIsExistOrderByTgPinjam(3L, true);
+        return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByTgPinjam(3L, true, StatusTransaksi.menunggu);
     }
 
     //mendapatkan list permintaan pinjaman employee (dari superior) dengan filter dan keyword
+    //hanya tampilkan yang statusnya menunggu
     @RequestMapping(value = "superior/filterEmployeeRequest/{sortBy}/{searchBy}/{keyword}", method = RequestMethod.GET)
     public List<Transaksi> getEmployeeRequestFromSuperiorWithFilterAndKeyword(@PathVariable(value = "sortBy") int sortBy, @PathVariable(value = "searchBy") int searchBy, @PathVariable(value = "keyword") String keyword) {
         //sementara pakai user id statis 3L
         if(searchBy==0){ //search by Nama Karyawan yang request
             switch (sortBy){
                 //sort by tgPinjam
-                case 0: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingOrderByTgPinjam(3L, true, keyword);
+                case 0: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByTgPinjam(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by noOrder
-                case 1: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingOrderByIdTransaksi(3L, true, keyword);
+                case 1: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by namaPeminjam
-                case 2: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingOrderByUser_Name(3L, true, keyword);
+                case 2: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByUser_Name(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by namaBarang
-                case 3: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingOrderByBarang_Nama(3L, true, keyword);
+                case 3: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByBarang_Nama(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by tgOrder
-                default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingOrderByIdTransaksi(3L, true, keyword);
+                default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
             }
         }
         else{ //search by Nama Barang
             switch (sortBy){
                 //sort by tgPinjam
-                case 0: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingOrderByTgPinjam(3L, true, keyword);
+                case 0: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByTgPinjam(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by noOrder
-                case 1: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingOrderByIdTransaksi(3L, true, keyword);
+                case 1: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by namaPeminjam
-                case 2: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingOrderByUser_Name(3L, true, keyword);
+                case 2: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByUser_Name(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by namaBarang
-                case 3: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingOrderByBarang_Nama(3L, true, keyword);
+                case 3: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByBarang_Nama(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by tgOrder
-                default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingOrderByIdTransaksi(3L, true, keyword);
+                default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
             }
         }
     }
 
     //mendapatkan list permintaan pinjaman employee (dari superior) dengan filter
+    //hanya tampilkan yang statusnya menunggu
     @RequestMapping(value = "superior/filterEmployeeRequest/{sortBy}/{searchBy}", method = RequestMethod.GET)
     public List<Transaksi> getEmployeeRequestFromSuperiorWithFilter(@PathVariable(value = "sortBy") int sortBy, @PathVariable(value = "searchBy") int searchBy) {
         //sementara pakai user id statis 3L
         switch (sortBy){
             //sort by tgPinjam
-            case 0: return transaksiRepository.findAllByUser_Superior_IdAndIsExistOrderByTgPinjam(3L,true);
+            case 0: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByTgPinjam(3L,true, StatusTransaksi.menunggu);
             //sort by noOrder
-            case 1: return transaksiRepository.findAllByUser_Superior_IdAndIsExistOrderByIdTransaksi(3L,true);
+            case 1: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByIdTransaksi(3L,true, StatusTransaksi.menunggu);
             //sort by namaPeminjam
-            case 2: return transaksiRepository.findAllByUser_Superior_IdAndIsExistOrderByUser_Name(3L,true);
+            case 2: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByUser_Name(3L,true, StatusTransaksi.menunggu);
             //sort by namaBarang
-            case 3: return transaksiRepository.findAllByUser_Superior_IdAndIsExistOrderByBarang_Nama(3L,true);
+            case 3: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByBarang_Nama(3L,true, StatusTransaksi.menunggu);
             //sort by tgOrder
-            default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistOrderByIdTransaksi(3L,true);
+            default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByIdTransaksi(3L,true, StatusTransaksi.menunggu);
         }
     }
 }

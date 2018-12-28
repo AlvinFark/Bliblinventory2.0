@@ -27,24 +27,36 @@ public class BarangController {
         return barangRepository.findAllByIsExistOrderByNama(true);
     }
 
-    @RequestMapping(value = {"employee/sortByName", "superior/sortByName"}, method = RequestMethod.GET)
-    public List<Barang> listBarangSortByName(){
-        return barangRepository.findAllByIsExistOrderByNama(true);
+    @RequestMapping(value = {"employee/sortByName/{indexKategori}", "superior/sortByName/{indexKategori}"}, method = RequestMethod.GET)
+    public List<Barang> listBarangSortByName(@PathVariable(value = "indexKategori") Long indexKategori){
+        if(indexKategori==0)
+            return barangRepository.findAllByIsExistOrderByNama(true);
+        else
+            return barangRepository.findAllByIsExistAndCategory_IdOrderByNama(true, indexKategori);
     }
 
-    @RequestMapping(value = {"employee/sortByCode", "superior/sortByCode"}, method = RequestMethod.GET)
-    public List<Barang> listBarangSortByCode(){
-        return barangRepository.findAllByIsExistOrderByKode(true);
+    @RequestMapping(value = {"employee/sortByCode/{indexKategori}", "superior/sortByCode/{indexKategori}"}, method = RequestMethod.GET)
+    public List<Barang> listBarangSortByCode(@PathVariable(value = "indexKategori") Long indexKategori){
+        if(indexKategori==0)
+            return barangRepository.findAllByIsExistOrderByKode(true);
+        else
+            return barangRepository.findAllByIsExistAndCategory_IdOrderByKode(true, indexKategori);
     }
 
-    @RequestMapping(value = {"employee/sortByName/{keyword}", "superior/sortByName/{keyword}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangByKeywordAndSortByName(@PathVariable(value = "keyword") String keyword){
-        return barangRepository.findByNamaContainingAndIsExistOrderByNama(keyword, true);
+    @RequestMapping(value = {"employee/sortByName/{indexKategori}/{keyword}", "superior/sortByName/{indexKategori}/{keyword}"}, method = RequestMethod.GET)
+    public List<Barang> listBarangByKeywordAndSortByName(@PathVariable(value = "indexKategori") Long indexKategori, @PathVariable(value = "keyword") String keyword){
+        if(indexKategori==0)
+            return barangRepository.findByNamaContainingAndIsExistOrderByNama(keyword, true);
+        else
+            return barangRepository.findByNamaContainingAndIsExistAndCategory_IdOrderByNama(keyword, true, indexKategori);
     }
 
-    @RequestMapping(value = {"employee/sortByCode/{keyword}", "superior/sortByCode/{keyword}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangByKeywordAndSortByCode(Model md, @PathVariable(value = "keyword") String keyword){
-        return barangRepository.findByNamaContainingAndIsExistOrderByKode(keyword, true);
+    @RequestMapping(value = {"employee/sortByCode/{indexKategori}/{keyword}", "superior/sortByCode/{indexKategori}/{keyword}"}, method = RequestMethod.GET)
+    public List<Barang> listBarangByKeywordAndSortByCode(@PathVariable(value = "indexKategori") Long indexKategori, @PathVariable(value = "keyword") String keyword){
+        if(indexKategori==0)
+           return barangRepository.findByNamaContainingAndIsExistOrderByKode(keyword, true);
+        else
+            return barangRepository.findByNamaContainingAndIsExistAndCategory_IdOrderByKode(keyword, true, indexKategori);
     }
 
     @RequestMapping(value = {"employee/getDetailProduct/{param1}", "superior/getDetailProduct/{param1}"}, method = RequestMethod.GET)

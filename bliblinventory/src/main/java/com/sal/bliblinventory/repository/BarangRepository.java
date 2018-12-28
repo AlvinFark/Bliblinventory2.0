@@ -9,8 +9,8 @@ import java.util.List;
 @Repository
 public interface BarangRepository extends JpaRepository<Barang, String> {
     Barang findBarangByKode(String kodeBarang);
-    List<Barang> findAllByOrderByNama();
-    List<Barang> findAllByOrderByKode();
-    List<Barang> findByNamaContainingOrderByNama(String namaBarang);
-    List<Barang> findByNamaContainingOrderByKode(String namaBarang);
+    List<Barang> findAllByIsExistOrderByNama(Boolean isExist);
+    List<Barang> findAllByIsExistOrderByKode(Boolean isExist);
+    List<Barang> findByNamaContainingAndIsExistOrderByNama(String namaBarang, Boolean isExist);
+    List<Barang> findByNamaContainingAndIsExistOrderByKode(String namaBarang, Boolean isExist);
 }

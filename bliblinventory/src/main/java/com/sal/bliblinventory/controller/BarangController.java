@@ -24,27 +24,27 @@ public class BarangController {
 
     @RequestMapping(value = {"employee/getAllProduct", "superior/getAllProduct"}, method = RequestMethod.GET)
     public List<Barang> listBarangAll(){
-        return barangRepository.findAllByOrderByNama();
+        return barangRepository.findAllByIsExistOrderByNama(true);
     }
 
     @RequestMapping(value = {"employee/sortByName", "superior/sortByName"}, method = RequestMethod.GET)
     public List<Barang> listBarangSortByName(){
-        return barangRepository.findAllByOrderByNama();
+        return barangRepository.findAllByIsExistOrderByNama(true);
     }
 
     @RequestMapping(value = {"employee/sortByCode", "superior/sortByCode"}, method = RequestMethod.GET)
     public List<Barang> listBarangSortByCode(){
-        return barangRepository.findAllByOrderByKode();
+        return barangRepository.findAllByIsExistOrderByKode(true);
     }
 
-    @RequestMapping(value = {"employee/sortByName/{param1}", "superior/sortByName/{param1}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangByKeywordAndSortByName(Model md, @PathVariable(value = "param1") String param1){
-        return barangRepository.findByNamaContainingOrderByNama(param1);
+    @RequestMapping(value = {"employee/sortByName/{keyword}", "superior/sortByName/{keyword}"}, method = RequestMethod.GET)
+    public List<Barang> listBarangByKeywordAndSortByName(@PathVariable(value = "keyword") String keyword){
+        return barangRepository.findByNamaContainingAndIsExistOrderByNama(keyword, true);
     }
 
-    @RequestMapping(value = {"employee/sortByCode/{param1}", "superior/sortByCode/{param1}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangByKeywordAndSortByCode(Model md, @PathVariable(value = "param1") String param1){
-        return barangRepository.findByNamaContainingOrderByKode(param1);
+    @RequestMapping(value = {"employee/sortByCode/{keyword}", "superior/sortByCode/{keyword}"}, method = RequestMethod.GET)
+    public List<Barang> listBarangByKeywordAndSortByCode(Model md, @PathVariable(value = "keyword") String keyword){
+        return barangRepository.findByNamaContainingAndIsExistOrderByKode(keyword, true);
     }
 
     @RequestMapping(value = {"employee/getDetailProduct/{param1}", "superior/getDetailProduct/{param1}"}, method = RequestMethod.GET)

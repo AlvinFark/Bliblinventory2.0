@@ -27,8 +27,13 @@ public class BarangController {
         return barangRepository.findAllByIsExistOrderByNama(true);
     }
 
+    @RequestMapping(value = {"employee/sortByName"}, method = RequestMethod.GET)
+    public List<Barang> listBarangSortByName(){
+        return barangRepository.findAllByIsExistOrderByNama(true);
+    }
+
     @RequestMapping(value = {"employee/sortByName/{indexKategori}", "superior/sortByName/{indexKategori}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangSortByName(@PathVariable(value = "indexKategori") Long indexKategori){
+    public List<Barang> listBarangSortByNameAndFilterByCategory(@PathVariable(value = "indexKategori") Long indexKategori){
         if(indexKategori==0)
             return barangRepository.findAllByIsExistOrderByNama(true);
         else
@@ -36,7 +41,7 @@ public class BarangController {
     }
 
     @RequestMapping(value = {"employee/sortByCode/{indexKategori}", "superior/sortByCode/{indexKategori}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangSortByCode(@PathVariable(value = "indexKategori") Long indexKategori){
+    public List<Barang> listBarangSortByCodeAndFilterByCategory(@PathVariable(value = "indexKategori") Long indexKategori){
         if(indexKategori==0)
             return barangRepository.findAllByIsExistOrderByKode(true);
         else
@@ -44,7 +49,7 @@ public class BarangController {
     }
 
     @RequestMapping(value = {"employee/sortByName/{indexKategori}/{keyword}", "superior/sortByName/{indexKategori}/{keyword}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangByKeywordAndSortByName(@PathVariable(value = "indexKategori") Long indexKategori, @PathVariable(value = "keyword") String keyword){
+    public List<Barang> listBarangByKeywordAndSortByNameAndFilterByCategory(@PathVariable(value = "indexKategori") Long indexKategori, @PathVariable(value = "keyword") String keyword){
         if(indexKategori==0)
             return barangRepository.findByNamaContainingAndIsExistOrderByNama(keyword, true);
         else
@@ -52,7 +57,7 @@ public class BarangController {
     }
 
     @RequestMapping(value = {"employee/sortByCode/{indexKategori}/{keyword}", "superior/sortByCode/{indexKategori}/{keyword}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangByKeywordAndSortByCode(@PathVariable(value = "indexKategori") Long indexKategori, @PathVariable(value = "keyword") String keyword){
+    public List<Barang> listBarangByKeywordAndSortByCodeAndFilterByCategory(@PathVariable(value = "indexKategori") Long indexKategori, @PathVariable(value = "keyword") String keyword){
         if(indexKategori==0)
            return barangRepository.findByNamaContainingAndIsExistOrderByKode(keyword, true);
         else

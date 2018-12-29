@@ -8,6 +8,7 @@ import com.sal.bliblinventory.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -139,5 +140,19 @@ public class TransaksiController {
       DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarang(subBarang);
       Transaksi transaksi = detailTransaksi.getTransaksi();
       return transaksi;
+    }
+
+    @PutMapping("superior/tolakPermintaanPinjam")
+    public Transaksi tolakPermintaanPinjam(@Valid @RequestBody Transaksi transaksiRequest) {
+        transaksiRequest.setStatusTransaksi(StatusTransaksi.ditolak);
+        transaksiRequest.setExist(true);
+        return transaksiRepository.save(transaksiRequest);
+    }
+
+    @PutMapping("superior/setujuiPermintaanPinjam")
+    public Transaksi setujuiPermintaanPinjam(@Valid @RequestBody Transaksi transaksiRequest) {
+        transaksiRequest.setStatusTransaksi(StatusTransaksi.disetujui);
+        transaksiRequest.setExist(true);
+        return transaksiRepository.save(transaksiRequest);
     }
 }

@@ -31,7 +31,7 @@ public class Transaksi {
     @Enumerated(EnumType.STRING)
     private StatusTransaksi statusTransaksi;
 
-    private boolean isExist;
+    private boolean isExist=true;
 
     //constructor
     public Transaksi(){
@@ -112,5 +112,13 @@ public class Transaksi {
 
     public void setStatusTransaksi(StatusTransaksi statusTransaksi) {
         this.statusTransaksi = statusTransaksi;
+    }
+
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public void setExist(boolean exist) {
+        isExist = exist;
     }
 }

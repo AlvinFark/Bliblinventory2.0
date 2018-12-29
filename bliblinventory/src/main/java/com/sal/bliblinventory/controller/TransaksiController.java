@@ -127,7 +127,7 @@ public class TransaksiController {
             default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByIdTransaksi(3L,true, StatusTransaksi.menunggu);
         }
     }
-    
+
     @RequestMapping(value = "api/getTransaksiByIdTransaksi/{idTransaksi}", method = RequestMethod.GET)
     public Transaksi getTransaksiByIdTransaksi(@PathVariable(value = "idTransaksi") Long idTransaksi) {
         return transaksiRepository.findByIdTransaksi(idTransaksi);
@@ -152,6 +152,12 @@ public class TransaksiController {
     public Transaksi setujuiPermintaanPinjam(@Valid @RequestBody Transaksi transaksiRequest) {
         transaksiRequest.setStatusTransaksi(StatusTransaksi.disetujui);
         transaksiRequest.setExist(true);
+        return transaksiRepository.save(transaksiRequest);
+    }
+
+    @PutMapping("api/editTransaksiNotExist")
+    public Transaksi editTransaksiNotExist(@Valid @RequestBody Transaksi transaksiRequest) {
+        transaksiRequest.setExist(false);
         return transaksiRepository.save(transaksiRequest);
     }
 }

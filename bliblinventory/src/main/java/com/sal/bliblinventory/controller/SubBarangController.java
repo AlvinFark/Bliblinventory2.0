@@ -63,4 +63,10 @@ public class SubBarangController {
     public SubBarang getSubBarangByKodeSubBarang(@PathVariable String kodeSubBarang){
         return subBarangRepository.getSubBarangByKodeSubBarang(kodeSubBarang);
     }
+
+    @PutMapping("api/editStatusSubBarangReady")
+    public SubBarang editStatusSubBarangReady(@Valid @RequestBody SubBarang subBarangRequest) {
+        subBarangRequest.setStatusSubBarang(true);
+        return subBarangRepository.save(subBarangRequest);
+    }
 }

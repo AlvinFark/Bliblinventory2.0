@@ -40,12 +40,7 @@ $( document ).ready(function() {
           count=result.length;
           $("#tabelDaftarBarang").html('');
           for (var i = 0; i < result.length; i++) {
-            var kategoriBarang;
-            var idKategoriBarang = ((result[i] || {}).category || {}).id;
-            switch (idKategoriBarang) {
-              case 1 : {kategoriBarang="Elektronik"; break;}
-              case 2 : {kategoriBarang="Perkakas Kantor"; break;}
-            }
+            var kategoriBarang = ((result[i] || {}).category || {}).name;
             document.getElementById("tabelDaftarBarang").innerHTML += '' +
               '<tr>\n' +
               '  <td id="kodeBarang'+i+'" class="kodeBarangTable">' + result[i].kode + '</td>\n' +

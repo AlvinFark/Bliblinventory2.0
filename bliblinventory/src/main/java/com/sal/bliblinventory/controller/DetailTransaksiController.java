@@ -36,4 +36,9 @@ public class DetailTransaksiController {
         }
         return subBarangList;
     }
+
+    @GetMapping("/api/permintaan")
+    public List<DetailTransaksi> getAllDetailTransaksi(){
+        return detailTransaksiRepository.getAllByIsExist(true);
+    }
 }

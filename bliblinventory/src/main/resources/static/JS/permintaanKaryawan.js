@@ -2,7 +2,7 @@ $( document ).ready(function() {
     //YG UNTUK ADMIN BELUM
 
     if(window.location.pathname == "/superior")
-        ajaxSetAllPermintaanPinjam();
+        ajaxGetAllPermintaanPinjam();
 
     $('select').formSelect();
     $('.modal').modal();
@@ -51,9 +51,60 @@ $( document ).ready(function() {
         var idTransaksi = (this.id).substring(6);
         ajaxGetDetailRequestOrder(idTransaksi);
     });
+
+    //pencet tombol tolak pada detail transaksi (popup)
+    $( document ).on("click","#buttonTolakFromDetail",function (){
+        var idTransaksi = $("#detailIdTransaksi").text();
+        ajaxTolakPermintaanPinjam(idTransaksi);
+    });
+
+    //pencet tombol setujui pada detail transaksi (popup)
+    $( document ).on("click","#buttonSetujuiFromDetail",function (){
+        var idTransaksi = $("#detailIdTransaksi").text();
+        ajaxSetujuiPermintaanPinjam(idTransaksi);
+    });
+
+    //pencet tombol tolak secara bulk
+    $( document ).on("click","#btnTolak",function (){
+        $('.cbx').filter(':checked').each(function() {
+            if (this.id!="cbxAll"){
+                var idTransaksi = (this.id).substring(3);
+                ajaxTolakPermintaanPinjam(idTransaksi);
+            }
+        });
+    });
+
+    //pencet tombol setujui secara bulk
+    $( document ).on("click","#btnSetujui",function (){
+        $('.cbx').filter(':checked').each(function() {
+            if (this.id!="cbxAll"){
+                var idTransaksi = (this.id).substring(3);
+                ajaxSetujuiPermintaanPinjam(idTransaksi);
+            }
+        });
+    });
 });
 
-function ajaxSetAllPermintaanPinjam() {
+
+function createContentListPermintaanPinjam(result) {
+    $("#listPermintaanPinjam").html('');
+    for(var i=0; i<result.length; i++){
+        $("#listPermintaanPinjam").append(
+            '<tr>\n' +
+            '<td><p><label><input type="checkbox" id="cbx'+result[i].idTransaksi+'" class="cbx" /><span></span></label></p></td>\n' +
+            '<td>'+result[i].idTransaksi+'</td>\n' +
+            '<td>'+result[i].user.name+'</td>\n' +
+            '<td>'+result[i].barang.nama+'</td>\n' +
+            '<td>'+changeDateFormat(result[i].tgPinjam)+'</td>\n' +
+            '<td>'+result[i].jumlah+'</td>\n' +
+            '<td>'+changeDateFormat((result[i].tgOrder).substring(0,10))+'</td>\n' +
+            '<td width=1px><a id="detail'+result[i].idTransaksi+'" class="waves-effect waves-light btn right modal-trigger btnDetail" href="#modalDetailRequest">Detail</a></td>\n' +
+            '</tr>'
+        );
+    }
+}
+
+function ajaxGetAllPermintaanPinjam() {
     $.ajax({
         type : "GET",
         url : window.location + "/getAllEmployeeRequest",
@@ -109,20 +160,58 @@ function ajaxGetDetailRequestOrder(idTransaksi) {
     });
 }
 
-function  createContentListPermintaanPinjam(result) {
-    $("#listPermintaanPinjam").html('');
-    for(var i=0; i<result.length; i++){
-        $("#listPermintaanPinjam").append(
-            '<tr>\n' +
-            '<td><p><label><input type="checkbox" id="cbx'+result[i].idTransaksi+'" class="cbx" /><span></span></label></p></td>\n' +
-            '<td>'+result[i].idTransaksi+'</td>\n' +
-            '<td>'+result[i].user.name+'</td>\n' +
-            '<td>'+result[i].barang.nama+'</td>\n' +
-            '<td>'+changeDateFormat(result[i].tgPinjam)+'</td>\n' +
-            '<td>'+result[i].jumlah+'</td>\n' +
-            '<td>'+changeDateFormat((result[i].tgOrder).substring(0,10))+'</td>\n' +
-            '<td width=1px><a id="detail'+result[i].idTransaksi+'" class="waves-effect waves-light btn right modal-trigger btnDetail" href="#modalDetailRequest">Detail</a></td>\n' +
-            '</tr>'
-        );
-    }
+function ajaxTolakPermintaanPinjam(idTransaksi) {
+    $.ajax({
+        type : "GET",
+        url : window.location + "/getDetailRequest/" + idTransaksi,
+        success: function(result){
+            $.ajax({
+                type : "PUT",
+                url : window.location + "/tolakPermintaanPinjam",
+                contentType: 'application/json',
+                data: JSON.stringify(result),
+                success: function() {
+                    $("#modalDetailRequest").modal('close');
+                    $(".cbx").prop('checked', false);
+                    ajaxGetRequestListBySortAndSearch();
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                    window.alert("error tolak");
+                }
+            });
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error getDetail");
+        }
+    });
+}
+
+function ajaxSetujuiPermintaanPinjam(idTransaksi) {
+    $.ajax({
+        type : "GET",
+        url : window.location + "/getDetailRequest/" + idTransaksi,
+        success: function(result){
+            $.ajax({
+                type : "PUT",
+                url : window.location + "/setujuiPermintaanPinjam",
+                contentType: 'application/json',
+                data: JSON.stringify(result),
+                success: function() {
+                    $("#modalDetailRequest").modal('close');
+                    $(".cbx").prop('checked', false);
+                    ajaxGetRequestListBySortAndSearch();
+                },
+                error: function (e) {
+                    console.log("ERROR: ", e);
+                    window.alert("error setujui");
+                }
+            });
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error getDetail");
+        }
+    });
 }

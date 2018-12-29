@@ -12,18 +12,16 @@
 			<i class="material-icons">dashboard</i>
 			<p>Kategori :</p>
 			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select>
-					<option value="1">Semua Kategori</option>
-					<option value="2">Elektronik</option>
+				<select class="kategoriSelectorTable">
+					<option value="All">Semua Kategori</option>
 				</select>
 			</div>
 		</div>
 	</div>
 	<div id="whiteBoard"  class="z-depth-2"  style="position:absolute">
-		<table class="highlight noPadding">
+		<table class="highlight">
 			<thead>
 				<tr>
-					<th><p><label><input type="checkbox" /><span></span></label></p></th>
 					<th>ID Barang</th>
 					<th>Nama Barang</th>
 					<th>Kategori</th>
@@ -35,7 +33,6 @@
 			</tbody>
 		</table>
 		<a class="waves-effect waves-light btn right kananBawah modal-trigger" href="#modalTambahProduk">tambah</a>
-		<a class="waves-effect waves-light btn right kananBawah modal-trigger clickEditTable disabled">ubah</a>
 	</div>
   <div id="modalDetailBarangTable" class="modal modal-fixed-footer">
 		<div class="modal-content">
@@ -110,10 +107,7 @@
 								<td class="tdAtrib">Kategori</td>
 								<td>
 									<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
-										<select id="ubahKategoriBarang">
-											<option disabled value="">Pilih Kategori</option>
-											<option value="Elektronik">Elektronik</option>
-                      <option value="Perkakas Kantor">Peralatan Kantor</option>
+										<select class="kategoriSelectorTable" id="ubahKategoriBarang">
 										</select>
 									</div>					
 								</td>
@@ -129,7 +123,7 @@
 							<tr>
 								<td class="tdAtrib">Gambar Produk</td>
 								<td>
-									<input id="flkafkla" type="file" name="files[]" style="padding:0">
+									<input id="ubahGambarProduk" type="file" name="files[]" value="" style="padding:0">
 								</td>
 							</tr>
 							<tr>
@@ -158,10 +152,11 @@
     <div class="modal-footer">
 			<a href="#!" class="modal-close btn-flat left clickDetailTable">tutup</a>
 			<a id="backToDetailTable" href="#" class="btn-flat left clickDetailTable">kembali</a>
+      <a id="tombolHapusBarang" class="modal-close waves-effect waves-light btn">hapus</a>
 			<a id="tombolEditBarang" class="waves-effect waves-light btn clickEditTable">ubah</a>
 			<a id="clickTambahSatuan" class="waves-effect waves-light btn">tambah satuan</a>
-			<a id="tombolSimpanEditan" class="waves-effect waves-light btn">simpan</a>
-			<a id="tombolSimpanSatuan" class="waves-effect waves-light btn">simpan</a>
+			<a id="tombolSimpanEditan" class="modal-close waves-effect waves-light btn">simpan</a>
+			<a id="tombolSimpanSatuan" class="modal-close waves-effect waves-light btn">simpan</a>
     </div>
 	</div>
   <div id="modalTambahProduk" class="modal modal-fixed-footer">
@@ -172,63 +167,57 @@
 					<td class="tdAtrib">ID Barang</td>
 					<td>
             <form>
-              <input id="namaBarangBaru" name="id" value="">
+              <input id="idBarangBaru" name="id" value="">
             </form>
           </td>
 				</tr>
 				<tr>
 					<td class="tdAtrib">Nama Barang</td>
-					<td>
-						<textarea name="NamaBarang" cols="30" rows="1"></textarea>
-					</td>
+          <td>
+            <form>
+              <input id="namaBarangBaru" name="id" value="">
+            </form>
+          </td>
 				</tr>
-				<tr>
-					<td class="tdAtrib">Brand</td>
-					<td>
-						<textarea name="NamaBrand" cols="30" rows="1"></textarea>
-					</td>
-				</tr>
+
 				<tr>
 				<tr>
 					<td class="tdAtrib">Kategori</td>
 					<td>
 						<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
-							<select>
-								<option disabled value="0">Pilih Kategori</option>
-								<option value="1">Elektronik</option>
+							<select class="kategoriSelectorTable" id="kategoriBarangBaru">
 							</select>
 						</div>					
 					</td>
 				</tr>
 				<tr>
-					<td class="tdAtrib">Supplier</td>
-					<td>
-						<textarea name="NamaSupplier" cols="30" rows="1"></textarea>
-					</td>
-				</tr>
-				<tr>
 					<td class="tdAtrib">Harga Beli</td>
-					<td style="display:flex">
-						Rp &ensp; <textarea name="NamaSupplier" cols="30" rows="1"></textarea>
-					</td>
+          <td style="display: flex">
+            <p>Rp&emsp;</p>
+            <form>
+              <input type="number" id="hargaBarangBaru" name="id" value="">
+            </form>
+          </td>
 				</tr>
 				<tr>
-					<td class="tdAtrib">Gambar Produk</td>
+					<td class="tdAtrib">Gambar Barang</td>
 					<td>
-						<input id="asfas" type="file" name="files[]" style="padding:0">
+						<input id="gambarBarangBaru" type="file" name="files[]" style="padding:0">
 					</td>
 				</tr>
 				<tr>
 					<td class="tdAtrib">Deskripsi</td>
-					<td>
-						<textarea class="formLarge" name="Deskripsi" cols="30" rows="1" placeholder="(opsional)"></textarea>
-					</td>
+          <td>
+            <form>
+              <input id="deskripsiBarangBaru" name="id" value="">
+            </form>
+          </td>
 				</tr>
 			</table>
 		</div>
     <div class="modal-footer">
 			<a href="#!" class="modal-close btn-flat left">tutup</a>
-			<a class="waves-effect waves-light btn" style="margin-right: 4px;">kirim</a>
+			<a class="modal-close waves-effect waves-light btn" id="submitBarangBaru" style="margin-right: 4px;">kirim</a>
     </div>
 	</div>
   <script type="text/javascript" src="../js/daftarBarangTable.js"></script>

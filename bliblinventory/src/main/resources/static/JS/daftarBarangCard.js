@@ -332,13 +332,25 @@ function ajaxBookingSubBarang(kodeBarang, jumlahBarang) {
     if(sukses ==1){
         for(var i =0;i<listSubBarang.length;i++){
             $.ajax({
-                type: "PUT",
-                url: window.location + "/changeStateSubBarangToBorrowed/" +listSubBarang[i].kodeSubBarang,
-                success: function (result) {
+                type : "GET",
+                url : "/api/getSubBarangByKodeSubBarang/" + listSubBarang[i].kodeSubBarang,
+                success: function(result){
+                    $.ajax({
+                        type : "PUT",
+                        url : window.location + "/changeStateSubBarangToBorrowed",
+                        contentType: 'application/json',
+                        data: JSON.stringify(result),
+                        success: function() {
+                        },
+                        error: function (e) {
+                            console.log("ERROR: ", e);
+                            window.alert("error ubah status sub barang");
+                        }
+                    });
                 },
                 error : function(e) {
                     console.log("ERROR: ", e);
-                    window.alert("error changeStateSubBarangToBorrowed");
+                    window.alert("error getSubBarang");
                 }
             });
         }

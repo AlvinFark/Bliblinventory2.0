@@ -31,12 +31,10 @@ public class SubBarangController {
         return subBarangRepository.countSubBarangByBarangKodeAndStatusSubBarangAndIsExist(kodeBarang, true, true);
     }
 
-    @RequestMapping(value = {"superior/changeStateSubBarangToBorrowed/{kodeSubBarang}"}, method = RequestMethod.PUT)
-    public int changeStateSubBarangToBorrowed(@PathVariable(value = "kodeSubBarang") String kodeSubBarang){
-        SubBarang subBarangToUpdate = subBarangRepository.getOne(kodeSubBarang);
-        subBarangToUpdate.setStatusSubBarang(false);
-        subBarangRepository.save(subBarangToUpdate);
-        return 1;
+    @RequestMapping(value = {"superior/changeStateSubBarangToBorrowed"}, method = RequestMethod.PUT)
+    public SubBarang changeStateSubBarangToBorrowed(@Valid @RequestBody SubBarang subBarangRequest){
+        subBarangRequest.setStatusSubBarang(false);
+        return subBarangRepository.save(subBarangRequest);
     }
 
     @RequestMapping(value = {"/api/barang/{kodebarang}/{kodesubbarang}"}, method = RequestMethod.POST)
@@ -59,5 +57,10 @@ public class SubBarangController {
       SubBarang sub = subBarangRepository.getSubBarangByKodeSubBarang(kodeSubBarang);
       sub.setExist(subBarang.getExist());
       return subBarangRepository.save(sub);
+    }
+
+    @GetMapping("/api/getSubBarangByKodeSubBarang/{kodeSubBarang}")
+    public SubBarang getSubBarangByKodeSubBarang(@PathVariable String kodeSubBarang){
+        return subBarangRepository.getSubBarangByKodeSubBarang(kodeSubBarang);
     }
 }

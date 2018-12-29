@@ -48,7 +48,6 @@ $( document ).ready(function() {
             }
             document.getElementById("tabelDaftarBarang").innerHTML += '' +
               '<tr>\n' +
-              '  <td><p><label><input id="checkBoxBarang' + i + '" type="checkbox"/><span></span></label></p></td>\n' +
               '  <td id="kodeBarang'+i+'" class="kodeBarangTable">' + result[i].kode + '</td>\n' +
               '  <td>' + result[i].nama + '</td>\n' +
               '  <td>' + kategoriBarang + '</td>\n' +
@@ -93,17 +92,14 @@ $( document ).ready(function() {
           $("#imgModalBarang").css({
             'background-image': 'url("images/barang/'+result.gambar+'")'
           });
-          var kategoriBarang;
-          var idKategoriBarang = ((result || {}).category || {}).id;
-          switch (idKategoriBarang) {
-            case 1 : {kategoriBarang="Elektronik"; break;}
-            case 2 : {kategoriBarang="Perkakas Kantor"; break;}
-          }
+          var kategoriBarang = ((result || {}).category || {}).name;
+
           $("#kodeBarangTable").html(kode);
           $("#namaBarangTable").html(result.nama);
           $("#kategoriBarangTable").html(kategoriBarang);
           $("#hargaBeliBarangTable").html(result.hargaBeli);
           $("#deskripsiBarangTable").html(result.deskripsi);
+          $("#gambarBarangTable").html(result.gambar);
 
           $("#ubahNamaBarang").val(result.nama);
           $("#ubahHargaBeliBarang").val(result.hargaBeli);
@@ -115,12 +111,15 @@ $( document ).ready(function() {
 
           $("#tombolSimpanEditan").click(function () {
             var keyword = $("#ubahKategoriBarang").val();
+            var gambar = $("#ubahGambarProduk").val();
+            if (gambar=="") {gambar = result.gambar};
             var jsonUbahKaryawan = {
               "kode" : $("#kodeBarangTable").text(),
               "nama" : $("#ubahNamaBarang").val(),
               "hargaBeli" : $("#ubahHargaBeliBarang").val(),
               "deskripsi" : $("#ubahdeskripsiBarang").val(),
-              "gambar" : "default.jpg"
+              "gambar" : gambar,
+              "isExist" : true
             };
             $.ajax({
               type : "PUT",
@@ -136,19 +135,31 @@ $( document ).ready(function() {
             });
           });
 
-          $("#tombolSimpanSatuan").click(function (){
-            var kodebarang = $("#kodeBarangTable").text();
-            $( ".barangSatuan" ).each(function() {
-              var kodesubbarang = $(this).val();
-              $.ajax({
-                type: "POST",
-                url: "/api/barang/" +kodebarang + "/" + kodesubbarang,
-                success: function(result) {
-                  alert('barang satuan berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
-                }
-              });
+          $("#tombolHapusBarang").click(function () {
+            var gambar = result.gambar;
+            var keyword = $("#ubahKategoriBarang").val();
+            var jsonUbahKaryawan = {
+              "kode" : $("#kodeBarangTable").text(),
+              "nama" : $("#ubahNamaBarang").val(),
+              "hargaBeli" : $("#ubahHargaBeliBarang").val(),
+              "deskripsi" : $("#ubahdeskripsiBarang").val(),
+              "gambar" : gambar,
+              "isExist" : false
+            };
+            $.ajax({
+              type : "PUT",
+              url : "/api/barang/"+keyword,
+              contentType: 'application/json',
+              data: JSON.stringify(jsonUbahKaryawan),
+              success: function(result) {
+                alert('data barang berhasil diubah, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
+              },
+              error: function (result) {
+                alert(JSON.stringify(result))
+              }
             });
-          })
+          });
+
         }
       });
       $.ajax({

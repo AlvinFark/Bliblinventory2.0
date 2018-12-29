@@ -139,7 +139,7 @@ function ajaxGetRequestListBySortAndSearch(){
 function ajaxGetDetailRequestOrder(idTransaksi) {
     $.ajax({
         type : "GET",
-        url : window.location + "/getDetailRequest/" + idTransaksi,
+        url : "api/getTransaksiByIdTransaksi/" + idTransaksi,
         success: function(result){
             $("#detailNamaKaryawan").html(result.user.name);
             $("#detailIdTransaksi").html(result.idTransaksi);
@@ -163,7 +163,7 @@ function ajaxGetDetailRequestOrder(idTransaksi) {
 function ajaxTolakPermintaanPinjam(idTransaksi) {
     $.ajax({
         type : "GET",
-        url : window.location + "/getDetailRequest/" + idTransaksi,
+        url : "api/getTransaksiByIdTransaksi/" + idTransaksi,
         success: function(result){
             $.ajax({
                 type : "PUT",
@@ -191,7 +191,7 @@ function ajaxTolakPermintaanPinjam(idTransaksi) {
 function ajaxSetujuiPermintaanPinjam(idTransaksi) {
     $.ajax({
         type : "GET",
-        url : window.location + "/getDetailRequest/" + idTransaksi,
+        url : "api/getTransaksiByIdTransaksi/" + idTransaksi,
         success: function(result){
             $.ajax({
                 type : "PUT",

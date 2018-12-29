@@ -58,21 +58,7 @@ function ajaxSetAllPermintaanPinjam() {
         type : "GET",
         url : window.location + "/getAllEmployeeRequest",
         success: function(result){
-            $("#listPermintaanPinjam").html('');
-            for(var i=0; i<result.length; i++){
-                $("#listPermintaanPinjam").append(
-                    '<tr>\n' +
-                        '<td><p><label><input type="checkbox" id="cbx'+result[i].idTransaksi+'" class="cbx" /><span></span></label></p></td>\n' +
-                        '<td>'+result[i].idTransaksi+'</td>\n' +
-                        '<td>'+result[i].user.name+'</td>\n' +
-                        '<td>'+result[i].barang.nama+'</td>\n' +
-                        '<td>'+changeDateFormat(result[i].tgPinjam)+'</td>\n' +
-                        '<td>'+result[i].jumlah+'</td>\n' +
-                        '<td>'+changeDateFormat((result[i].tgOrder).substring(0,10))+'</td>\n' +
-                        '<td width=1px><a id="detail'+result[i].idTransaksi+'" class="waves-effect waves-light btn right modal-trigger btnDetail" href="#modalDetailRequest">Detail</a></td>\n' +
-                    '</tr>'
-                );
-            }
+            createContentListPermintaanPinjam(result);
         },
         error : function(e) {
             console.log("ERROR: ", e);
@@ -90,21 +76,7 @@ function ajaxGetRequestListBySortAndSearch(){
         type : "GET",
         url : url,
         success: function(result){
-            $("#listPermintaanPinjam").html('');
-            for(var i=0; i<result.length; i++){
-                $("#listPermintaanPinjam").append(
-                    '<tr>\n' +
-                    '<td><p><label><input type="checkbox" /><span></span></label></p></td>\n' +
-                    '<td>'+result[i].idTransaksi+'</td>\n' +
-                    '<td>'+result[i].user.name+'</td>\n' +
-                    '<td>'+result[i].barang.nama+'</td>\n' +
-                    '<td>'+changeDateFormat(result[i].tgPinjam)+'</td>\n' +
-                    '<td>'+result[i].jumlah+'</td>\n' +
-                    '<td>'+changeDateFormat((result[i].tgOrder).substring(0,10))+'</td>\n' +
-                    '<td width=1px><a class="waves-effect waves-light btn right modal-trigger kotak-small" href="#modalDetailRequest"><i class="material-icons">search</i></a></td>\n' +
-                    '</tr>'
-                );
-            }
+            createContentListPermintaanPinjam(result);
         },
         error : function(e) {
             console.log("ERROR: ", e);
@@ -135,4 +107,22 @@ function ajaxGetDetailRequestOrder(idTransaksi) {
             window.alert("error");
         }
     });
+}
+
+function  createContentListPermintaanPinjam(result) {
+    $("#listPermintaanPinjam").html('');
+    for(var i=0; i<result.length; i++){
+        $("#listPermintaanPinjam").append(
+            '<tr>\n' +
+            '<td><p><label><input type="checkbox" id="cbx'+result[i].idTransaksi+'" class="cbx" /><span></span></label></p></td>\n' +
+            '<td>'+result[i].idTransaksi+'</td>\n' +
+            '<td>'+result[i].user.name+'</td>\n' +
+            '<td>'+result[i].barang.nama+'</td>\n' +
+            '<td>'+changeDateFormat(result[i].tgPinjam)+'</td>\n' +
+            '<td>'+result[i].jumlah+'</td>\n' +
+            '<td>'+changeDateFormat((result[i].tgOrder).substring(0,10))+'</td>\n' +
+            '<td width=1px><a id="detail'+result[i].idTransaksi+'" class="waves-effect waves-light btn right modal-trigger btnDetail" href="#modalDetailRequest">Detail</a></td>\n' +
+            '</tr>'
+        );
+    }
 }

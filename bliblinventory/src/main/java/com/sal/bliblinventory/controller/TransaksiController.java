@@ -6,7 +6,6 @@ import com.sal.bliblinventory.model.SubBarang;
 import com.sal.bliblinventory.model.Transaksi;
 import com.sal.bliblinventory.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

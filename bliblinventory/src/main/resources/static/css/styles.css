@@ -96,7 +96,7 @@ table td textarea.formLarge, table td input.formLarge{
   height: 150px;
   align-items: center;
 }
-.tanggalOrderList{
+.rightSideOrderList{
   width:200px;
   margin: 14px 10px;
   align-self: flex-start;

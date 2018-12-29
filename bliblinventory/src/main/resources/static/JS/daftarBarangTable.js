@@ -1,9 +1,24 @@
 $( document ).ready(function() {
-    $('select').formSelect();
+
     $('.modal').modal();
     $('.datepicker').datepicker();
 
-  ajaxGetBarangTable('',0);
+    ajaxGetBarangTable('',0);
+
+    $.ajax({
+      type: "GET",
+      url: "/category",
+      success: function (result) {
+        for (var i=0; i<result.length; i++){
+          $(".kategoriSelectorTable").append('<option value="'+result[i].name+'">'+result[i].name+'</option>')
+        }
+        $(".kategoriSelectorTable").trigger('contentChanged');
+      }
+    });
+
+    $('select').on('contentChanged', function() {
+      $(this).formSelect();
+    });
 
     $("#clickTambahSatuan").click(function(){
         $("#editBarangTable").hide();
@@ -95,6 +110,9 @@ $( document ).ready(function() {
           $("#ubahdeskripsiBarang").val(result.deskripsi);
           $("#ubahKategoriBarang").val(kategoriBarang);
 
+          $('#ubahKategoriBarang option[value="'+kategoriBarang+'"]').prop('selected', true);
+          $(".kategoriSelectorTable").trigger('contentChanged');
+
           $("#tombolSimpanEditan").click(function () {
             var keyword = $("#ubahKategoriBarang").val();
             var jsonUbahKaryawan = {
@@ -128,7 +146,6 @@ $( document ).ready(function() {
                 success: function(result) {
                   alert('barang satuan berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
                 }
-
               });
             });
           })
@@ -210,19 +227,5 @@ $( document ).ready(function() {
         '  </div>\n');
     });
 
-
-    $("#searchBarang").keypress(function(e) {
-      if(e.which == 13) {
-        ajaxGetBarangTable($("#searchBarang").val(),$("#filterBarang").prop('selectedIndex'));
-      }
-    });
-  
-    $( document ).on("change","#filterBarang",function (){
-      ajaxGetBarangTable($("#searchBarang").val(),$("#filterBarang").prop('selectedIndex'));
-    });
-  
-    $("#btnRefreshListList").click(function() {
-      ajaxGetBarangTable($("#searchBarang").val(),$("#filterBarang").prop('selectedIndex'));
-    });
 
 });

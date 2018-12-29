@@ -12,9 +12,8 @@
 			<i class="material-icons">dashboard</i>
 			<p>Kategori :</p>
 			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select>
-					<option value="1">Semua Kategori</option>
-					<option value="2">Elektronik</option>
+				<select class="kategoriSelectorTable">
+					<option value="All">Semua Kategori</option>
 				</select>
 			</div>
 		</div>
@@ -110,10 +109,7 @@
 								<td class="tdAtrib">Kategori</td>
 								<td>
 									<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
-										<select id="ubahKategoriBarang">
-											<option disabled value="">Pilih Kategori</option>
-											<option value="Elektronik">Elektronik</option>
-                      <option value="Perkakas Kantor">Peralatan Kantor</option>
+										<select class="kategoriSelectorTable" id="ubahKategoriBarang">
 										</select>
 									</div>					
 								</td>
@@ -193,9 +189,7 @@
 					<td class="tdAtrib">Kategori</td>
 					<td>
 						<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
-							<select>
-								<option disabled value="0">Pilih Kategori</option>
-								<option value="1">Elektronik</option>
+							<select class="kategoriSelectorTable">
 							</select>
 						</div>					
 					</td>

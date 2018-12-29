@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface DetailTransaksiRepository extends JpaRepository<DetailTransaksi, Long> {
   DetailTransaksi getDetailTransaksiBySubBarang(SubBarang subBarang);
+  List<DetailTransaksi> findAllByTransaksi_IdTransaksi(Long idTransaksi);
 }

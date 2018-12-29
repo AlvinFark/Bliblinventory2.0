@@ -219,6 +219,32 @@ $( document ).ready(function() {
       });
     });
 
+    $(document).on("click", "#submitBarangBaru", function(){
+      var keyword = $("#kategoriBarangBaru").val();
+      var path = $("#gambarBarangBaru").val();
+      var fileGambar = path.split('\\').pop();
+      var jsonKaryawanBaru = {
+        "kode" : $("#idBarangBaru").val(),
+        "nama" : $("#namaBarangBaru").val(),
+        "hargaBeli" : $("#hargaBarangBaru").val(),
+        "deskripsi" : $("#deskripsiBarangBaru").val(),
+        "gambar" : fileGambar,
+        "isExist" : true
+      };
+      $.ajax({
+        type : "PUT",
+        url : "/api/barang/"+keyword,
+        contentType: 'application/json',
+        data: JSON.stringify(jsonKaryawanBaru),
+        success: function(result) {
+          alert('barang baru berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
+        },
+        error: function (result) {
+          alert(JSON.stringify(result))
+        }
+      });
+    });
+
     $("#triggerTambahBarangSatuan").click(function () {
       $("#tambahBarangSatuan").append('' +
         '  <div class="valign-wrapper" style="margin-top: 5px">\n' +

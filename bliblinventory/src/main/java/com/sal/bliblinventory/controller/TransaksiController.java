@@ -130,6 +130,12 @@ public class TransaksiController {
         }
     }
 
+    //mendapatkan detail dari daftar Permintaan Karyawan
+    @RequestMapping(value = {"superior/getDetailRequest/{idTransaksi}", "admin/getDetailRequest/{idTransaksi}"}, method = RequestMethod.GET)
+    public Transaksi getDetailRequest(@PathVariable(value = "idTransaksi") Long idTransaksi) {
+        return transaksiRepository.findByIdTransaksi(idTransaksi);
+    }
+
     @GetMapping("api/transaksi/subbarang/{kodesubbarang}")
     public Transaksi transaksiPerSubBarang(@PathVariable String kodesubbarang){
       SubBarang subBarang = subBarangRepository.getSubBarangByKodeSubBarang(kodesubbarang);

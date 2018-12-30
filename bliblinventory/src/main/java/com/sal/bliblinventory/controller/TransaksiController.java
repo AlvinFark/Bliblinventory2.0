@@ -216,6 +216,13 @@ public class TransaksiController {
         return transaksiRepository.save(transaksiRequest);
     }
 
+    @PutMapping("admin/assignPermintaanPinjam")
+    public Transaksi assignPermintaanPinjam(@Valid @RequestBody Transaksi transaksiRequest) {
+        transaksiRequest.setStatusTransaksi(StatusTransaksi.diassign);
+        transaksiRequest.setExist(true);
+        return transaksiRepository.save(transaksiRequest);
+    }
+
     @PutMapping("api/editTransaksiNotExist")
     public Transaksi editTransaksiNotExist(@Valid @RequestBody Transaksi transaksiRequest) {
         transaksiRequest.setExist(false);

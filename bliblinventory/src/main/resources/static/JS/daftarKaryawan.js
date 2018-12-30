@@ -1,6 +1,5 @@
 $( document ).ready(function() {
 
-  $('select').formSelect();
   $('.modal').modal();
 
   $('select').on('contentChanged', function() {
@@ -49,17 +48,17 @@ $( document ).ready(function() {
   });
 
   $("#buttonSimpanUbahanKaryawan").click(function(){
-    var id=$('#idKaryawan').val();
+    var id=$('#detailIdKaryawan').text();
     var name=$('#ubahNamaKaryawan').val();
     var gender=$("#ubahGenderKaryawan").val();
     var address=$("#alamatKaryawan").val();
     var dob=$("#ubahTanggalLahir").val();
     var roleId=$("#ubahRole").val();
-    var superiorId=$("#ubahNamaSuperior").val();
+    var superiorId=$("#selectUbahSuperior").val();
     if (roleId!=2||superiorId=="undefined"){superiorId="0"};
     var hp=$("#hpKaryawan").val();
     var email=$("#emailKaryawan").val();
-    var uname=$("#ubahUsernameKaryawan").val();
+    var uname=$("#detailUsernameKaryawan").text();
     var jsonUbahDetail={
       "name" : name,
       "username" : uname,
@@ -85,17 +84,17 @@ $( document ).ready(function() {
   });
 
   $("#buttonHapusKaryawan").click(function(){
-    var id=$('#idKaryawan').val();
+    var id=$('#detailIdKaryawan').text();
     var name=$('#ubahNamaKaryawan').val();
     var gender=$("#ubahGenderKaryawan").val();
     var address=$("#alamatKaryawan").val();
     var dob=$("#ubahTanggalLahir").val();
     var roleId=$("#ubahRole").val();
-    var superiorId=$("#ubahNamaSuperior").val();
+    var superiorId=$("#selectUbahSuperior").val();
     if (roleId!=2||superiorId=="undefined"){superiorId="0"};
     var hp=$("#hpKaryawan").val();
     var email=$("#emailKaryawan").val();
-    var uname=$("#ubahUsernameKaryawan").val();
+    var uname=$("#detailUsernameKaryawan").val();
     var jsonUbahDetail={
       "name" : name,
       "username" : uname,
@@ -123,31 +122,34 @@ $( document ).ready(function() {
   function ajaxGetDetailKaryawan(id) {
     $.ajax({
       type: "GET",
-      url: "/category",
+      url: "/api/users/",
       success: function (result) {
+        $("#selectUbahSuperior").html('');
         for (var i=0; i<result.length; i++){
-          $(".kategoriSelectorTable").append('<option value="'+result[i].name+'">'+result[i].name+'</option>')
+          var roleapis=((result[i] || {}).roles[0] || {}).name;
+          if (roleapis=="ROLE_SUPERIOR"){
+          $("#selectUbahSuperior").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
+          }
         }
-        for (var i=0; i<result.length; i++){
-          $("#selectorKategoriTable").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
-        }
-        $(".kategoriSelectorTable").trigger('contentChanged');
-        $("#selectorKategoriTable").trigger('contentChanged');
+        $("#selectUbahSuperior").trigger('contentChanged');
       }
-    });
+    }), async = false;
     $.ajax({
       type: "GET",
       url: "/api/users/id/" + id,
       success: function (result) {
         console.log(result);
-        var roleuser;
+        var roleuser, roleid;
         var roleapi=((result || {}).roles[0] || {}).name;
         if (roleapi=="ROLE_EMPLOYEE"){
           roleuser="Staff";
-        } else if (roleuser=="ROLE_SUPERIOR"){
+          roleid=2;
+        } else if (roleapi=="ROLE_SUPERIOR"){
           roleuser="Superior";
+          roleid=1;
         } else {
           roleuser="Admin";
+          roleid=3;
         };
         var usersuperior=((result || {}).superior || {}).name;
         var usersuperiorid=((result || {}).superior || {}).id;
@@ -172,14 +174,17 @@ $( document ).ready(function() {
         $("#detailEmailKaryawan").html(result.email);
 
         $("#ubahNamaKaryawan").val(result.name);
-        $("#ubahGenderKaryawan").val(result.gender);
+        $('#ubahGenderKaryawan option[value="'+result.gender+'"]').prop('selected', true);
+        $("#ubahGenderKaryawan").trigger('contentChanged');
         $("#alamatKaryawan").val(result.address);
         $("#ubahTanggalLahir").val(result.dateOfBirth);
-        $("#ubahRole").val(roleuser);
+        $('#ubahRole option[value="'+roleid+'"]').prop('selected', true);
+        $("#ubahRole").trigger('contentChanged');
+        $('#selectUbahSuperior option[value="'+usersuperiorid+'"]').prop('selected', true);
+        $("#selectUbahSuperior").trigger('contentChanged');
         $("#ubahNamaSuperior").val(usersuperior);
         $("#hpKaryawan").val(result.phoneNumber);
         $("#emailKaryawan").val(result.email);
-        afterModal();
       },
       error : function(e) {
         console.log("ERROR: ", e);

@@ -1,4 +1,4 @@
-	<script type="text/javascript" src="../js/daftarKaryawan.js"></script>
+
 	<h4>Daftar Karyawan</h4>
 	<div style="display:flex; margin-top: 20px;">
 		<div class="containerSelectLogo valign-wrapper">
@@ -26,6 +26,148 @@
 	</div>
 	<a class="waves-effect waves-light btn btn-white right modal-trigger" id="triggerTambahKaryawan" href="#modalTambahKaryawan" style="margin: 10px 10px 20px 0;">tambah</a>
   <div id="modalDetailKaryawan" class="modal modal-fixed-footer">
+    <div id="detailKaryawan" class="modal-content" style="padding: 5px 30px 5px 30px !important">
+      <h4 class="headerModal">Detail Karyawan</h4>
+      <div class="valign-wrapper">
+        <div class="kontainerImgModal" id="detailFotoKaryawan"></div>
+        <div>
+          <table class="tableNoBorder smallPadding">
+            <tr>
+              <td class="tdAtrib" width="150px">ID Karyawan</td>
+              <td class="tdInfo" id="detailIdKaryawan"></td>
+            </tr>
+            <tr>
+              <td class="tdAtrib" width="150px">Username</td>
+              <td class="tdInfo" id="detailUsernameKaryawan"></td>
+            </tr>
+            <tr>
+              <td class="tdAtrib" width="150px">Nama</td>
+              <td class="tdInfo" id="detailNamaKaryawan"></td>
+            </tr>
+            <tr>
+              <td class="tdAtrib">Jenis Kelamin</td>
+              <td class="tdInfo" id="detailGenderKaryawan"></td>
+            </tr>
+            <tr>
+              <td class="tdAtrib">Alamat</td>
+              <td class="tdInfo" id="detailAlamatKaryawan"></td>
+            </tr>
+            <tr>
+              <td class="tdAtrib">Tanggal Lahir</td>
+              <td class="tdInfo" id="detailDoBKaryawan"></td>
+            </tr>
+            <tr>
+              <td class="tdAtrib">Jabatan</td>
+              <td class="tdInfo" id="detailRoleKaryawan"></td>
+            </tr>
+            <tr>
+              <td class="tdAtrib superior">Superior</td>
+              <td class="tdInfo superior" id="detailSuperiorKaryawan"></td>
+            </tr>
+            <tr>
+              <td class="tdAtrib">No HP</td>
+              <td class="tdInfo" id="detailHpKaryawan"></td>
+            </tr>
+            <tr>
+              <td class="tdAtrib">email</td>
+              <td class="tdInfo" id="detailEmailKaryawan"></td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div id="ubahDetailKaryawan" class="modal-content">
+      <h4 class="headerModal">Ubah Detail Karyawan</h4>
+      <div class="valign-wrapper" style="width:100%">
+        <table class="tableNoBorder smallPadding">
+          <tr>
+            <td class="tdAtrib" width="120px">Nama</td>
+            <td class="tdInfo">
+              <form>
+                <input id="ubahNamaKaryawan" name="name" value="">
+              </form>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdAtrib">Jenis Kelamin</td>
+            <td>
+              <div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
+                <select class="browser-default" id="ubahGenderKaryawan">
+                  <option value="Pria">Pria</option>
+                  <option value="Wanita">Wanita</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdAtrib">Alamat</td>
+            <td class="tdInfo">
+              <form>
+                <input id="alamatKaryawan" name="alamat" value="">
+              </form>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdAtrib">Tanggal Lahir</td>
+            <td class="tdInfo">
+              <form>
+                <input id="ubahTanggalLahir" type="date" name="dob" value="">
+              </form>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdAtrib">Jabatan</td>
+            <td>
+              <div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
+                <select class="browser-default" id="ubahRole">
+                  <option value="2">Staff</option>
+                  <option value="1">Superior</option>
+                  <option value="3">Admin</option>
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr class="ubahSuperior">
+            <td class="tdAtrib ubahSuperior">Superior</td>
+            <td class="tdInfo ubahSuperior">
+              <div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
+                <select class="browser-default" id="selectUbahSuperior">
+                </select>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdAtrib">No HP</td>
+            <td class="tdInfo">
+              <form>
+                <input id="hpKaryawan" name="hpkar" value="">
+              </form>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdAtrib">email</td>
+            <td class="tdInfo">
+              <form>
+                <input id="emailKaryawan" name="email" value="">
+              </form>
+            </td>
+          </tr>
+          <tr>
+            <td class="tdAtrib">Foto</td>
+            <td>
+              <input id="gantiFotoKaryawan" type="file" name="file" multiple style="padding:0">
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <a href="#!" class="modal-close btn-flat left">tutup</a>
+      <a id="buttonBackToDetailKaryawan" href="#" class="btn-flat left">kembali</a>
+      <a id="buttonHapusKaryawan" href="#hapusKaryawan" class="modal-close waves-effect waves-light btn" style="margin-right: 4px;">hapus</a>
+      <a id="buttonUbahDetailKaryawan" href="#ubahDetailKaryawan" class="waves-effect waves-light btn" style="margin-right: 4px;">ubah</a>
+      <a id="buttonSimpanUbahanKaryawan" class="modal-close waves-effect waves-light btn" style="margin-right: 4px;">simpan</a>
+    </div><script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
 	</div>
 	<div id="modalTambahKaryawan" class="modal modal-fixed-footer">
 		<div class="modal-content">
@@ -134,3 +276,4 @@
       <a id="btnKirimKaryawanBaru" class="modal-close waves-effect waves-light btn">kirim</a>
     </div>
 	</div>
+  <script type="text/javascript" src="../js/daftarKaryawan.js"></script>

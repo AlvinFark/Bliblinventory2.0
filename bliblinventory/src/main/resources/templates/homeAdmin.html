@@ -1,7 +1,8 @@
+<script type="text/javascript" src="../JS/homeAdmin.js"></script>
 <header style="z-index: 3;">
 	<nav>
 		<div class="nav-wrapper">
-			<a href="#"><img class="brand-logo imgLogo" src="../../images/logo2.png"/></a>
+			<a><img class="brand-logo imgLogo" src="../../images/logo2.png"/></a>
 			<a data-target="mobileEmployee" class="sidenav-trigger"><i class="material-icons">menu</i></a>
 			<ul class="right hide-on-med-and-down">
 				<li><input type="text" id="inputSearch" placeholder="Ketik barang yang ingin anda cari"/></li>
@@ -20,21 +21,22 @@
 		<li class="divider"></li>
 		<li><a class="modal-trigger" href="#modalBeliProduk">Buat Permintaan Pembelian Barang Inventaris</a></li>
 		<li class="divider"></li>
-		<li><a id="klikDaftarKaryawan" href="#">Daftar Karyawan</a></li>
+		<li><a id="klikDaftarKaryawan">Daftar Karyawan</a></li>
 		<li class="divider"></li>
 		<li><a id="klikPermintaanKaryawan">Daftar Permintaan Peminjaman Karyawan</a></li>
 		<li class="divider"></li>
 		<li><a class="modal-trigger" href="#modalBackup">Backup dan Restore</a></li>
 		<li class="divider"></li>
-		<li><a href="../loginPage.html">Logout</a></li>
+        <li><a href="http://localhost:8080/" id="klikLogout">Logout</a></li>
 	</ul>
 </header>
 <div style="height:64px;" ></div>
 <div class="kontainer">
-	<div id="includeDaftarBarangTable" style="position:absolute; width:inherit"></div>
+	<div id="includePageContent" style="position:absolute; width:inherit"></div>
+	<!--<div id="includeDaftarBarangTable" style="position:absolute; width:inherit"></div>
 	<div id="includeDaftarKaryawan" style="position:absolute; width:inherit"></div>
 	<div id="includePengembalianBarang" style="position:absolute; width:inherit"></div>
-	<div id="includePermintaanKaryawan" style="position:absolute; width:inherit"></div>
+	<div id="includePermintaanKaryawan" style="position:absolute; width:inherit"></div>-->
 </div>
 <div id="modalTambahBatch" class="modal modal-fixed-footer">
 	<form action="/api/upload" enctype="multipart/form-data" method="POST">\]
@@ -42,10 +44,10 @@
 			<h4 class="headerModal">Tambah Barang secara Batch</h4>
 			<p style="padding-top:80px;"> File : &ensp;<input id="fileUpload" type="file" name="fileUpload" style="padding:0"> </p>
 			<p> Catatan : <br> File Excel yang dipilih harus menggunakan format penulisan untuk penambahan produk yang sudah ditetapkan.
-			<br> Format file dapat diunduh <a href="#">disini</a></p>
+			<br> Format file dapat diunduh <a>disini</a></p>
 		</div>
 		<div class="modal-footer">
-			<a href="#!" class="modal-close btn-flat left">tutup</a>
+			<a class="modal-close btn-flat left">tutup</a>
 			<input type="submit" id="btnUpdateBatch" value="kirim" class="waves-effect waves-light btn" style="margin-right: 4px;">
 		</div>
 	</form>
@@ -103,7 +105,7 @@
 		</table>
 	</div>
 	<div class="modal-footer">
-		<a href="#!" class="modal-close btn-flat left">tutup</a>
+		<a class="modal-close btn-flat left">tutup</a>
 		<a id="buttonReasdquestPinjam" class="waves-effect waves-light btn" style="margin-right: 4px;">kirim</a>
 	</div>
 </div>
@@ -126,4 +128,3 @@
 		</table>
 	</div>
 </div>
-<script type="text/javascript" src="/JS/homeAdmin.js"></script>

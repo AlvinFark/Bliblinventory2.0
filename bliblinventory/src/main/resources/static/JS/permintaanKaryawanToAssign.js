@@ -1,17 +1,17 @@
 $( document ).ready(function() {
-    ajaxGetAllPermintaanPinjam();
+    ajaxGetAllPermintaanPinjamToAssign();
 
     $('select').formSelect();
     $('.modal').modal();
 
     //ketika merubah dropdown urutkan
     $( document ).on("change","#selectSortBy",function (){
-            ajaxGetRequestListBySortAndSearch();
+        ajaxGetRequestListBySortAndSearch();
     });
 
     //ketika klik icon search
     $( document ).on("click","#iconSearch",function (){
-            ajaxGetRequestListBySortAndSearch();
+        ajaxGetRequestListBySortAndSearch();
     });
 
     //ketika ada checkbox yang diklik
@@ -46,10 +46,10 @@ $( document ).ready(function() {
         //kalo semua dicheck, checklist for all di cek juga
         var selectedAllPermintaan=true;
         $( ".cbxBody" ).each(function() {
-          if( !$(this).is(':checked')){ selectedAllPermintaan=false};
+            if( !$(this).is(':checked')){ selectedAllPermintaan=false};
         })
         if (selectedAllPermintaan){
-          $("#cbxAll").prop('checked', true);
+            $("#cbxAll").prop('checked', true);
         }
     });
 
@@ -156,7 +156,7 @@ function createContentListPermintaanPinjam(result) {
     }
 }
 
-function ajaxGetAllPermintaanPinjam() {
+function ajaxGetAllPermintaanPinjamToAssign() {
     $.ajax({
         type : "GET",
         url : window.location + "/getAllEmployeeRequest",

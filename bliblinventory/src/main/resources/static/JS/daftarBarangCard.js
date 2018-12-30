@@ -55,11 +55,12 @@ $( document ).ready(function() {
         else
             url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + keteranganPinjam;
 
-        var sukses = ajaxSendRequestPinjam(url);
+        var idTransaksi = ajaxSendRequestPinjam(url);
 
         //kalau superior dan request pinjamnya berhasil, requestnya langsung di-approve, dan sub barang langsung dipesankan
-        if(window.location.pathname == "/superior" && sukses==1){
-            ajaxBookingSubBarang(kodeBarang, jumlahBarang);
+        if(window.location.pathname == "/superior" && idTransaksi!=0){
+            window.alert("id transaksi = "+idTransaksi);
+            ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi);
         }
 
         $('#modalDetailPinjam').modal('close');
@@ -293,13 +294,13 @@ function ajaxGetProductCustom(url){
 }
 
 function ajaxSendRequestPinjam(url) {
-    var sukses = 0;
+    var idTransaksi=0;
     $.ajax({
         type : "POST",
         url : url,
         success: function(result){
-            window.alert(result);
-            sukses = 1;
+            idTransaksi = result;
+            window.alert("Permintaan pinjam berhasil");
         },
         error : function(e) {
             console.log("ERROR: ", e);
@@ -307,16 +308,15 @@ function ajaxSendRequestPinjam(url) {
         },
         async: false
     });
-
-    return sukses;
+    return idTransaksi;
 }
 
-function ajaxBookingSubBarang(kodeBarang, jumlahBarang) {
+function ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi) {
     var sukses = 0;
     var listSubBarang;
     $.ajax({
         type : "POST",
-        url : window.location + "/createDetailTransaksi/" + kodeBarang + "/" +jumlahBarang,
+        url : window.location + "/createDetailTransaksi/" + kodeBarang + "/" +jumlahBarang + "/" + idTransaksi,
         success: function(result){
             sukses=1;
             listSubBarang= result; //result berisi list subBarang yang akan dibooking

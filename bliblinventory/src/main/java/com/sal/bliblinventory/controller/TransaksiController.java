@@ -30,20 +30,22 @@ public class TransaksiController {
 
     //employee mengirim request pinjam
     @RequestMapping(value = {"employee/requestPinjam/{kodeBarang}/{tgPinjam}/{jumlahBarang}/{keteranganPinjam}"}, method = RequestMethod.POST)
-    public String sendRequestFromEmployee(@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "tgPinjam") String tgPinjam, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "keteranganPinjam") String keteranganPinjam){
+    public Long sendRequestFromEmployee(@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "tgPinjam") String tgPinjam, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "keteranganPinjam") String keteranganPinjam){
         //sementara usernya masih static (pakai user dg id 1L)
         Transaksi transaksi = new Transaksi(userRepository.getUserById(1L), tgPinjam, barangRepository.findBarangByKode(kodeBarang), jumlahBarang, keteranganPinjam, StatusTransaksi.menunggu);
         transaksiRepository.save(transaksi);
-        return "Permintaan peminjaman "+barangRepository.findBarangByKode(kodeBarang).getNama()+" sejumlah "+ jumlahBarang+ " unit berhasil";
+        return transaksi.getIdTransaksi();
+        //return "Permintaan peminjaman "+barangRepository.findBarangByKode(kodeBarang).getNama()+" sejumlah "+ jumlahBarang+ " unit berhasil";
     }
 
     //superior mengirim request pinjam
     @RequestMapping(value = {"superior/requestPinjam/{kodeBarang}/{tgPinjam}/{jumlahBarang}/{keteranganPinjam}"}, method = RequestMethod.POST)
-    public String sendRequestFromSuperior(@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "tgPinjam") String tgPinjam, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "keteranganPinjam") String keteranganPinjam){
+    public Long sendRequestFromSuperior(@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "tgPinjam") String tgPinjam, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "keteranganPinjam") String keteranganPinjam){
         //sementara usernya masih static (pakai user dg id 1L)
         Transaksi transaksi = new Transaksi(userRepository.getUserById(1L), tgPinjam, barangRepository.findBarangByKode(kodeBarang), jumlahBarang, keteranganPinjam, StatusTransaksi.disetujui);
         transaksiRepository.save(transaksi);
-        return "Permintaan peminjaman "+barangRepository.findBarangByKode(kodeBarang).getNama()+" sejumlah "+ jumlahBarang+ " unit berhasil";
+        return transaksi.getIdTransaksi();
+        //return "Permintaan peminjaman "+barangRepository.findBarangByKode(kodeBarang).getNama()+" sejumlah "+ jumlahBarang+ " unit berhasil";
     }
 
     //mendapatkan list transaksi
@@ -125,6 +127,65 @@ public class TransaksiController {
             case 3: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByBarang_Nama(3L,true, StatusTransaksi.menunggu);
             //sort by tgOrder
             default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByIdTransaksi(3L,true, StatusTransaksi.menunggu);
+        }
+    }
+
+    //mendapatkan list permintaan pinjaman employee & superior (dari admin)
+    //hanya tampilkan yang statusnya disetujui
+    @RequestMapping(value = "admin/getAllEmployeeRequest", method = RequestMethod.GET)
+    public List<Transaksi> getAllEmployeeRequestFromAdmin() {
+        return transaksiRepository.findAllByIsExistAndStatusTransaksiOrderByTgPinjam(true, StatusTransaksi.disetujui);
+    }
+
+    //mendapatkan list permintaan pinjaman employee dan superior (dari admin) dengan filter dan keyword
+    //hanya tampilkan yang statusnya disetujui
+    @RequestMapping(value = "admin/filterEmployeeRequest/{sortBy}/{searchBy}/{keyword}", method = RequestMethod.GET)
+    public List<Transaksi> getEmployeeRequestFromAdminWithFilterAndKeyword(@PathVariable(value = "sortBy") int sortBy, @PathVariable(value = "searchBy") int searchBy, @PathVariable(value = "keyword") String keyword) {
+        if(searchBy==0){ //search by Nama Karyawan yang request
+            switch (sortBy){
+                //sort by tgPinjam
+                case 0: return transaksiRepository.findAllByIsExistAndUser_NameContainingAndStatusTransaksiOrderByTgPinjam(true, keyword, StatusTransaksi.disetujui);
+                //sort by noOrder
+                case 1: return transaksiRepository.findAllByIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(true, keyword, StatusTransaksi.disetujui);
+                //sort by namaPeminjam
+                case 2: return transaksiRepository.findAllByIsExistAndUser_NameContainingAndStatusTransaksiOrderByUser_Name(true, keyword, StatusTransaksi.disetujui);
+                //sort by namaBarang
+                case 3: return transaksiRepository.findAllByIsExistAndUser_NameContainingAndStatusTransaksiOrderByBarang_Nama(true, keyword, StatusTransaksi.disetujui);
+                //sort by tgOrder
+                default: return transaksiRepository.findAllByIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(true, keyword, StatusTransaksi.disetujui);
+            }
+        }
+        else{ //search by Nama Barang
+            switch (sortBy){
+                //sort by tgPinjam
+                case 0: return transaksiRepository.findAllByIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByTgPinjam(true, keyword, StatusTransaksi.disetujui);
+                //sort by noOrder
+                case 1: return transaksiRepository.findAllByIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByIdTransaksi(true, keyword, StatusTransaksi.disetujui);
+                //sort by namaPeminjam
+                case 2: return transaksiRepository.findAllByIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByUser_Name(true, keyword, StatusTransaksi.disetujui);
+                //sort by namaBarang
+                case 3: return transaksiRepository.findAllByIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByBarang_Nama(true, keyword, StatusTransaksi.disetujui);
+                //sort by tgOrder
+                default: return transaksiRepository.findAllByIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(true, keyword, StatusTransaksi.disetujui);
+            }
+        }
+    }
+
+    //mendapatkan list permintaan pinjaman employee dan superior (dari admin) dengan filter
+    //hanya tampilkan yang statusnya disetujui
+    @RequestMapping(value = "admin/filterEmployeeRequest/{sortBy}/{searchBy}", method = RequestMethod.GET)
+    public List<Transaksi> getEmployeeRequestFromAdminWithFilter(@PathVariable(value = "sortBy") int sortBy, @PathVariable(value = "searchBy") int searchBy) {
+        switch (sortBy){
+            //sort by tgPinjam
+            case 0: return transaksiRepository.findAllByIsExistAndStatusTransaksiOrderByTgPinjam(true, StatusTransaksi.disetujui);
+            //sort by noOrder
+            case 1: return transaksiRepository.findAllByIsExistAndStatusTransaksiOrderByIdTransaksi(true, StatusTransaksi.disetujui);
+            //sort by namaPeminjam
+            case 2: return transaksiRepository.findAllByIsExistAndStatusTransaksiOrderByUser_Name(true, StatusTransaksi.disetujui);
+            //sort by namaBarang
+            case 3: return transaksiRepository.findAllByIsExistAndStatusTransaksiOrderByBarang_Nama(true, StatusTransaksi.disetujui);
+            //sort by tgOrder
+            default: return transaksiRepository.findAllByIsExistAndStatusTransaksiOrderByIdTransaksi(true, StatusTransaksi.disetujui);
         }
     }
 

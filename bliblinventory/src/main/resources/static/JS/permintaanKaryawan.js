@@ -44,6 +44,15 @@ $( document ).ready(function() {
             $("#btnSetujui").addClass("disabled");
             $("#btnTolak").addClass("disabled");
         }
+
+        //kalo semua dicheck, checklist for all di cek juga
+        var selectedAllPermintaan=true;
+        $( ".cbxBody" ).each(function() {
+          if( !$(this).is(':checked')){ selectedAllPermintaan=false};
+        })
+        if (selectedAllPermintaan){
+          $("#cbxAll").prop('checked', true);
+        }
     });
 
     //ketika klik button detail
@@ -91,7 +100,7 @@ function createContentListPermintaanPinjam(result) {
     for(var i=0; i<result.length; i++){
         $("#listPermintaanPinjam").append(
             '<tr>\n' +
-            '<td><p><label><input type="checkbox" id="cbx'+result[i].idTransaksi+'" class="cbx" /><span></span></label></p></td>\n' +
+            '<td><p><label><input type="checkbox" id="cbx'+result[i].idTransaksi+'" class="cbx cbxBody" /><span></span></label></p></td>\n' +
             '<td>'+result[i].idTransaksi+'</td>\n' +
             '<td>'+result[i].user.name+'</td>\n' +
             '<td>'+result[i].barang.nama+'</td>\n' +

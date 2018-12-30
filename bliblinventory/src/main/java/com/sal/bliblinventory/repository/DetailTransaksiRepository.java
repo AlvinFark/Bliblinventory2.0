@@ -10,5 +10,8 @@ import java.util.List;
 @Repository
 public interface DetailTransaksiRepository extends JpaRepository<DetailTransaksi, Long> {
   DetailTransaksi getDetailTransaksiBySubBarang(SubBarang subBarang);
+
+  List<DetailTransaksi> getAllByIsExist(boolean isExist);
+
   List<DetailTransaksi> findAllByTransaksi_IdTransaksi(Long idTransaksi);
 }

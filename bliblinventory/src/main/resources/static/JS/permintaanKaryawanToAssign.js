@@ -51,10 +51,10 @@ $( document ).ready(function() {
         //kalo semua dicheck, checklist for all di cek juga
         var selectedAllPermintaan=true;
         $( ".cbxBody" ).each(function() {
-          if( !$(this).is(':checked')){ selectedAllPermintaan=false};
+            if( !$(this).is(':checked')){ selectedAllPermintaan=false};
         })
         if (selectedAllPermintaan){
-          $("#cbxAll").prop('checked', true);
+            $("#cbxAll").prop('checked', true);
         }
     });
 

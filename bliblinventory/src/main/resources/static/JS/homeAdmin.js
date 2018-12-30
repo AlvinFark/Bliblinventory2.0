@@ -4,9 +4,10 @@ $( document ).ready(function() {
   $("#includeDaftarBarangTable").load("daftarBarangTable.html"); 
   $("#includeDaftarKaryawan").load("daftarKaryawan.html"); 
   $("#includePengembalianBarang").load("pengembalianBarang.html"); 
-  $("#includePermintaanKaryawan").load("permintaanKaryawan.html"); 
+  $("#includePermintaanKaryawan").load("permintaanKaryawan.html");
+  $("#includeDaftarBarangTable").hide();
   $("#includeDaftarKaryawan").hide(); 
-  $("#includePengembalianBarang").hide(); 
+  //$("#includePengembalianBarang").hide();
   $("#includePermintaanKaryawan").hide(); 
   
   $("#klikDaftarBarang").click(function(){

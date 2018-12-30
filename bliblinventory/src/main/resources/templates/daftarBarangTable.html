@@ -5,15 +5,15 @@
 			<i class="material-icons">search</i>
 			<p style="margin-right:3px;">Cari :</p>
 			<div class="input-field containerSearch valign-wrapper z-depth-1">
-					<input type="text" placeholder="Ketik yang ingin dicari"/>
+					<input id="searchTabelBarang" type="text" placeholder="Ketik yang ingin dicari"/>
 			</div>	
 		</div>
 		<div class="containerSelectLogo valign-wrapper">
 			<i class="material-icons">dashboard</i>
 			<p>Kategori :</p>
 			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select class="kategoriSelectorTable">
-					<option value="All">Semua Kategori</option>
+				<select id="selectorKategoriTable">
+					<option value="0">Semua Kategori</option>
 				</select>
 			</div>
 		</div>
@@ -22,10 +22,10 @@
 		<table class="highlight">
 			<thead>
 				<tr>
-					<th>ID Barang</th>
+					<th width="200px">ID Barang</th>
 					<th>Nama Barang</th>
-					<th>Kategori</th>
-					<th>Harga Beli</th>
+					<th width="200px">Kategori</th>
+					<th width="200px">Harga Beli</th>
 					<th></th>
 				</tr>
 			</thead>

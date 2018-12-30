@@ -12,7 +12,11 @@ $( document ).ready(function() {
         for (var i=0; i<result.length; i++){
           $(".kategoriSelectorTable").append('<option value="'+result[i].name+'">'+result[i].name+'</option>')
         }
+        for (var i=0; i<result.length; i++){
+          $("#selectorKategoriTable").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
+        }
         $(".kategoriSelectorTable").trigger('contentChanged');
+        $("#selectorKategoriTable").trigger('contentChanged');
       }
     });
 
@@ -40,12 +44,7 @@ $( document ).ready(function() {
           count=result.length;
           $("#tabelDaftarBarang").html('');
           for (var i = 0; i < result.length; i++) {
-            var kategoriBarang;
-            var idKategoriBarang = ((result[i] || {}).category || {}).id;
-            switch (idKategoriBarang) {
-              case 1 : {kategoriBarang="Elektronik"; break;}
-              case 2 : {kategoriBarang="Perkakas Kantor"; break;}
-            }
+            var kategoriBarang = ((result[i] || {}).category || {}).name;
             document.getElementById("tabelDaftarBarang").innerHTML += '' +
               '<tr>\n' +
               '  <td id="kodeBarang'+i+'" class="kodeBarangTable">' + result[i].kode + '</td>\n' +
@@ -82,6 +81,16 @@ $( document ).ready(function() {
         }
       });
     }
+
+    $( document ).on("change","#selectorKategoriTable",function (){
+      ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
+    });
+
+    $("#searchTabelBarang").keypress(function(e) {
+      if(e.which == 13) {
+        ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
+      }
+    });
 
     $(document).on("click", ".triggerModalTable", function(){
       kode = jQuery(this).parent("td").parent("tr"). children(".kodeBarangTable").text();

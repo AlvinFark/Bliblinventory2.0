@@ -29,15 +29,15 @@ $( document ).ready(function() {
   });
 
   $( document ).on("click",".triggerDetailKaryawan",function () {
+    $("#detailKaryawan").fadeIn();
+    $("#ubahDetailKaryawan").hide();
+    $("#buttonUbahDetailKaryawan").show();
+    $("#buttonHapusKaryawan").show();
+    $("#buttonBackToDetailKaryawan").hide();
+    $("#buttonSimpanUbahanKaryawan").hide();
     var idKaryawan = jQuery(this).children(".card").children(".card-content").children("p:first-child").text();
     ajaxGetDetailKaryawan(idKaryawan);
   });
-
-  var roleawal=$("#ubahRole").prop('selectedIndex');
-  if (roleawal==0){
-    $(".ubahSuperior").show();} else {
-    $(".ubahSuperior").hide();
-  }
 
   $( document ).on("change","#ubahRole",function (){
     var role=$("#ubahRole").prop('selectedIndex');
@@ -122,20 +122,6 @@ $( document ).ready(function() {
   function ajaxGetDetailKaryawan(id) {
     $.ajax({
       type: "GET",
-      url: "/api/users/",
-      success: function (result) {
-        $("#selectUbahSuperior").html('');
-        for (var i=0; i<result.length; i++){
-          var roleapis=((result[i] || {}).roles[0] || {}).name;
-          if (roleapis=="ROLE_SUPERIOR"){
-          $("#selectUbahSuperior").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
-          }
-        }
-        $("#selectUbahSuperior").trigger('contentChanged');
-      }
-    }), async = false;
-    $.ajax({
-      type: "GET",
       url: "/api/users/id/" + id,
       success: function (result) {
         console.log(result);
@@ -166,25 +152,24 @@ $( document ).ready(function() {
         $("#detailRoleKaryawan").html(roleuser);
         if (roleuser=="Staff"){
           $(".superior").attr("hidden",false);
+          $(".ubahSuperior").attr("hidden",false);
           $("#detailSuperiorKaryawan").html(usersuperior);
         } else {
           $(".superior").attr("hidden",true);
+          $(".ubahSuperior").attr("hidden",true);
         }
         $("#detailHpKaryawan").html(result.phoneNumber);
         $("#detailEmailKaryawan").html(result.email);
 
         $("#ubahNamaKaryawan").val(result.name);
         $('#ubahGenderKaryawan option[value="'+result.gender+'"]').prop('selected', true);
-        $("#ubahGenderKaryawan").trigger('contentChanged');
         $("#alamatKaryawan").val(result.address);
         $("#ubahTanggalLahir").val(result.dateOfBirth);
         $('#ubahRole option[value="'+roleid+'"]').prop('selected', true);
-        $("#ubahRole").trigger('contentChanged');
         $('#selectUbahSuperior option[value="'+usersuperiorid+'"]').prop('selected', true);
-        $("#selectUbahSuperior").trigger('contentChanged');
-        $("#ubahNamaSuperior").val(usersuperior);
         $("#hpKaryawan").val(result.phoneNumber);
         $("#emailKaryawan").val(result.email);
+
       },
       error : function(e) {
         console.log("ERROR: ", e);
@@ -222,12 +207,21 @@ $( document ).ready(function() {
         url : "/api/users/"+keyword,
         success: function(result){
           $("#daftarKaryawan").html('');
+          $("#selectUbahSuperior").html('');
           for(var i = 0; i < result.length; i++){
             var roleuser, filterRole;
             var roleapi=((result[i] || {}).roles[0] || {}).name;
-            if (roleapi=="ROLE_EMPLOYEE"){roleuser="Staff"; filterRole=1;}
-            else if (roleapi=="ROLE_SUPERIOR"){roleuser="Superior"; filterRole=2;}
-            else {roleuser="Admin"; filterRole=3;};
+            if (roleapi=="ROLE_EMPLOYEE"){
+              roleuser="Staff";
+              filterRole=1;
+            } else if (roleapi=="ROLE_SUPERIOR"){
+              roleuser="Superior";
+              filterRole=2;
+              $("#selectUbahSuperior").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
+            } else {
+              roleuser="Admin";
+              filterRole=3;
+            };
             if ((filter==0||filterRole==filter)&&result[i].isActive==1){
               $("#daftarKaryawan").append('' +
                 '<a class="col s6 l2 m3 modal-trigger triggerDetailKaryawan" id="" href="#modalDetailKaryawan">\n' +
@@ -245,7 +239,6 @@ $( document ).ready(function() {
                 '</div>\n' +
                 '</a>');
             }
-
           }
         },
         error : function(e) {

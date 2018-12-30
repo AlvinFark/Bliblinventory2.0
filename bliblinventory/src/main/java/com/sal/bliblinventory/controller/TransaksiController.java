@@ -6,9 +6,9 @@ import com.sal.bliblinventory.model.SubBarang;
 import com.sal.bliblinventory.model.Transaksi;
 import com.sal.bliblinventory.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -128,9 +128,8 @@ public class TransaksiController {
         }
     }
 
-    //mendapatkan detail dari daftar Permintaan Karyawan
-    @RequestMapping(value = {"superior/getDetailRequest/{idTransaksi}", "admin/getDetailRequest/{idTransaksi}"}, method = RequestMethod.GET)
-    public Transaksi getDetailRequest(@PathVariable(value = "idTransaksi") Long idTransaksi) {
+    @RequestMapping(value = "api/getTransaksiByIdTransaksi/{idTransaksi}", method = RequestMethod.GET)
+    public Transaksi getTransaksiByIdTransaksi(@PathVariable(value = "idTransaksi") Long idTransaksi) {
         return transaksiRepository.findByIdTransaksi(idTransaksi);
     }
 
@@ -140,5 +139,25 @@ public class TransaksiController {
       DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarang(subBarang);
       Transaksi transaksi = detailTransaksi.getTransaksi();
       return transaksi;
+    }
+
+    @PutMapping("superior/tolakPermintaanPinjam")
+    public Transaksi tolakPermintaanPinjam(@Valid @RequestBody Transaksi transaksiRequest) {
+        transaksiRequest.setStatusTransaksi(StatusTransaksi.ditolak);
+        transaksiRequest.setExist(true);
+        return transaksiRepository.save(transaksiRequest);
+    }
+
+    @PutMapping("superior/setujuiPermintaanPinjam")
+    public Transaksi setujuiPermintaanPinjam(@Valid @RequestBody Transaksi transaksiRequest) {
+        transaksiRequest.setStatusTransaksi(StatusTransaksi.disetujui);
+        transaksiRequest.setExist(true);
+        return transaksiRepository.save(transaksiRequest);
+    }
+
+    @PutMapping("api/editTransaksiNotExist")
+    public Transaksi editTransaksiNotExist(@Valid @RequestBody Transaksi transaksiRequest) {
+        transaksiRequest.setExist(false);
+        return transaksiRepository.save(transaksiRequest);
     }
 }

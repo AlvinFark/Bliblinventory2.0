@@ -11,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -40,5 +41,15 @@ public class DetailTransaksiController {
     @GetMapping("/api/permintaan")
     public List<DetailTransaksi> getAllDetailTransaksi(){
         return detailTransaksiRepository.getAllByIsExist(true);
+
+    @RequestMapping(value = "api/getDetailTransaksiByIdTransaksi/{idTransaksi}", method = RequestMethod.GET)
+    public List<DetailTransaksi> getTransaksiByIdTransaksi(@PathVariable(value = "idTransaksi") Long idTransaksi) {
+        return detailTransaksiRepository.findAllByTransaksi_IdTransaksi(idTransaksi);
+    }
+
+    @PutMapping("api/editDetailTransaksiNotExist")
+    public DetailTransaksi editDetailTransaksiNotExist(@Valid @RequestBody DetailTransaksi detailTransaksiRequest) {
+        detailTransaksiRequest.setExist(false);
+        return detailTransaksiRepository.save(detailTransaksiRequest);
     }
 }

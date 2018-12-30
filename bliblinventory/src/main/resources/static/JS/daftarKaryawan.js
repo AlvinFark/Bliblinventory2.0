@@ -1,5 +1,193 @@
 $( document ).ready(function() {
 
+  $('select').formSelect();
+  $('.modal').modal();
+
+  $('select').on('contentChanged', function() {
+    $(this).formSelect();
+  });
+
+  $("#ubahDetailKaryawan").hide();
+  $("#buttonBackToDetailKaryawan").hide();
+  $("#buttonSimpanUbahanKaryawan").hide();
+
+  $(".triggerDetailKaryawan, #buttonBackToDetailKaryawan").click(function(){
+    $("#detailKaryawan").fadeIn();
+    $("#ubahDetailKaryawan").hide();
+    $("#buttonUbahDetailKaryawan").show();
+    $("#buttonHapusKaryawan").show();
+    $("#buttonBackToDetailKaryawan").hide();
+    $("#buttonSimpanUbahanKaryawan").hide();
+  });
+
+  $("#buttonUbahDetailKaryawan").click(function(){
+    $("#detailKaryawan").hide();
+    $("#ubahDetailKaryawan").fadeIn();
+    $("#buttonUbahDetailKaryawan").hide();
+    $("#buttonHapusKaryawan").hide();
+    $("#buttonBackToDetailKaryawan").fadeIn();
+    $("#buttonSimpanUbahanKaryawan").show();
+  });
+
+  $( document ).on("click",".triggerDetailKaryawan",function () {
+    var idKaryawan = jQuery(this).children(".card").children(".card-content").children("p:first-child").text();
+    ajaxGetDetailKaryawan(idKaryawan);
+  });
+
+  var roleawal=$("#ubahRole").prop('selectedIndex');
+  if (roleawal==0){
+    $(".ubahSuperior").show();} else {
+    $(".ubahSuperior").hide();
+  }
+
+  $( document ).on("change","#ubahRole",function (){
+    var role=$("#ubahRole").prop('selectedIndex');
+    if (role==0){
+      $(".ubahSuperior").show();} else {
+      $(".ubahSuperior").hide();
+    }
+  });
+
+  $("#buttonSimpanUbahanKaryawan").click(function(){
+    var id=$('#idKaryawan').val();
+    var name=$('#ubahNamaKaryawan').val();
+    var gender=$("#ubahGenderKaryawan").val();
+    var address=$("#alamatKaryawan").val();
+    var dob=$("#ubahTanggalLahir").val();
+    var roleId=$("#ubahRole").val();
+    var superiorId=$("#ubahNamaSuperior").val();
+    if (roleId!=2||superiorId=="undefined"){superiorId="0"};
+    var hp=$("#hpKaryawan").val();
+    var email=$("#emailKaryawan").val();
+    var uname=$("#ubahUsernameKaryawan").val();
+    var jsonUbahDetail={
+      "name" : name,
+      "username" : uname,
+      "gender" : gender,
+      "address" : address,
+      "dateOfBirth" : dob,
+      "phoneNumber" : hp,
+      "email" : email,
+      "password" : hp,
+      "superiorId" : superiorId,
+      "roleId" : roleId,
+      "isActive" : true
+    };
+    $.ajax({
+      type: "PUT",
+      url: "/api/users/id/" + id,
+      contentType: 'application/json',
+      data: JSON.stringify(jsonUbahDetail),
+      success: function(result) {
+        alert('detail karyawan berhasil diubah, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
+      }
+    });
+  });
+
+  $("#buttonHapusKaryawan").click(function(){
+    var id=$('#idKaryawan').val();
+    var name=$('#ubahNamaKaryawan').val();
+    var gender=$("#ubahGenderKaryawan").val();
+    var address=$("#alamatKaryawan").val();
+    var dob=$("#ubahTanggalLahir").val();
+    var roleId=$("#ubahRole").val();
+    var superiorId=$("#ubahNamaSuperior").val();
+    if (roleId!=2||superiorId=="undefined"){superiorId="0"};
+    var hp=$("#hpKaryawan").val();
+    var email=$("#emailKaryawan").val();
+    var uname=$("#ubahUsernameKaryawan").val();
+    var jsonUbahDetail={
+      "name" : name,
+      "username" : uname,
+      "gender" : gender,
+      "address" : address,
+      "dateOfBirth" : dob,
+      "phoneNumber" : hp,
+      "email" : email,
+      "password" : hp,
+      "superiorId" : superiorId,
+      "roleId" : roleId,
+      "isActive" : false
+    };
+    $.ajax({
+      type: "PUT",
+      url: "/api/users/id/" + id,
+      contentType: 'application/json',
+      data: JSON.stringify(jsonUbahDetail),
+      success: function(result) {
+        alert('data karyawan ' + name + ' berhasil dihapus. Silahkan klik GO untuk merefresh list karyawan');
+      }
+    });
+  });
+
+  function ajaxGetDetailKaryawan(id) {
+    $.ajax({
+      type: "GET",
+      url: "/category",
+      success: function (result) {
+        for (var i=0; i<result.length; i++){
+          $(".kategoriSelectorTable").append('<option value="'+result[i].name+'">'+result[i].name+'</option>')
+        }
+        for (var i=0; i<result.length; i++){
+          $("#selectorKategoriTable").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
+        }
+        $(".kategoriSelectorTable").trigger('contentChanged');
+        $("#selectorKategoriTable").trigger('contentChanged');
+      }
+    });
+    $.ajax({
+      type: "GET",
+      url: "/api/users/id/" + id,
+      success: function (result) {
+        console.log(result);
+        var roleuser;
+        var roleapi=((result || {}).roles[0] || {}).name;
+        if (roleapi=="ROLE_EMPLOYEE"){
+          roleuser="Staff";
+        } else if (roleuser=="ROLE_SUPERIOR"){
+          roleuser="Superior";
+        } else {
+          roleuser="Admin";
+        };
+        var usersuperior=((result || {}).superior || {}).name;
+        var usersuperiorid=((result || {}).superior || {}).id;
+        $("#detailFotoKaryawan").css({
+          'background-image': 'url("images/users/'+result.id+'.jpg")'
+        });
+
+        $("#detailIdKaryawan").html(result.id);
+        $("#detailUsernameKaryawan").html(result.username);
+        $("#detailNamaKaryawan").html(result.name);
+        $("#detailGenderKaryawan").html(result.gender);
+        $("#detailAlamatKaryawan").html(result.address);
+        $("#detailDoBKaryawan").html(result.dateOfBirth);
+        $("#detailRoleKaryawan").html(roleuser);
+        if (roleuser=="Staff"){
+          $(".superior").attr("hidden",false);
+          $("#detailSuperiorKaryawan").html(usersuperior);
+        } else {
+          $(".superior").attr("hidden",true);
+        }
+        $("#detailHpKaryawan").html(result.phoneNumber);
+        $("#detailEmailKaryawan").html(result.email);
+
+        $("#ubahNamaKaryawan").val(result.name);
+        $("#ubahGenderKaryawan").val(result.gender);
+        $("#alamatKaryawan").val(result.address);
+        $("#ubahTanggalLahir").val(result.dateOfBirth);
+        $("#ubahRole").val(roleuser);
+        $("#ubahNamaSuperior").val(usersuperior);
+        $("#hpKaryawan").val(result.phoneNumber);
+        $("#emailKaryawan").val(result.email);
+        afterModal();
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+        window.alert("error");
+      }
+    });
+  };
+
     ajaxGetUsers("",0);
 
     $('select').formSelect();

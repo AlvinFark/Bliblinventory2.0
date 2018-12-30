@@ -38,16 +38,18 @@
 	<div id="includePermintaanKaryawan" style="position:absolute; width:inherit"></div>
 </div>
 <div id="modalTambahBatch" class="modal modal-fixed-footer">
-	<div class="modal-content">
-		<h4 class="headerModal">Tambah Barang secara Batch</h4>
-		<p style="padding-top:80px;"> File : &ensp;<input id="fileupload" type="file" name="files[]" style="padding:0"> </p>
-		<p> Catatan : <br> File Excel yang dipilih harus menggunakan format penulisan untuk penambahan produk yang sudah ditetapkan.
-		<br> Format file dapat diunduh <a href="#">disini</a></p>
-	</div>
-	<div class="modal-footer">
-		<a href="#!" class="modal-close btn-flat left">tutup</a>
-		<a id="buttonRequestPinjam" class="waves-effect waves-light btn" style="margin-right: 4px;">kirim</a>
-	</div>
+	<form action="/api/upload" enctype="multipart/form-data" method="POST">\]
+		<div class="modal-content">
+			<h4 class="headerModal">Tambah Barang secara Batch</h4>
+			<p style="padding-top:80px;"> File : &ensp;<input id="fileUpload" type="file" name="fileUpload" style="padding:0"> </p>
+			<p> Catatan : <br> File Excel yang dipilih harus menggunakan format penulisan untuk penambahan produk yang sudah ditetapkan.
+			<br> Format file dapat diunduh <a href="#">disini</a></p>
+		</div>
+		<div class="modal-footer">
+			<a href="#!" class="modal-close btn-flat left">tutup</a>
+			<input type="submit" id="btnUpdateBatch" value="kirim" class="waves-effect waves-light btn" style="margin-right: 4px;">
+		</div>
+	</form>
 </div>
 <div id="modalBeliProduk" class="modal modal-fixed-footer">
 	<div class="modal-content">

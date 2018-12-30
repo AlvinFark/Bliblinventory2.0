@@ -1,22 +1,17 @@
 $( document ).ready(function() {
-    //YG UNTUK ADMIN BELUM
-
-    if(window.location.pathname == "/superior")
-        ajaxGetAllPermintaanPinjam();
+    ajaxGetAllPermintaanPinjamToAssign();
 
     $('select').formSelect();
     $('.modal').modal();
 
     //ketika merubah dropdown urutkan
     $( document ).on("change","#selectSortBy",function (){
-        if(window.location.pathname == "/superior")
-            ajaxGetRequestListBySortAndSearch();
+        ajaxGetRequestListBySortAndSearch();
     });
 
     //ketika klik icon search
     $( document ).on("click","#iconSearch",function (){
-        if(window.location.pathname == "/superior")
-            ajaxGetRequestListBySortAndSearch();
+        ajaxGetRequestListBySortAndSearch();
     });
 
     //ketika ada checkbox yang diklik
@@ -161,7 +156,7 @@ function createContentListPermintaanPinjam(result) {
     }
 }
 
-function ajaxGetAllPermintaanPinjam() {
+function ajaxGetAllPermintaanPinjamToAssign() {
     $.ajax({
         type : "GET",
         url : window.location + "/getAllEmployeeRequest",

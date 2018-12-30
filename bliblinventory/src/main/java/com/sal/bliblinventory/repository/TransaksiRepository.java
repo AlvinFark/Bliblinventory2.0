@@ -30,4 +30,22 @@ public interface TransaksiRepository extends JpaRepository<Transaksi, Long> {
     List<Transaksi> findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByIdTransaksi(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
     List<Transaksi> findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByBarang_Nama(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
     List<Transaksi> findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByUser_Name(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
+
+    //yang status transaksinya disetujui
+    List<Transaksi> findAllByIsExistAndStatusTransaksiOrderByTgPinjam(boolean isExist, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByIsExistAndStatusTransaksiOrderByIdTransaksi(boolean isExist, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByIsExistAndStatusTransaksiOrderByBarang_Nama(boolean isExist, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByIsExistAndStatusTransaksiOrderByUser_Name(boolean isExist, StatusTransaksi statusTransaksi);
+
+    //search by user_name dan yang status transaksinya disetujui
+    List<Transaksi> findAllByIsExistAndUser_NameContainingAndStatusTransaksiOrderByTgPinjam(boolean isExist, String userName, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(boolean isExist, String userName, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByIsExistAndUser_NameContainingAndStatusTransaksiOrderByBarang_Nama(boolean isExist, String userName, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByIsExistAndUser_NameContainingAndStatusTransaksiOrderByUser_Name(boolean isExist, String userName, StatusTransaksi statusTransaksi);
+
+    //search by barang_nama dan yang status transaksinya disetujui
+    List<Transaksi> findAllByIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByTgPinjam(boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByIdTransaksi(boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByBarang_Nama(boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByUser_Name(boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
 }

@@ -7,21 +7,11 @@ $( document ).ready(function() {
     //ketika merubah dropdown urutkan
     $( document ).on("change","#selectSortBy",function (){
         ajaxGetRequestListBySortAndSearch();
-        if($('.cbx').length == 1){
-            $("#btnSetujui").addClass("disabled");
-            $("#btnTolak").addClass("disabled");
-        }
-        $("#cbxAll").prop('checked', false);
     });
 
     //ketika klik icon search
     $( document ).on("click","#iconSearch",function (){
         ajaxGetRequestListBySortAndSearch();
-        if($('.cbx').length == 1){
-            $("#btnSetujui").addClass("disabled");
-            $("#btnTolak").addClass("disabled");
-        }
-        $("#cbxAll").prop('checked', false);
     });
 
     //ketika ada checkbox yang diklik
@@ -39,21 +29,16 @@ $( document ).ready(function() {
                 $("#cbxAll").prop('checked', false);
         }
 
-        //kalau ada yang di check, tombol setujui dan tolak bisa diklik
+        //kalau ada yang di check, tombol assign diklik
         if ($('.cbx').filter(':checked').length > 0) {
-            if($('.cbx').filter(':checked').length == 1 && $("#cbxAll").is(':checked')){
+            if($('.cbx').filter(':checked').length == 1 && $("#cbxAll").is(':checked'))
                 $("#cbxAll").prop('checked', false);
-            }
-            else{
-                $("#btnSetujui").removeClass("disabled");
-                $("#btnTolak").removeClass("disabled");
-            }
+            else
+                $("#btnAssign").removeClass("disabled");
         }
-        //kalau tdk ada yang di check, tombol setujui dan tolak disabled
-        else{
-            $("#btnSetujui").addClass("disabled");
-            $("#btnTolak").addClass("disabled");
-        }
+        //kalau tdk ada yang di check, tombol assign disabled
+        else
+            $("#btnAssign").addClass("disabled");
 
         //kalo semua dicheck, checklist for all di cek juga
         var selectedAllPermintaan=true;
@@ -64,11 +49,9 @@ $( document ).ready(function() {
             $("#cbxAll").prop('checked', true);
         }
 
-        //kalau cuma ada checklist All, tombol setujui dan tolak disabled
-        if($('.cbx').length == 1){
-            $("#btnSetujui").addClass("disabled");
-            $("#btnTolak").addClass("disabled");
-        }
+        //kalau cuma ada checklist All, tombol assign disabled
+        if($('.cbx').length == 1)
+            $("#btnAssign").addClass("disabled");
     });
 
     //ketika klik button detail
@@ -77,84 +60,23 @@ $( document ).ready(function() {
         ajaxGetDetailRequestOrder(idTransaksi);
     });
 
-    //pencet tombol tolak pada detail transaksi (popup)
-    $( document ).on("click","#buttonTolakFromDetail",function (){
+
+    //pencet tombol Assign pada detail transaksi (popup)
+    $( document ).on("click","#buttonAssignFromDetail",function (){
         var idTransaksi = $("#detailIdTransaksi").text();
-        ajaxTolakPermintaanPinjam(idTransaksi);
+        ajaxAssignPermintaanPinjam(idTransaksi);
     });
 
-    //pencet tombol setujui pada detail transaksi (popup)
-    $( document ).on("click","#buttonSetujuiFromDetail",function (){
-        var idTransaksi = $("#detailIdTransaksi").text();
-        var stokCukup = cekStokBarang(idTransaksi);
-        if(stokCukup==1){
-            ajaxSetujuiPermintaanPinjam(idTransaksi);
-        }
-        else
-            window.alert("Permintaan tidak bisa diproses karena stok barang inventaris tidak cukup");
-    });
-
-    //pencet tombol tolak secara bulk
-    $( document ).on("click","#btnTolak",function (){
+    //pencet tombol Assign secara bulk
+    $( document ).on("click","#btnAssign",function (){
         $('.cbx').filter(':checked').each(function() {
             if (this.id!="cbxAll"){
                 var idTransaksi = (this.id).substring(3);
-                ajaxTolakPermintaanPinjam(idTransaksi);
+                ajaxAssignPermintaanPinjam(idTransaksi);
             }
         });
-    });
-
-    //pencet tombol setujui secara bulk
-    $( document ).on("click","#btnSetujui",function (){
-        var unSuccess = 0;
-        $('.cbx').filter(':checked').each(function() {
-            if (this.id!="cbxAll"){
-                var idTransaksi = (this.id).substring(3);
-                var stokCukup = cekStokBarang(idTransaksi);
-                if(stokCukup==1){
-                    ajaxSetujuiPermintaanPinjam(idTransaksi);
-                }
-                else{
-                    unSuccess = unSuccess+ 1;
-                }
-            }
-        });
-        if(unSuccess>0){
-            window.alert("Beberapa permintaan tidak bisa diproses karena stok barang inventaris tidak cukup");
-        }
     });
 });
-
-function cekStokBarang(idTransaksi) {
-    var stokCukup = 0;
-    $.ajax({
-        type : "GET",
-        url : "api/getTransaksiByIdTransaksi/"+idTransaksi,
-        success: function(result){
-            var kodeBarang = result.barang.kode;
-            var jumlahBarangDiRequest = result.jumlah;
-            $.ajax({
-                type : "GET",
-                url : "superior/countReadySubBarang/"+kodeBarang,
-                success: function(result){
-                    if(result >= jumlahBarangDiRequest)
-                        stokCukup = 1;
-                },
-                error : function(e) {
-                    console.log("ERROR: ", e);
-                    window.alert("error getJumlahStokBarang");
-                },
-                async: false
-            });
-        },
-        error : function(e) {
-            console.log("ERROR: ", e);
-            window.alert("error getTransaksiByIdTransaksi");
-        },
-        async: false
-    });
-    return stokCukup;
-}
 
 function createContentListPermintaanPinjam(result) {
     $("#listPermintaanPinjam").html('');
@@ -168,7 +90,7 @@ function createContentListPermintaanPinjam(result) {
             '<td>'+changeDateFormat(result[i].tgPinjam)+'</td>\n' +
             '<td>'+result[i].jumlah+'</td>\n' +
             '<td>'+changeDateFormat((result[i].tgOrder).substring(0,10))+'</td>\n' +
-            '<td width=1px><a id="detail'+result[i].idTransaksi+'" class="waves-effect waves-light btn right modal-trigger btnDetail" href="#modalDetailRequest">Detail</a></td>\n' +
+            '<td width=1px><a id="detail'+result[i].idTransaksi+'" class="waves-effect waves-light btn right modal-trigger btnDetail" href="#modalDetailRequestAssign">Detail</a></td>\n' +
             '</tr>'
         );
     }
@@ -205,6 +127,9 @@ function ajaxGetRequestListBySortAndSearch(){
         },
         async:false
     });
+    if($('.cbx').length == 1)
+        $("#btnAssign").addClass("disabled");
+    $("#cbxAll").prop('checked', false);
 }
 
 function ajaxGetDetailRequestOrder(idTransaksi) {
@@ -212,7 +137,7 @@ function ajaxGetDetailRequestOrder(idTransaksi) {
         type : "GET",
         url : "api/getTransaksiByIdTransaksi/" + idTransaksi,
         success: function(result){
-            $("#detailNamaKaryawan").html(result.user.name);
+            $("#detailNamaKaryawanDetail").html(result.user.name);
             $("#detailIdTransaksi").html(result.idTransaksi);
             $("#detailTgOrder").html(changeDateFormat((result.tgOrder).substring(0,10)) + " " + (result.tgOrder).substring(11));
             $("#detailNamaBarang").html(result.barang.nama);
@@ -227,113 +152,36 @@ function ajaxGetDetailRequestOrder(idTransaksi) {
         error : function(e) {
             console.log("ERROR: ", e);
             window.alert("error");
-        }
-    });
-}
-
-function ajaxTolakPermintaanPinjam(idTransaksi) {
-    $.ajax({
-        type : "GET",
-        url : "api/getTransaksiByIdTransaksi/" + idTransaksi,
-        success: function(result){
-            $.ajax({
-                type : "PUT",
-                url : window.location + "/tolakPermintaanPinjam",
-                contentType: 'application/json',
-                data: JSON.stringify(result),
-                success: function() {
-                    $("#modalDetailRequest").modal('close');
-                    $(".cbx").prop('checked', false);
-                    ajaxGetRequestListBySortAndSearch();
-                },
-                error: function (e) {
-                    console.log("ERROR: ", e);
-                    window.alert("error tolak");
-                }
-            });
         },
-        error : function(e) {
-            console.log("ERROR: ", e);
-            window.alert("error getDetail");
-        }
+        async:false
     });
 }
 
-function ajaxSetujuiPermintaanPinjam(idTransaksi) {
-    var sukses=0;
+function ajaxAssignPermintaanPinjam(idTransaksi) {
     $.ajax({
         type : "GET",
         url : "api/getTransaksiByIdTransaksi/" + idTransaksi,
         success: function(result){
             $.ajax({
                 type : "PUT",
-                url : window.location + "/setujuiPermintaanPinjam",
+                url : window.location + "/assignPermintaanPinjam",
                 contentType: 'application/json',
                 data: JSON.stringify(result),
                 success: function() {
-                    sukses=1;
-                    $("#modalDetailRequest").modal('close');
+                    $("#modalDetailRequestAssign").modal('close');
                     $(".cbx").prop('checked', false);
                     ajaxGetRequestListBySortAndSearch();
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);
-                    window.alert("error setujui");
+                    window.alert("error assign");
                 },
                 async: false
             });
-            if(sukses==1)
-                ajaxBookingSubBarang(result.barang.kode, result.jumlah,idTransaksi);
         },
         error : function(e) {
             console.log("ERROR: ", e);
             window.alert("error getDetail");
         }
     });
-}
-
-function ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi) {
-    var sukses = 0;
-    var listSubBarang;
-    $.ajax({
-        type : "POST",
-        url : window.location + "/createDetailTransaksi/" + kodeBarang + "/" +jumlahBarang + "/" + idTransaksi,
-        success: function(result){
-            sukses=1;
-            listSubBarang= result; //result berisi list subBarang yang akan dibooking
-        },
-        error : function(e) {
-            console.log("ERROR: ", e);
-            window.alert("error createDetailTransaksi");
-        },
-        async: false
-    });
-
-    //kalau bookingnya sukses, ubah status subBarang menjadi dipinjam (Boolean false)
-    if(sukses ==1){
-        for(var i =0;i<listSubBarang.length;i++){
-            $.ajax({
-                type : "GET",
-                url : "/api/getSubBarangByKodeSubBarang/" + listSubBarang[i].kodeSubBarang,
-                success: function(result){
-                    $.ajax({
-                        type : "PUT",
-                        url : window.location + "/changeStateSubBarangToBorrowed",
-                        contentType: 'application/json',
-                        data: JSON.stringify(result),
-                        success: function() {
-                        },
-                        error: function (e) {
-                            console.log("ERROR: ", e);
-                            window.alert("error ubah status sub barang");
-                        }
-                    });
-                },
-                error : function(e) {
-                    console.log("ERROR: ", e);
-                    window.alert("error getSubBarang");
-                }
-            });
-        }
-    }
 }

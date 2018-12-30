@@ -35,6 +35,37 @@ $( document ).ready(function() {
         $("#clickTambahSatuan").hide();
     });
 
+  $( document ).on("click",".cbxBarang",function (){
+    //kalau checkbox All di klik, semua ikut checked / unchecked
+    if(this.id == "cbxAllBarang"){
+      if ($("#cbxAllBarang").is(':checked'))
+        $(".cbxBarang").prop('checked', true);
+      else
+        $(".cbxBarang").prop('checked', false);
+    }
+    //kalau ada checkbox yang unchecked, checkbox all menjadi unchecked juga
+    else{
+      if( !$(this).is(':checked') && $("#cbxAllBarang").is(':checked'))
+        $("#cbxAllBarang").prop('checked', false);
+    }
+
+    //kalau ada yang di check, tombol setujui dan tolak bisa diklik
+    if ($('.cbxBarang').filter(':checked').length > 0) {
+      $("#btnDeleteSelectedBarang").removeClass("disabled");
+    }
+    //kalau tdk ada yang di check, tombol setujui dan tolak disabled
+    else{
+      $("#btnDeleteSelectedBarang").addClass("disabled");
+    }
+    var selectedAll=true;
+    $( ".cbxBarangBody" ).each(function() {
+      if( !$(this).is(':checked')){ selectedAll=false};
+    })
+    if (selectedAll){
+      $("#cbxAllBarang").prop('checked', true);
+    }
+  });
+    
     function ajaxGetBarangTable(keyword, filter) {
       var count=0;
       $.ajax({
@@ -47,6 +78,7 @@ $( document ).ready(function() {
             var kategoriBarang = ((result[i] || {}).category || {}).name;
             document.getElementById("tabelDaftarBarang").innerHTML += '' +
               '<tr>\n' +
+              '  <td><p><label><input type="checkbox" id="cbxbarang'+result[i].kode+'" class="cbxBarang cbxBarangBody" /><span></span></label></p></td>\n' +
               '  <td id="kodeBarang'+i+'" class="kodeBarangTable">' + result[i].kode + '</td>\n' +
               '  <td>' + result[i].nama + '</td>\n' +
               '  <td>' + kategoriBarang + '</td>\n' +

@@ -22,10 +22,11 @@
 		<table class="highlight">
 			<thead>
 				<tr>
-					<th width="200px">ID Barang</th>
+          <th style="width: 50px; padding-top: 7px;"><p><label><input type="checkbox" id="cbxAllBarang" class="cbxBarang"/><span></span></label></p></th>
+					<th width="150px">ID Barang</th>
 					<th>Nama Barang</th>
 					<th width="200px">Kategori</th>
-					<th width="200px">Harga Beli</th>
+					<th width="150px">Harga Beli</th>
 					<th></th>
 				</tr>
 			</thead>
@@ -33,6 +34,7 @@
 			</tbody>
 		</table>
 		<a class="waves-effect waves-light btn right kananBawah modal-trigger" href="#modalTambahProduk">tambah</a>
+    <a class="waves-effect waves-light btn right kananBawah modal-trigger disabled" href="#modalTambahProduk" id="btnDeleteSelectedBarang">hapus</a>
 	</div>
   <div id="modalDetailBarangTable" class="modal modal-fixed-footer">
 		<div class="modal-content">

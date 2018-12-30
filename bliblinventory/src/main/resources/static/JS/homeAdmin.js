@@ -5,10 +5,10 @@ $( document ).ready(function() {
   $("#includeDaftarKaryawan").load("daftarKaryawan.html"); 
   $("#includePengembalianBarang").load("pengembalianBarang.html"); 
   $("#includePermintaanKaryawan").load("permintaanKaryawan.html");
-  $("#includeDaftarBarangTable").hide();
+  //$("#includeDaftarBarangTable").hide();
   $("#includeDaftarKaryawan").hide(); 
-  //$("#includePengembalianBarang").hide();
-  $("#includePermintaanKaryawan").hide(); 
+  $("#includePengembalianBarang").hide();
+  $("#includePermintaanKaryawan").hide();
   
   $("#klikDaftarBarang").click(function(){
     $("#includeDaftarBarangTable").fadeIn();

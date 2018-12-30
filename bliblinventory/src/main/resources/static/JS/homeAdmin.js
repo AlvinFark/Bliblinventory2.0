@@ -8,7 +8,9 @@ $( document ).ready(function() {
   $("#includeDaftarKaryawan").load("daftarKaryawan.html"); 
   $("#includePengembalianBarang").load("pengembalianBarang.html"); 
   $("#includePermintaanKaryawan").load("permintaanKaryawanToAssign.html");
-  $("#includeDaftarBarangTable").hide();
+  $("#includePermintaanKaryawan").load("permintaanKaryawan.html");
+  //$("#includeDaftarBarangTable").hide();
+  $("#includeDaftarKaryawan").hide();
   $("#includePengembalianBarang").hide();
   $("#includePermintaanKaryawan").hide();
   

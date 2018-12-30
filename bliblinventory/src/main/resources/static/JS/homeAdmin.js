@@ -1,12 +1,16 @@
 $( document ).ready(function() {
-  $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
-  $('.sidenav').sidenav();
+    $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
+    $('.sidenav').sidenav();
+
+    //tidak dipakai
+    /*
   $("#includeDaftarBarangTable").load("daftarBarangTable.html"); 
   $("#includeDaftarKaryawan").load("daftarKaryawan.html"); 
   $("#includePengembalianBarang").load("pengembalianBarang.html"); 
   $("#includePermintaanKaryawan").load("permintaanKaryawanToAssign.html");
-  $("#includeDaftarBarangTable").hide();
-  //$("#includeDaftarKaryawan").hide();
+  $("#includePermintaanKaryawan").load("permintaanKaryawan.html");
+  //$("#includeDaftarBarangTable").hide();
+  $("#includeDaftarKaryawan").hide();
   $("#includePengembalianBarang").hide();
   $("#includePermintaanKaryawan").hide();
   
@@ -34,12 +38,55 @@ $( document ).ready(function() {
     $("#includePengembalianBarang").fadeOut();
     $("#includePermintaanKaryawan").fadeIn();
   });
+*/
 
-  $('select').formSelect();
-  $('.modal').modal();
+    $('select').formSelect();
+    $('.modal').modal();
 
-  $(".card").hover(function(){
-    $(this).addClass('z-depth-3');}, function(){$(this).removeClass('z-depth-3');
-  });
+    $(".card").hover(function(){
+    $(this).addClass('z-depth-3');}, function(){
+        $(this).removeClass('z-depth-3');
+    });
 
+    page1();
+
+    $("#klikDaftarBarang").click(function(){
+        page1();
+    });
+
+    $("#klikPengembalianBarang").click(function(){
+        page2();
+    });
+
+    $("#klikDaftarKaryawan").click(function(){
+        page3();
+    });
+
+    $("#klikPermintaanKaryawan").click(function(){
+        page4();
+    });
+
+    $(".imgLogo").click(function(){
+        page1();
+    });
+
+    $("#klikLogout").click(function(){
+
+    });
 });
+
+function page1(){
+    $("#includePageContent").load("daftarBarangTable.html");
+}
+
+function page2(){
+    $("#includePageContent").load("pengembalianBarang.html");
+}
+
+function page3(){
+    $("#includePageContent").load("daftarKaryawan.html");
+}
+
+function page4(){
+    $("#includePageContent").load("permintaanKaryawanToAssign.html");
+}

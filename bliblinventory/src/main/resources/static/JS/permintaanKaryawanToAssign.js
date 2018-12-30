@@ -7,11 +7,21 @@ $( document ).ready(function() {
     //ketika merubah dropdown urutkan
     $( document ).on("change","#selectSortBy",function (){
         ajaxGetRequestListBySortAndSearch();
+        if($('.cbx').length == 1){
+            $("#btnSetujui").addClass("disabled");
+            $("#btnTolak").addClass("disabled");
+        }
+        $("#cbxAll").prop('checked', false);
     });
 
     //ketika klik icon search
     $( document ).on("click","#iconSearch",function (){
         ajaxGetRequestListBySortAndSearch();
+        if($('.cbx').length == 1){
+            $("#btnSetujui").addClass("disabled");
+            $("#btnTolak").addClass("disabled");
+        }
+        $("#cbxAll").prop('checked', false);
     });
 
     //ketika ada checkbox yang diklik
@@ -31,7 +41,9 @@ $( document ).ready(function() {
 
         //kalau ada yang di check, tombol setujui dan tolak bisa diklik
         if ($('.cbx').filter(':checked').length > 0) {
-            if($('.cbx').filter(':checked').length == 1 && $("#cbxAll").is(':checked')){}
+            if($('.cbx').filter(':checked').length == 1 && $("#cbxAll").is(':checked')){
+                $("#cbxAll").prop('checked', false);
+            }
             else{
                 $("#btnSetujui").removeClass("disabled");
                 $("#btnTolak").removeClass("disabled");
@@ -50,6 +62,12 @@ $( document ).ready(function() {
         })
         if (selectedAllPermintaan){
             $("#cbxAll").prop('checked', true);
+        }
+
+        //kalau cuma ada checklist All, tombol setujui dan tolak disabled
+        if($('.cbx').length == 1){
+            $("#btnSetujui").addClass("disabled");
+            $("#btnTolak").addClass("disabled");
         }
     });
 
@@ -184,7 +202,8 @@ function ajaxGetRequestListBySortAndSearch(){
         error : function(e) {
             console.log("ERROR: ", e);
             window.alert("error");
-        }
+        },
+        async:false
     });
 }
 

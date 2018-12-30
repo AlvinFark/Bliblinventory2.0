@@ -53,4 +53,6 @@ public class DetailTransaksiController {
         detailTransaksiRequest.setExist(false);
         return detailTransaksiRepository.save(detailTransaksiRequest);
     }
+
+
 }

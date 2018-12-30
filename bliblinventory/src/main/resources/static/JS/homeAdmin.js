@@ -5,8 +5,8 @@ $( document ).ready(function() {
   $("#includeDaftarKaryawan").load("daftarKaryawan.html"); 
   $("#includePengembalianBarang").load("pengembalianBarang.html"); 
   $("#includePermintaanKaryawan").load("permintaanKaryawan.html");
-  $("#includeDaftarBarangTable").hide();
-  //$("#includeDaftarKaryawan").hide();
+  //$("#includeDaftarBarangTable").hide();
+  $("#includeDaftarKaryawan").hide();
   $("#includePengembalianBarang").hide();
   $("#includePermintaanKaryawan").hide();
   

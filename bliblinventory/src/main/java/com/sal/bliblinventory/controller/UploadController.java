@@ -27,22 +27,15 @@ public class UploadController {
     @Autowired
     BarangRepository barangRepository;
 
-    @Autowired
-    ServletContext context;
-
-    private static final String FILE_NAME = "D:/barang.xlsx";
     public static String filename;
     private static String UPLOADED_FOLDER = "D:/";
-
-    String relativeWebPath = "/resources/static/images/barang";
-    String absoluteFilePath = context.getRealPath(relativeWebPath);
 
     private String stringValue;
     private double numericValue;
     private int baris,kolom = 0;
 
     @PostMapping("/upload")
-    public void singleFileUpload(@RequestParam("fileUpload") MultipartFile file,
+    public String singleFileUpload(@RequestParam("fileUpload") MultipartFile file,
                                    RedirectAttributes redirectAttributes) {
 
         if (file.isEmpty()) {
@@ -66,7 +59,7 @@ public class UploadController {
         }
 
 
-        //READ THE EXCEL DOCUMENT
+        //membaca isi dari dokumen excel
         try {
             FileInputStream excelFile = new FileInputStream(new File(filename));
             Workbook workbook = new XSSFWorkbook(excelFile);
@@ -113,7 +106,6 @@ public class UploadController {
                     if(kolom == 4)
                         baris++;
                     kolom++;
-
                 }
                 System.out.println();
 
@@ -123,5 +115,6 @@ public class UploadController {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    return "redirect:/admin";
     }
 }

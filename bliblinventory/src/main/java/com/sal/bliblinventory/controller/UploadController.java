@@ -6,8 +6,10 @@ import com.sal.bliblinventory.repository.BarangRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.ServletContext;
@@ -31,12 +33,12 @@ public class UploadController {
     private static String UPLOADED_FOLDER = "D:/";
 
     private String stringValue;
-    private double numericValue;
+    private Long numericValue;
     private int baris,kolom = 0;
 
     @PostMapping("/upload")
-    public String singleFileUpload(@RequestParam("fileUpload") MultipartFile file,
-                                   RedirectAttributes redirectAttributes) {
+    public void singleFileUpload(@RequestParam("fileUpload") MultipartFile file,
+                                         RedirectAttributes redirectAttributes, ModelMap model) {
 
         if (file.isEmpty()) {
             redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
@@ -71,7 +73,8 @@ public class UploadController {
             String deskripsi = " ";
             String gambar = " ";
             double kuantitas;
-            Long harga = 100000L;
+            Long harga = 0L;
+            Long kategori = 0L;
 
             while (iterator.hasNext()) {
 
@@ -88,22 +91,29 @@ public class UploadController {
                         stringValue = currentCell.getStringCellValue();
                     } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
                         System.out.print(currentCell.getNumericCellValue() + "--");
-                        numericValue = currentCell.getNumericCellValue();
+                        numericValue = Double.valueOf(currentCell.getNumericCellValue()).longValue();
                     }
                     if(baris != 0){
-                        switch (kolom % 5){
+                        switch (kolom % 7){
                             case 0 : kode = stringValue;break;
                             case 1 : nama = stringValue;break;
                             case 2 : deskripsi = stringValue;break;
                             case 3 : kuantitas = numericValue;break;
                             case 4 : gambar = stringValue;break;
+                            case 5 : harga = numericValue;break;
+                            case 6 :
+                                if(stringValue.equals("Elektronik"))
+                                    kategori = 1L;
+                                else if(stringValue.equals("Peralatan Kantor"))
+                                    kategori = 2L;
+                                break;
                         }
                     }
-                    if(kolom % 5 == 4 && baris != 0){
-                        Barang barang = new Barang(kode,nama,gambar,deskripsi,harga,true);
+                    if(kolom % 7 == 6 && baris != 0){
+                        Barang barang = new Barang(kode,nama,gambar,deskripsi,harga,true,kategori);
                         barangRepository.save(barang);
                     }
-                    if(kolom == 4)
+                    if(kolom == 6)
                         baris++;
                     kolom++;
                 }
@@ -115,6 +125,16 @@ public class UploadController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    return "redirect:/admin";
+
+        try{
+            Path p = Paths.get(UPLOADED_FOLDER+file.getOriginalFilename());
+            Files.delete(p);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        //return new ModelAndView("redirect:/admin", model);
     }
 }

@@ -4,7 +4,7 @@ $( document ).ready(function() {
   $("#includeDaftarBarangTable").load("daftarBarangTable.html"); 
   $("#includeDaftarKaryawan").load("daftarKaryawan.html"); 
   $("#includePengembalianBarang").load("pengembalianBarang.html"); 
-  $("#includePermintaanKaryawan").load("permintaanKaryawan.html");
+  $("#includePermintaanKaryawan").load("permintaanKaryawanToAssign.html");
   $("#includeDaftarBarangTable").hide();
   //$("#includeDaftarKaryawan").hide();
   $("#includePengembalianBarang").hide();

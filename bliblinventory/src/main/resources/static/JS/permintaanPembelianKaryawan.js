@@ -127,8 +127,6 @@ function ajaxGetRequestListBySortAndSearch(){
         },
         async:false
     });
-    if($('.cbx').length == 1)
-        $("#btnSudahDibeli").addClass("disabled");
     $("#cbxAll").prop('checked', false);
     $("#btnSudahDibeli").addClass("disabled");
 }

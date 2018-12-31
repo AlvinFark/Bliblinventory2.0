@@ -89,6 +89,25 @@ table td textarea.formLarge, table td input.formLarge{
   background-repeat: no-repeat;
   background-position: 50% 50%;
 }
+.kontainerImgCardBarang{
+  width: 100%;
+  padding-bottom: 100%;
+  border-radius:2px;
+  border: 1px solid rgb(212, 212, 212);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
+.kontainerImgModalBarang{
+  margin-right: 20px;
+  width: 300px;
+  padding-bottom: 300px;
+  border-radius:2px;
+  border: 1px solid rgb(212, 212, 212);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
 .cardOrderList{
   width: 98%;
   margin-left: 1%;
@@ -197,3 +216,4 @@ table td textarea.formLarge, table td input.formLarge{
   width:auto;
   border-radius: 2px;
 }
+

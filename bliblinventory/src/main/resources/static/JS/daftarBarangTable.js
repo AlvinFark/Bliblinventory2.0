@@ -191,7 +191,7 @@ $( document ).ready(function() {
         url : "employee/getDetailProduct/"+kode,
         success: function(result) {
           $("#imgModalBarang").css({
-            'background-image': 'url("D:/bliblinventoryimages/barang/'+result.gambar+'")'
+            'background-image': 'url("http://127.0.0.1:8000/bliblinventoryimages/barang/'+result.gambar+'")'
           });
 
           var kategoriBarang = ((result || {}).category || {}).name;

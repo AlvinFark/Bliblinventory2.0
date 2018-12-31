@@ -66,7 +66,7 @@ function buatFormPemintaanPembelian() {
     $('#jumlahBarangRequestBeli').val(1);
     $('#keteranganRequestBeli').val("");
     $('#namaBarangRequestBeli').val("");
-    $("#tgOrdeRequestBeli").html(changeDateFormat(getDateNow()));
+    $("#tgOrderRequestBeli").html(changeDateFormat(getDateNow()));
     ajaxGetDropDownKategori();
     $(":input").bind('keyup mouseup blur focusout', function () {
         if($('#jumlahBarangRequestBeli').val() < 1){

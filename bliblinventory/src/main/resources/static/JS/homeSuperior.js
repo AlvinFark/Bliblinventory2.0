@@ -18,6 +18,9 @@ $( document ).ready(function() {
     else if(page == 3){
         page3();
     }
+    else if(page == 4){
+        page4();
+    }
 
     $("#klikDaftarBarang").click(function(){
         $.session.set('page','1');
@@ -37,6 +40,11 @@ $( document ).ready(function() {
     $("#klikDaftarOrderKaryawan").click(function(){
         $.session.set('page','3');
         page3();
+    });
+
+    $("#klikDaftarPermintaanPembelian").click(function(){
+        $.session.set('page','4');
+        page4();
     });
 
     $("#klikLogout").click(function(){
@@ -81,6 +89,12 @@ function page2(){
 
 function page3(){
     $("#includePageContent").load("permintaanKaryawan.html");
+    $("#inputSearch").hide();
+    $("#iconSearch").hide();
+}
+
+function page4(){
+    $("#includePageContent").load("permintaanPembelianList.html");
     $("#inputSearch").hide();
     $("#iconSearch").hide();
 }

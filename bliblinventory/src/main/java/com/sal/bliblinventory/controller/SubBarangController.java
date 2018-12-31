@@ -5,7 +5,6 @@ import com.sal.bliblinventory.exception.ResourceNotFoundException;
 import com.sal.bliblinventory.model.Barang;
 import com.sal.bliblinventory.model.DetailTransaksi;
 import com.sal.bliblinventory.model.SubBarang;
-import com.sal.bliblinventory.model.Transaksi;
 import com.sal.bliblinventory.repository.BarangRepository;
 import com.sal.bliblinventory.repository.DetailTransaksiRepository;
 import com.sal.bliblinventory.repository.SubBarangRepository;
@@ -61,14 +60,13 @@ public class SubBarangController {
     @PutMapping("/api/subbarang/{kodeSubBarang}")
     public String hapusSubBarang(@PathVariable String kodeSubBarang, @Valid @RequestBody SubBarang subBarang) {
       SubBarang sub = subBarangRepository.getSubBarangByKodeSubBarang(kodeSubBarang);
-      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExist(sub, true);
-      Transaksi transaksi = detailTransaksi.getTransaksi();
+      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExistAndTgKembali(sub, true, null);
       if (detailTransaksi==null){
         sub.setExist(subBarang.getExist());
         subBarangRepository.save(sub);
-        return "Barang satuan berhasil dihapus";
+        return "Barang satuan dengan kode " + kodeSubBarang + " berhasil dihapus";
       } else {
-        return "Barang satuan tidak dapat dihapus, silahkan pastikan barang tersebut tidak sedang dipinjam";
+        return "Barang satuan dengan kode " + kodeSubBarang + " tidak dapat dihapus, silahkan pastikan barang tersebut tidak sedang dipinjam";
       }
     }
 

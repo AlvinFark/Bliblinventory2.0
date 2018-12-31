@@ -32,36 +32,36 @@ public class BarangController {
         return barangRepository.findAllByIsExistOrderByNama(true);
     }
 
-    @RequestMapping(value = {"employee/sortByName/{indexKategori}", "superior/sortByName/{indexKategori}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangSortByNameAndFilterByCategory(@PathVariable(value = "indexKategori") Long indexKategori){
-        if(indexKategori==0)
+    @RequestMapping(value = {"employee/sortByName/{idKategori}", "superior/sortByName/{idKategori}"}, method = RequestMethod.GET)
+    public List<Barang> listBarangSortByNameAndFilterByCategory(@PathVariable(value = "idKategori") Long idKategori){
+        if(idKategori==0)
             return barangRepository.findAllByIsExistOrderByNama(true);
         else
-            return barangRepository.findAllByIsExistAndCategory_IdOrderByNama(true, indexKategori);
+            return barangRepository.findAllByIsExistAndCategory_IdOrderByNama(true, idKategori);
     }
 
-    @RequestMapping(value = {"employee/sortByCode/{indexKategori}", "superior/sortByCode/{indexKategori}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangSortByCodeAndFilterByCategory(@PathVariable(value = "indexKategori") Long indexKategori){
-        if(indexKategori==0)
+    @RequestMapping(value = {"employee/sortByCode/{idKategori}", "superior/sortByCode/{idKategori}"}, method = RequestMethod.GET)
+    public List<Barang> listBarangSortByCodeAndFilterByCategory(@PathVariable(value = "idKategori") Long idKategori){
+        if(idKategori==0)
             return barangRepository.findAllByIsExistOrderByKode(true);
         else
-            return barangRepository.findAllByIsExistAndCategory_IdOrderByKode(true, indexKategori);
+            return barangRepository.findAllByIsExistAndCategory_IdOrderByKode(true, idKategori);
     }
 
-    @RequestMapping(value = {"employee/sortByName/{indexKategori}/{keyword}", "superior/sortByName/{indexKategori}/{keyword}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangByKeywordAndSortByNameAndFilterByCategory(@PathVariable(value = "indexKategori") Long indexKategori, @PathVariable(value = "keyword") String keyword){
-        if(indexKategori==0)
+    @RequestMapping(value = {"employee/sortByName/{idKategori}/{keyword}", "superior/sortByName/{idKategori}/{keyword}"}, method = RequestMethod.GET)
+    public List<Barang> listBarangByKeywordAndSortByNameAndFilterByCategory(@PathVariable(value = "idKategori") Long idKategori, @PathVariable(value = "keyword") String keyword){
+        if(idKategori==0)
             return barangRepository.findByNamaContainingAndIsExistOrderByNama(keyword, true);
         else
-            return barangRepository.findByNamaContainingAndIsExistAndCategory_IdOrderByNama(keyword, true, indexKategori);
+            return barangRepository.findByNamaContainingAndIsExistAndCategory_IdOrderByNama(keyword, true, idKategori);
     }
 
-    @RequestMapping(value = {"employee/sortByCode/{indexKategori}/{keyword}", "superior/sortByCode/{indexKategori}/{keyword}"}, method = RequestMethod.GET)
-    public List<Barang> listBarangByKeywordAndSortByCodeAndFilterByCategory(@PathVariable(value = "indexKategori") Long indexKategori, @PathVariable(value = "keyword") String keyword){
-        if(indexKategori==0)
+    @RequestMapping(value = {"employee/sortByCode/{idKategori}/{keyword}", "superior/sortByCode/{idKategori}/{keyword}"}, method = RequestMethod.GET)
+    public List<Barang> listBarangByKeywordAndSortByCodeAndFilterByCategory(@PathVariable(value = "idKategori") Long idKategori, @PathVariable(value = "keyword") String keyword){
+        if(idKategori==0)
            return barangRepository.findByNamaContainingAndIsExistOrderByKode(keyword, true);
         else
-            return barangRepository.findByNamaContainingAndIsExistAndCategory_IdOrderByKode(keyword, true, indexKategori);
+            return barangRepository.findByNamaContainingAndIsExistAndCategory_IdOrderByKode(keyword, true, idKategori);
     }
 
     @RequestMapping(value = {"employee/getDetailProduct/{param1}", "superior/getDetailProduct/{param1}"}, method = RequestMethod.GET)

@@ -127,7 +127,11 @@
 							<tr>
 								<td class="tdAtrib">Gambar Produk</td>
 								<td>
-									<input id="ubahGambarProduk" type="file" name="files[]" value="" style="padding:0">
+                  <form id="formGantiFoto" action="/api/upload/foto/barang/" enctype="multipart/form-data" method="POST">
+                    <div>
+                      <p> File : &ensp;<input id="fileUploadGantiFotoBarang" type="file" name="fileUploadGantiFotoBarang" style="padding:0"> </p>
+                    </div>
+                  </form>
 								</td>
 							</tr>
 							<tr>
@@ -146,11 +150,10 @@
 				<h4 class="headerModal">Tambah Barang Satuan</h4>
 				<div id="tambahBarangSatuan" style="margin-top: 10px">
           <div class="valign-wrapper">
-            <div class="tdAtrib" style="width:100px;">ID Satuan</div>
-            <textarea class="barangSatuan" name="satuan" cols="30" rows="1" style="height:30px; padding: 5px 0 0 5px;"></textarea>
+            <div class="tdAtrib" style="width:100px;">Jumlah</div>
+            <input id="jumlahTambahSatuan" type="number" name="id" value="">
           </div>
 				</div>
-				<a class="waves-effect waves-light btn" id="triggerTambahBarangSatuan" style="margin: 10px 0 0 285px;">tambah lagi</a>
 			</div>
 		</div>
     <div class="modal-footer">
@@ -158,9 +161,9 @@
 			<a id="backToDetailTable" href="#" class="btn-flat left clickDetailTable">kembali</a>
       <a id="tombolHapusBarang" class="modal-close waves-effect waves-light btn">hapus</a>
 			<a id="tombolEditBarang" class="waves-effect waves-light btn clickEditTable">ubah</a>
-			<a id="clickTambahSatuan" class="waves-effect waves-light btn">tambah satuan</a>
-			<a id="tombolSimpanEditan" class="modal-close waves-effect waves-light btn">simpan</a>
-			<a id="tombolSimpanSatuan" class="modal-close waves-effect waves-light btn">simpan</a>
+			<a id="tombolTambahSatuan" class="waves-effect waves-light btn clickTambahSatuan">tambah satuan</a>
+      <input type="submit" id="tombolSimpanEditan" value="simpan" class="waves-effect waves-light btn modal-close">
+      <a id="tombolSimpanSatuan" class="modal-close waves-effect waves-light btn">tambah</a>
     </div>
 	</div>
   <div id="modalTambahProduk" class="modal modal-fixed-footer">

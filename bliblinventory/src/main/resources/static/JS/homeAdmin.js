@@ -66,6 +66,10 @@ $( document ).ready(function() {
         page4();
     });
 
+    $("#klikPermintaanPembelianKaryawan").click(function(){
+        page5();
+    });
+
     $(".imgLogo").click(function(){
         page1();
     });
@@ -89,4 +93,8 @@ function page3(){
 
 function page4(){
     $("#includePageContent").load("permintaanKaryawanToAssign.html");
+}
+
+function page5(){
+    $("#includePageContent").load("permintaanPembelianKaryawan.html");
 }

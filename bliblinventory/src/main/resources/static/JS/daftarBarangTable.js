@@ -65,7 +65,41 @@ $( document ).ready(function() {
       $("#cbxAllBarang").prop('checked', true);
     }
   });
-    
+
+    function deleteBarang(kode) {
+      $.ajax({
+        type : "GET",
+        url : "/api/barang/"+kode+"/subbarang",
+        success: function (result1) {
+          for (var i=0; i<result1.length; i++){
+            var kodeSubBarang = result1[i].kodeSubBarang;
+            var jsonSubBarang = {
+              "kodeSubBarang" : kodeSubBarang,
+              "isExist" : false
+            };
+            $.ajax({
+              async: false,
+              type: "PUT",
+              url: "/api/subbarang/" + kodeSubBarang,
+              contentType: 'application/json',
+              data: JSON.stringify(jsonSubBarang),
+              complete: function(result3) {
+                alert(result3.responseText);
+              }
+            })
+          }
+          $.ajax({
+            async: false,
+            type : "PUT",
+            url : "/api/barang/delete/" + kode,
+            complete: function(result2) {
+              alert(result2.responseText);
+            }
+          });
+        }
+      });
+    }
+
     function ajaxGetBarangTable(keyword, filter) {
       var count=0;
       $.ajax({
@@ -146,6 +180,15 @@ $( document ).ready(function() {
       }
     });
 
+  $( document ).on("click","#btnDeleteSelectedBarang",function (){
+    $('.cbxBarang').filter(':checked').each(function() {
+      if (this.id!="cbxAllBarang"){
+        var kode = (this.id).substring(9);
+        deleteBarang(kode);
+      }
+    });
+  });
+
     $(document).on("click", ".triggerModalTable", function(){
       kode = jQuery(this).parent("td").parent("tr"). children(".kodeBarangTable").text();
       $.ajax({
@@ -200,36 +243,7 @@ $( document ).ready(function() {
 
           $("#tombolHapusBarang").click(function () {
             var kode = $("#kodeBarangTable").text();
-            $.ajax({
-              type : "GET",
-              url : "/api/barang/"+kode+"/subbarang",
-              success: function (result1) {
-                for (var i=0; i<result1.length; i++){
-                  var kodeSubBarang = result1[i].kodeSubBarang;
-                  var jsonSubBarang = {
-                    "kodeSubBarang" : kodeSubBarang,
-                    "isExist" : false
-                  };
-                  $.ajax({
-                    type: "PUT",
-                    url: "/api/subbarang/" + kodeSubBarang,
-                    contentType: 'application/json',
-                    data: JSON.stringify(jsonSubBarang),
-                    complete: function(result3) {
-                      alert(result3);
-                    }
-                  }),async=false;
-                };
-                $.ajax({
-                  type : "PUT",
-                  url : "/api/barang/delete/" + kode,
-                  complete: function(result2) {
-                    alert(result2);
-                  }
-                });
-              }
-            });
-
+            deleteBarang(kode);
           });
         }
       });

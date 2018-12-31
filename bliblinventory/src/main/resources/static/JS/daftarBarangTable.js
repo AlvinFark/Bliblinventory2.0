@@ -15,13 +15,7 @@ $( document ).ready(function() {
         for (var i=0; i<result.length; i++){
           $("#selectorKategoriTable").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
         }
-        $(".kategoriSelectorTable").trigger('contentChanged');
-        $("#selectorKategoriTable").trigger('contentChanged');
       }
-    });
-
-    $('select').on('contentChanged', function() {
-      $(this).formSelect();
     });
 
     $("#clickTambahSatuan").click(function(){
@@ -213,7 +207,6 @@ $( document ).ready(function() {
           $("#ubahKategoriBarang").val(kategoriBarang);
 
           $('#ubahKategoriBarang option[value="'+kategoriBarang+'"]').prop('selected', true);
-          $(".kategoriSelectorTable").trigger('contentChanged');
 
           $("#tombolSimpanEditan").click(function () {
             var keyword = $("#ubahKategoriBarang").val();

@@ -42,10 +42,20 @@ $( document ).ready(function() {
     });
 
     $("#btnKirimRequestBeli").click(function(){
-        if ($('#namaBarangRequestBeli').val() == ""){
+        var namaBarang = $('#namaBarangRequestBeli').val();
+        var idKategori = $("#selectKategoryRequestBeli option:selected").val();
+        var jumlah = $('#jumlahBarangRequestBeli').val();
+        var keterangan = $('#keteranganRequestBeli').val();
+
+        if (namaBarang == ""){
             window.alert("Nama barang masih kosong");
         }
         else{
+            if(keterangan == "")
+                url = "api/createPermintaanPembelian/"+namaBarang+"/"+idKategori+"/"+jumlah+"/"+null;
+            else
+                url = "api/createPermintaanPembelian/"+namaBarang+"/"+idKategori+"/"+jumlah+"/"+keterangan;
+            ajaxCreatePermintaanPembelian(url, namaBarang);
             $("#modalPermintaanPembelian").modal("close");
         }
     });
@@ -102,5 +112,20 @@ function ajaxGetDropDownKategori() {
             window.alert("error ajaxGetSelectKategori");
         },
         async:false
+    });
+}
+
+function ajaxCreatePermintaanPembelian(url, namaBarang) {
+    $.ajax({
+        type : "POST",
+        url : url,
+        success: function(result){
+            window.alert("Permintaan pembelian " + namaBarang +" berhasil");
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error ajaxCreatePermintaanPembelian");
+        },
+        async: false
     });
 }

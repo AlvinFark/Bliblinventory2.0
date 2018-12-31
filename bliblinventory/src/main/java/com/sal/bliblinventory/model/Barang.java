@@ -32,13 +32,19 @@ public class Barang {
 
     public Barang(){}
 
-    public Barang(String kode, String nama, String gambar, String deskripsi, Long hargaBeli, boolean isExist){
+    public Barang(String kode, String nama, String gambar, String deskripsi, Long hargaBeli, boolean isExist, Long kategori){
       this.kode = kode;
       this.nama = nama;
       this.gambar = gambar;
       this.deskripsi = deskripsi;
       this.isExist = isExist;
       this.hargaBeli = hargaBeli;
+      try{
+          this.category.setId(kategori);
+      }
+      catch(NullPointerException e){
+
+      }
     }
 
     public String getKode() {

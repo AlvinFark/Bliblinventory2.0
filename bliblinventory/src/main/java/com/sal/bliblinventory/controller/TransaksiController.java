@@ -197,7 +197,7 @@ public class TransaksiController {
     @GetMapping("api/transaksi/subbarang/{kodesubbarang}")
     public Transaksi transaksiPerSubBarang(@PathVariable String kodesubbarang){
       SubBarang subBarang = subBarangRepository.getSubBarangByKodeSubBarang(kodesubbarang);
-      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarang(subBarang);
+      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExist(subBarang, true);
       Transaksi transaksi = detailTransaksi.getTransaksi();
       return transaksi;
     }

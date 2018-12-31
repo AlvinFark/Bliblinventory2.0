@@ -19,4 +19,6 @@ public interface DetailTransaksiRepository extends JpaRepository<DetailTransaksi
   List<DetailTransaksi> getAllByTransaksi_IsExist(boolean isExist);
 
   List<DetailTransaksi> findAllByTransaksi_IdTransaksi(Long idTransaksi);
+
+  DetailTransaksi getDetailTransaksiByIdDetailTransaksi(Long idDetailTransaksi);
 }

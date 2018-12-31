@@ -58,7 +58,7 @@ $( document ).ready(function() {
               '  <td>'+kategoriBarang+'</td>\n' +
               '  <td>'+namaUser+'</td>\n' +
               '  <td>'+tanggalPinjam+'</td>\n' +
-              '  <td width=10px><a class="waves-effect waves-light btn btn-small right" id="terima'+result[i].idDetailTransaksi+'">terima</a></td>\n' +
+              '  <td width=10px><a class="waves-effect waves-light btn btn-small right btnTerima" id="terima'+result[i].idDetailTransaksi+'">terima</a></td>\n' +
               '</tr>\n';
           }
         }
@@ -117,6 +117,28 @@ $( document ).ready(function() {
     }
   });
 
+  $( document ).on("click",".btnTerima",function (){
+    var kode = (this.id).substring(6);
+    terimaTransaksi(kode);
+  })
 
+  $( document ).on("click","#terimaTerpilih",function (){
+    $('.cbxBack').filter(':checked').each(function() {
+      if (this.id!="cbxAllBack"){
+        var kode = (this.id).substring(7);
+        terimaTransaksi(kode);
+      }
+    });
+  });
+
+  function terimaTransaksi(kode) {
+    $.ajax({
+      type: "PUT",
+      url: "/api/detailtransaksi/kembali/" + kode,
+      success: function(result) {
+        alert(result);
+      }
+    });
+  }
 
 });

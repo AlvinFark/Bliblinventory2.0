@@ -116,14 +116,15 @@ function getProductBySortAndSearch() {
     var url;
     var keyword = $("#inputSearch").val();
     var indexSortSelected = $("#selectUrutkan").prop('selectedIndex');
-    var indexCategorySelected = $("#selectKategori").prop('selectedIndex');
+    var idCategorySelected = $("#selectKategori option:selected").val();
     if(indexSortSelected==0){
-        url = window.location+"/sortByName/" + indexCategorySelected + "/" + keyword;
+        url = window.location+"/sortByName/" + idCategorySelected + "/" + keyword;
     }
     else if(indexSortSelected==1){
-        url = window.location+"/sortByCode/" + indexCategorySelected + "/" + keyword;
+        url = window.location+"/sortByCode/" + idCategorySelected + "/" + keyword;
     }
     ajaxGetProductCustom(url);
+    window.alert(idCategorySelected)
 }
 
 //tampilkan semua product

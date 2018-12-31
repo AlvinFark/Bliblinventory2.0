@@ -57,6 +57,10 @@ public class AuthController {
         )
     );
 
+//    if(authentication.isAuthenticated() && authentication.getAuthorities().equals("ADMIN")){
+//      return
+//    }
+
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     String jwt = tokenProvider.generateToken(authentication);

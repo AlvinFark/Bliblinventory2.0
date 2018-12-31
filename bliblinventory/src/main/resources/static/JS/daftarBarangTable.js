@@ -125,7 +125,6 @@ $( document ).ready(function() {
                   success: function (result2) {
                     $("td:contains(" + kode + ")").parent("tr").children("td.unitTersediaTable").html(result2);
                     if ($("td:contains(" + kode + ")").parent("tr").children("td.totalUnitTable").text()!=$("td:contains(" + kode + ")").parent("tr").children("td.unitTersediaTable").text()){
-                      $("td:contains(" + kode + ")").parent("tr").children("td.checkboxTd").html("");
                     };
                   }
                 });
@@ -200,28 +199,37 @@ $( document ).ready(function() {
           });
 
           $("#tombolHapusBarang").click(function () {
-            var gambar = result.gambar;
-            var keyword = $("#ubahKategoriBarang").val();
-            var jsonUbahKaryawan = {
-              "kode" : $("#kodeBarangTable").text(),
-              "nama" : $("#ubahNamaBarang").val(),
-              "hargaBeli" : $("#ubahHargaBeliBarang").val(),
-              "deskripsi" : $("#ubahdeskripsiBarang").val(),
-              "gambar" : gambar,
-              "isExist" : false
-            };
+            var kode = $("#kodeBarangTable").text();
             $.ajax({
-              type : "PUT",
-              url : "/api/barang/"+keyword,
-              contentType: 'application/json',
-              data: JSON.stringify(jsonUbahKaryawan),
-              success: function(result) {
-                alert('data barang berhasil diubah, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
-              },
-              error: function (result) {
-                alert(JSON.stringify(result))
+              type : "GET",
+              url : "/api/barang/"+kode+"/subbarang",
+              success: function (result1) {
+                for (var i=0; i<result1.length; i++){
+                  var kodeSubBarang = result1[i].kodeSubBarang;
+                  var jsonSubBarang = {
+                    "kodeSubBarang" : kodeSubBarang,
+                    "isExist" : false
+                  };
+                  $.ajax({
+                    type: "PUT",
+                    url: "/api/subbarang/" + kodeSubBarang,
+                    contentType: 'application/json',
+                    data: JSON.stringify(jsonSubBarang),
+                    complete: function(result3) {
+                      alert(result3);
+                    }
+                  }),async=false;
+                };
+                $.ajax({
+                  type : "PUT",
+                  url : "/api/barang/delete/" + kode,
+                  complete: function(result2) {
+                    alert(result2);
+                  }
+                });
               }
             });
+
           });
         }
       });
@@ -235,7 +243,7 @@ $( document ).ready(function() {
             url: "/employee/countReadySubBarang/" + kode,
             success: function (result2) {
               $("#unitTersediaTable").html(result2);
-              if ($("#totalUnitTable").text()!=$("#unitTersediaTable").text()){
+              if ($("#totalUnitTable").text()!=0&&$("#unitTersediaTable").text()==0){
                 $("#tombolHapusBarang").hide();
               } else {
                 $("#tombolHapusBarang").show();
@@ -317,7 +325,7 @@ $( document ).ready(function() {
         contentType: 'application/json',
         data: JSON.stringify(jsonKaryawanBaru),
         success: function(result) {
-          alert('barang baru berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
+          alert('barang baru berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar barang');
         },
         error: function (result) {
           alert(JSON.stringify(result))
@@ -333,5 +341,17 @@ $( document ).ready(function() {
         '  </div>\n');
     });
 
-
+    $(document).on("click", "#tombolSimpanSatuan", function () {
+      var kodeBarang = $("#kodeBarangTable").text();
+      $( ".barangSatuan" ).each(function() {
+        var kodeSubBarang = $(this).val();
+        $.ajax({
+          type: "POST",
+          url: "/api/barang/" + kodeBarang + "/" + kodeSubBarang,
+          success: function (result) {
+            alert('sub barang baru berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar barang');
+          }
+        })
+      })
+    })
 });

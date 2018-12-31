@@ -5,13 +5,14 @@ import com.sal.bliblinventory.model.SubBarang;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
 public interface DetailTransaksiRepository extends JpaRepository<DetailTransaksi, Long> {
-  DetailTransaksi getDetailTransaksiBySubBarangAndIsExist(SubBarang subBarang, boolean isExist);
+  DetailTransaksi getDetailTransaksiBySubBarangAndIsExistAndTgKembali(SubBarang subBarang, boolean isExist, LocalDateTime tgKembali);
 
-  List<DetailTransaksi> getAllByIsExist(boolean isExist);
+  List<DetailTransaksi> getAllByIsExistAndTgKembali(boolean isExist, LocalDateTime tgKembali);
 
   DetailTransaksi getDetailTransaksiBySubBarangAndTransaksi_IsExist(SubBarang subBarang, boolean isExist);
 

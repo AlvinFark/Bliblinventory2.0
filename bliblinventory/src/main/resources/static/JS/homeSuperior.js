@@ -1,7 +1,6 @@
 $( document ).ready(function() {
     $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
     $('.datepicker').datepicker();
-    //$("#includeManualOrder").load("buatPermintaanPeminjamanManual.html");
 
     var page = $.session.get('page');
     if(page == null || page == 1) {

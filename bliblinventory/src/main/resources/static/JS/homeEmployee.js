@@ -2,7 +2,6 @@ $( document ).ready(function() {
     $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
     $('.datepicker').datepicker();
     $('.modal').modal();
-    //$("#includeManualOrder").load("buatPermintaanPeminjamanManual.html");
 
     //session penanda tiap page, supaya kalau refresh, tetap berada di page-nya
     var page = $.session.get('page');

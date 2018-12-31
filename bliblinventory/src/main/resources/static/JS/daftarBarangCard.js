@@ -59,7 +59,6 @@ $( document ).ready(function() {
 
         //kalau superior dan request pinjamnya berhasil, requestnya langsung di-approve, dan sub barang langsung dipesankan
         if(window.location.pathname == "/superior" && idTransaksi!=0){
-            window.alert("id transaksi = "+idTransaksi);
             ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi);
         }
 
@@ -124,7 +123,6 @@ function getProductBySortAndSearch() {
         url = window.location+"/sortByCode/" + idCategorySelected + "/" + keyword;
     }
     ajaxGetProductCustom(url);
-    window.alert(idCategorySelected)
 }
 
 //tampilkan semua product
@@ -140,11 +138,11 @@ function ajaxGetAllProduct(){
                     '<a class="col s6 l2 m3 modal-trigger productCard" href="#modalDetailPinjam">\n' +
                     '<div class="card">\n' +
                     '<div class="card-image">\n' +
-                    '<img src="'+result[i].gambar+'" style="height:203px; width:100%">\n' +
+                    '<img src="/images/barang/'+result[i].gambar+'" style="height:203px; width:100%">\n' +
                     '</div>\n' +
                     '<div class="card-content">\n' +
                     '<p>'+result[i].kode+'</p>\n' +
-                    '<p>'+result[i].nama+'</p>\n' +
+                    '<p style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">'+result[i].nama+'</p>\n' +
                     '</div>\n' +
                     '</div>\n' +
                     '</a>');
@@ -161,7 +159,7 @@ function ajaxGetAllProduct(){
 function ajaxGetProductDetail(idBarang) {
     var allSubBarang = 0;
     var readySubBarang = 0;
-    
+
     //hitung total sub kuantitas barang
     $.ajax({
         type : "GET",
@@ -196,7 +194,7 @@ function ajaxGetProductDetail(idBarang) {
         url : window.location + "/getDetailProduct/" + idBarang,
         success: function(result){
             $("#detailBarangCard").html('<div>\n' +
-                '<img src="'+result.gambar+'" style="height:300px; width:auto"/>\n' +
+                '<img src="/images/barang/'+result.gambar+'" style="height:300px; width:auto"/>\n' +
                 '</div>\n' +
                 '<div>\n' +
                 '<table class="tableNoBorder">\n' +
@@ -282,11 +280,11 @@ function ajaxGetProductCustom(url){
                     '<a class="col s6 l2 m3 modal-trigger" href="#modalDetailPinjam">\n' +
                     '<div class="card">\n' +
                     '<div class="card-image">\n' +
-                    '<img src="'+result[i].gambar+'" style="height:203px; width:100%">\n' +
+                    '<img src="/images/barang/'+result[i].gambar+'" style="height:203px; width:100%">\n' +
                     '</div>\n' +
                     '<div class="card-content">\n' +
                     '<p>'+result[i].kode+'</p>\n' +
-                    '<p>'+result[i].nama+'</p>\n' +
+                    '<p style="white-space: nowrap; overflow: hidden;text-overflow: ellipsis;">'+result[i].nama+'</p>\n' +
                     '</div>\n' +
                     '</div>\n' +
                     '</a>');

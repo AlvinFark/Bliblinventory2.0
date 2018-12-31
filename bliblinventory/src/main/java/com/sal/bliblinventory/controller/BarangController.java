@@ -5,6 +5,7 @@ import com.sal.bliblinventory.model.Barang;
 import com.sal.bliblinventory.model.Category;
 import com.sal.bliblinventory.repository.BarangRepository;
 import com.sal.bliblinventory.repository.CategoryRepository;
+import com.sal.bliblinventory.repository.SubBarangRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,9 @@ public class BarangController {
 
     @Autowired
     BarangRepository barangRepository;
+
+    @Autowired
+    SubBarangRepository subBarangRepository;
 
     @Autowired
     CategoryRepository categoryRepository;
@@ -75,6 +79,19 @@ public class BarangController {
     Category category = categoryRepository.findByName(categoryName);
     barangRequest.setCategory(category);
     return barangRepository.save(barangRequest);
+  }
+
+  @PutMapping("/api/barang/delete/{kodeBarang}")
+  public String hapusBarang(@PathVariable String kodeBarang) {
+      Barang barang = barangRepository.findBarangByKode(kodeBarang);
+      int count = subBarangRepository.countSubBarangByBarangKodeAndIsExist(barang.getKode(), true);
+      if (count==0){
+        barang.setIsExist(false);
+        barangRepository.save(barang);
+        return "Barang " + barang.getNama() + " berhasil dihapus";
+      } else {
+        return "Barang" + barang.getNama() + " tidak berhasil dihapus sepenuhnya, terdapat sub barang yang masih dipinjam";
+      }
   }
 
 }

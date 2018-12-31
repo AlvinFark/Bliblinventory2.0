@@ -40,7 +40,7 @@ public class DetailTransaksiController {
 
     @GetMapping("/api/permintaan")
     public List<DetailTransaksi> getAllDetailTransaksi() {
-      return detailTransaksiRepository.getAllByIsExist(true);
+      return detailTransaksiRepository.getAllByIsExistAndTgKembali(true, null);
     }
 
     @RequestMapping(value = "api/getDetailTransaksiByIdTransaksi/{idTransaksi}", method = RequestMethod.GET)

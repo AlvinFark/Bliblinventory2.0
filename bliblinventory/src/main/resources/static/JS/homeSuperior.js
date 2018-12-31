@@ -36,6 +36,19 @@ $( document ).ready(function() {
     $("#klikLogout").click(function(){
         $.session.remove('page');
     });
+
+    $("#klikPermintaanPembelian").click(function(){
+        buatFormPemintaanPembelian();
+    });
+
+    $("#btnKirimRequestBeli").click(function(){
+        if ($('#namaBarangRequestBeli').val() == ""){
+            window.alert("Nama barang masih kosong");
+        }
+        else{
+            $("#modalPermintaanPembelian").modal("close");
+        }
+    });
 });
 
 function page1(){
@@ -54,4 +67,40 @@ function page3(){
     $("#includePageContent").load("permintaanKaryawan.html");
     $("#inputSearch").hide();
     $("#iconSearch").hide();
+}
+
+function buatFormPemintaanPembelian() {
+    $('#jumlahBarangRequestBeli').val(1);
+    $('#keteranganRequestBeli').val("");
+    $('#namaBarangRequestBeli').val("");
+    $("#tgOrdeRequestBeli").html(changeDateFormat(getDateNow()));
+    ajaxGetDropDownKategori();
+    $(":input").bind('keyup mouseup blur focusout', function () {
+        if($('#jumlahBarangRequestBeli').val() < 1){
+            window.alert("Minimal jumlah barang 1");
+            $('#jumlahBarangRequestBeli').val(1);
+        }
+    });
+}
+
+function ajaxGetDropDownKategori() {
+    $.ajax({
+        type : "GET",
+        url : window.location + "/getAllCategory",
+        success: function(result){
+            $("#selectKategoryRequestBeli").html('');
+            //tampilkan semua kategori dalam dropdown
+            for(var i = 0; i < result.length; i++){
+                $("#selectKategoryRequestBeli").append(
+                    '<option value="'+result[i].id+'">'+result[i].name+'</option>'
+                );
+            }
+            $("#selectKategoryRequestBeli").trigger('contentChanged');
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error ajaxGetSelectKategori");
+        },
+        async:false
+    });
 }

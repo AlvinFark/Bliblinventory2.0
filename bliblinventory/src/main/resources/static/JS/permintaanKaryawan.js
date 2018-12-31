@@ -7,21 +7,11 @@ $( document ).ready(function() {
     //ketika merubah dropdown urutkan
     $( document ).on("change","#selectSortBy",function (){
         ajaxGetRequestListBySortAndSearch();
-        if($('.cbx').length == 1){
-            $("#btnSetujui").addClass("disabled");
-            $("#btnTolak").addClass("disabled");
-        }
-        $("#cbxAll").prop('checked', false);
     });
 
     //ketika klik icon search
     $( document ).on("click","#iconSearch",function (){
         ajaxGetRequestListBySortAndSearch();
-        if($('.cbx').length == 1){
-            $("#btnSetujui").addClass("disabled");
-            $("#btnTolak").addClass("disabled");
-        }
-        $("#cbxAll").prop('checked', false);
     });
 
     //ketika ada checkbox yang diklik
@@ -205,6 +195,9 @@ function ajaxGetRequestListBySortAndSearch(){
         },
         async:false
     });
+    $("#cbxAll").prop('checked', false);
+    $("#btnSetujui").addClass("disabled");
+    $("#btnTolak").addClass("disabled");
 }
 
 function ajaxGetDetailRequestOrder(idTransaksi) {

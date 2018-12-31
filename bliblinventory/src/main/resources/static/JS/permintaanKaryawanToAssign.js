@@ -127,9 +127,8 @@ function ajaxGetRequestListBySortAndSearch(){
         },
         async:false
     });
-    if($('.cbx').length == 1)
-        $("#btnAssign").addClass("disabled");
     $("#cbxAll").prop('checked', false);
+    $("#btnAssign").addClass("disabled");
 }
 
 function ajaxGetDetailRequestOrder(idTransaksi) {

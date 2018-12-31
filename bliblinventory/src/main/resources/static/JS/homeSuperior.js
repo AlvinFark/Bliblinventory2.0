@@ -1,6 +1,12 @@
 $( document ).ready(function() {
     $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
     $('.datepicker').datepicker();
+    $('.modal').modal();
+    $('select').formSelect();
+
+    $('select').on('contentChanged', function() {
+        $(this).formSelect();
+    });
 
     var page = $.session.get('page');
     if(page == null || page == 1) {

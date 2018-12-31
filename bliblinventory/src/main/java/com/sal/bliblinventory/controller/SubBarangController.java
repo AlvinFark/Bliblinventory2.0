@@ -3,8 +3,11 @@ package com.sal.bliblinventory.controller;
 import com.sal.bliblinventory.exception.AppException;
 import com.sal.bliblinventory.exception.ResourceNotFoundException;
 import com.sal.bliblinventory.model.Barang;
+import com.sal.bliblinventory.model.DetailTransaksi;
 import com.sal.bliblinventory.model.SubBarang;
+import com.sal.bliblinventory.model.Transaksi;
 import com.sal.bliblinventory.repository.BarangRepository;
+import com.sal.bliblinventory.repository.DetailTransaksiRepository;
 import com.sal.bliblinventory.repository.SubBarangRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -20,6 +23,9 @@ public class SubBarangController {
 
     @Autowired
     BarangRepository barangRepository;
+
+    @Autowired
+    DetailTransaksiRepository detailTransaksiRepository;
 
     @RequestMapping(value = {"employee/countAllSubBarang/{kodeBarang}", "superior/countAllSubBarang/{kodeBarang}"}, method = RequestMethod.GET)
     public int countSubBarang(@PathVariable(value = "kodeBarang") String kodeBarang){
@@ -53,10 +59,17 @@ public class SubBarangController {
     }
 
     @PutMapping("/api/subbarang/{kodeSubBarang}")
-    public SubBarang editSubBarang(@PathVariable String kodeSubBarang, @Valid @RequestBody SubBarang subBarang) {
+    public String hapusSubBarang(@PathVariable String kodeSubBarang, @Valid @RequestBody SubBarang subBarang) {
       SubBarang sub = subBarangRepository.getSubBarangByKodeSubBarang(kodeSubBarang);
-      sub.setExist(subBarang.getExist());
-      return subBarangRepository.save(sub);
+      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExist(sub, true);
+      Transaksi transaksi = detailTransaksi.getTransaksi();
+      if (detailTransaksi==null){
+        sub.setExist(subBarang.getExist());
+        subBarangRepository.save(sub);
+        return "Barang satuan berhasil dihapus";
+      } else {
+        return "Barang satuan tidak dapat dihapus, silahkan pastikan barang tersebut tidak sedang dipinjam";
+      }
     }
 
     @GetMapping("/api/getSubBarangByKodeSubBarang/{kodeSubBarang}")

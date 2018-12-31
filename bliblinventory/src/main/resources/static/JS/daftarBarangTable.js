@@ -244,7 +244,6 @@ $( document ).ready(function() {
           });
         }
       });
-
       $.ajax({
         type: "GET",
         url: "/api/barang/" + kode + "/subbarang",
@@ -261,7 +260,7 @@ $( document ).ready(function() {
               '  <td class="namaPeminjam">'+ peminjam +'</td>\n' +
               '  <td class="tanggalPinjam">'+ peminjam +'</td>\n' +
               '  <td class="tdDeleteSubBarang" width=100px>\n' +
-              '    <a class="waves-effect waves-light btn right btn-small modal-trigger triggerDeleteSubBarang" href="#modalDetailRequest"><i class="material-icons">delete</i></a>\n' +
+              '    <a class="waves-effect waves-light btn right btn-small modal-trigger triggerDeleteSubBarang"><i class="material-icons">delete</i></a>\n' +
               '  </td>\n' +
               '</tr>')
           }
@@ -284,7 +283,7 @@ $( document ).ready(function() {
             var kodeSubBarang = $(this).parent("td").parent("tr.rowDetailSubBarang").children(".idDetailSubBarang").text();
             var jsonSubBarang = {
               "kodeSubBarang" : kodeSubBarang,
-              "isExist" : true
+              "isExist" : false
             };
             $.ajax({
               type: "PUT",
@@ -292,7 +291,7 @@ $( document ).ready(function() {
               contentType: 'application/json',
               data: JSON.stringify(jsonSubBarang),
               success: function(result) {
-                alert('barang satuan berhasil dihapus, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
+                alert(result);
               }
             });
           });

@@ -9,6 +9,7 @@ import java.util.List;
 @Repository
 public interface PermintaanPembelianRepository extends JpaRepository<PermintaanPembelian, Long> {
     List<PermintaanPembelian> findAllByIsBoughtAndIsExist(boolean isBought, boolean isExist);
+    List<PermintaanPembelian> findAllByIsBoughtAndIsExistAndUser_Id(boolean isBought, boolean isExist, Long userId);
     PermintaanPembelian getPermintaanPembelianByIdPermintaanPembelian(Long idPermintaanPembelian);
 
     //sort by id, nama user, nama barang

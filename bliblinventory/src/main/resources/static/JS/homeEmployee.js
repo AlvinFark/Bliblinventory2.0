@@ -16,6 +16,9 @@ $( document ).ready(function() {
     else if(page == 2){
         page2();
     }
+    else if(page == 3){
+        page3();
+    }
 
     $("#klikDaftarBarang").click(function(){
         $.session.set('page','1');
@@ -25,6 +28,11 @@ $( document ).ready(function() {
     $("#klikDaftarOrder").click(function(){
         $.session.set('page','2');
         page2();
+    });
+
+    $("#klikDaftarPermintaanPembelian").click(function(){
+        $.session.set('page','3');
+        page3();
     });
 
     $(".imgLogo").click(function(){
@@ -68,6 +76,12 @@ function page1(){
 
 function page2(){
     $("#includePageContent").load("orderList.html");
+    $("#inputSearch").hide();
+    $("#iconSearch").hide();
+}
+
+function page3(){
+    $("#includePageContent").load("permintaanPembelianList.html");
     $("#inputSearch").hide();
     $("#iconSearch").hide();
 }

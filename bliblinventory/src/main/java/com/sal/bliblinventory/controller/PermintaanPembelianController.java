@@ -86,4 +86,22 @@ public class PermintaanPembelianController {
         permintaanPembelianRequest.setExist(true);
         return permintaanPembelianRepository.save(permintaanPembelianRequest);
     }
+
+    @RequestMapping(value = "api/getPermintaanPinjam/belumDibeli", method = RequestMethod.GET)
+    public List<PermintaanPembelian> getPermintaanPinjambelumDibeli() {
+        //sementara masih pakai user Id = 1L
+        return permintaanPembelianRepository.findAllByIsBoughtAndIsExistAndUser_Id(false,true,1L);
+    }
+
+    @RequestMapping(value = "api/getPermintaanPinjam/sudahDibeli", method = RequestMethod.GET)
+    public List<PermintaanPembelian> getPermintaanPinjamSudahDibeli() {
+        //sementara masih pakai user Id = 1L
+        return permintaanPembelianRepository.findAllByIsBoughtAndIsExistAndUser_Id(true,true,1L);
+    }
+
+    @PutMapping("api/deletePermintaanPembelian")
+    public PermintaanPembelian deletePermintaanPembelian(@Valid @RequestBody PermintaanPembelian permintaanPembelianRequest) {
+        permintaanPembelianRequest.setExist(false);
+        return permintaanPembelianRepository.save(permintaanPembelianRequest);
+    }
 }

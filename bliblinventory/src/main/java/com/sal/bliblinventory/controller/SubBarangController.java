@@ -5,7 +5,6 @@ import com.sal.bliblinventory.exception.ResourceNotFoundException;
 import com.sal.bliblinventory.model.Barang;
 import com.sal.bliblinventory.model.DetailTransaksi;
 import com.sal.bliblinventory.model.SubBarang;
-import com.sal.bliblinventory.model.Transaksi;
 import com.sal.bliblinventory.repository.BarangRepository;
 import com.sal.bliblinventory.repository.DetailTransaksiRepository;
 import com.sal.bliblinventory.repository.SubBarangRepository;
@@ -62,7 +61,6 @@ public class SubBarangController {
     public String hapusSubBarang(@PathVariable String kodeSubBarang, @Valid @RequestBody SubBarang subBarang) {
       SubBarang sub = subBarangRepository.getSubBarangByKodeSubBarang(kodeSubBarang);
       DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExist(sub, true);
-      Transaksi transaksi = detailTransaksi.getTransaksi();
       if (detailTransaksi==null){
         sub.setExist(subBarang.getExist());
         subBarangRepository.save(sub);

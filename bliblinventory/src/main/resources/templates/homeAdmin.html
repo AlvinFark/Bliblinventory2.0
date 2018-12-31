@@ -44,7 +44,8 @@
 	<form action="/api/upload" enctype="multipart/form-data" method="POST">
 		<div class="modal-content">
 			<h4 class="headerModal">Tambah Barang secara Batch</h4>
-			<p style="padding-top:80px;"> File : &ensp;<input id="fileUpload" type="file" name="fileUpload" style="padding:0"> </p>
+			<p style="padding-top:80px;"> File barang (.xlsx) : &ensp;<input id="fileUpload" type="file" accept=".xlsx" name="fileExcel" style="padding:0"> </p>
+			<p style="padding-top:80px;"> File gambar (.zip) : &ensp;<input id="fileUpload" type="file" accept=".zip" name="fileGambar" style="padding:0"> </p>
 			<p> Catatan : <br> File Excel yang dipilih harus menggunakan format penulisan untuk penambahan produk yang sudah ditetapkan.
 			<br> Format file dapat diunduh <a href="../../format-tambah-barang-bulk.xlsx" download>disini</a></p>
 		</div>

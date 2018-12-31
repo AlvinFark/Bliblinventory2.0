@@ -45,7 +45,7 @@ function ajaxGetOrderList(url) {
                 $("#myOrderList").append(
                     '<div class="card cardOrderList">\n' +
                         '<div class="card-image">\n' +
-                            '<img class="imageOrderList" src="'+result[i].barang.gambar+'">\n' +
+                            '<img class="imageOrderList" src="/images/barang/'+result[i].barang.gambar+'">\n' +
                         '</div>\n' +
                         '<table class="tableNoBorder infoOrderList">\n' +
                             '<tr>\n' +

@@ -55,6 +55,8 @@ public class User {
 
     private boolean isActive;
 
+    String gambar;
+
     public User() {
 
     }
@@ -167,5 +169,12 @@ public class User {
       return this.isActive;
   }
 
+  public String getGambar() {
+    return gambar;
+  }
+
+  public void setGambar(String gambar) {
+    this.gambar = gambar;
+  }
 }
 

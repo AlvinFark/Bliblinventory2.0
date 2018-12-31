@@ -193,9 +193,8 @@ function ajaxGetProductDetail(idBarang) {
         type : "GET",
         url : window.location + "/getDetailProduct/" + idBarang,
         success: function(result){
-            $("#detailBarangCard").html('<div>\n' +
-                '<img src="/images/barang/'+result.gambar+'" style="height:300px; width:auto"/>\n' +
-                '</div>\n' +
+            $("#detailBarangCard").html('' +
+                '<div class="kontainerImgModalBarang" id="detailFotoBarang"></div>' +
                 '<div>\n' +
                 '<table class="tableNoBorder">\n' +
                 '<tr>\n' +
@@ -224,7 +223,9 @@ function ajaxGetProductDetail(idBarang) {
                 '</tr>\n' +
                 '</table>\n' +
                 '</div>');
-
+          $("#detailFotoBarang").css({
+            'background-image': 'url("http://127.0.0.1:8000/bliblinventoryimages/barang/'+result.gambar+'")'
+          });
         },
         error : function(e) {
             console.log("ERROR: ", e);

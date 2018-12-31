@@ -1,18 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link type="text/css" rel="stylesheet" href="../css/styles.css">
-	<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"	media="screen,projection"/>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 	<script type="text/javascript" src="../JS/pengembalianBarang.js"></script>
-	<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
-	<title>bliblinventory</title>
-</head>
 <body class="kontainer">
   <h4>Pengembalian Barang Inventaris</h4>
 	<div style="display:flex; margin-top: 20px;">
@@ -20,7 +6,7 @@
 			<i class="material-icons">search</i>
 			<p>Cari :</p>
 			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select id="selectSearchPengembalian">
+				<select class="browser-default" id="selectSearchPengembalian">
 					<option value="user">Nama Karyawan</option>
 					<option value="barang">Nama Barang</option>
 				</select>
@@ -33,7 +19,7 @@
 			<i class="material-icons">sort</i>
 			<p>Urutkan :</p>
 			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select id="selectSortPengembalian" class="refreshpermintaan-trigger ">
+				<select id="selectSortPengembalian" class="browser-default refreshpermintaan-trigger ">
 					<option value="user">Nama Karyawan</option>
 					<option value="barang">Nama Barang</option>
 				</select>
@@ -43,37 +29,29 @@
 			<i class="material-icons">dashboard</i>
 			<p>Kategori :</p>
 			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select id="selectKategoriPengembalian" class="kategoriSelectorTable refreshpermintaan-trigger">
+				<select id="selectKategoriPengembalian" class="browser-default kategoriSelectorTable refreshpermintaan-trigger">
 					<option value="All">Semua Kategori</option>
 				</select>
 			</div>
 		</div>
 	</div>
 	<div id="whiteBoard"  class="z-depth-2"  style="position:absolute">
-		<table class="highlight">
+		<table class="highlight noPadding">
 			<thead>
 				<tr>
-					<th>ID Satuan</th>
+          <th style="width: 50px; padding-top: 7px;"><p><label><input type="checkbox" id="cbxAllBack" class="cbxBack"/><span></span></label></p></th>
+          <th>ID Satuan</th>
 					<th>ID Barang</th>
 					<th>Nama Barang</th>
           <th>Kategori Barang</th>
 					<th>Nama Karyawan</th>
-					<th>Tanggal Peminjaman</th>
+					<th>Tanggal Pinjam</th>
 					<th></th>
 				</tr>
 			</thead>
 			<tbody id="tabelKembaliBarang">
 			</tbody>
 		</table>
-		<a class="waves-effect waves-light btn right kananBawah disabled">terima terpilih</a>
-  </div>
-  <div class="modal" id="modalTerimaConfirm">
-    <div class="modal-content valign-wrapper" style="flex-direction:column">
-      <p>barang sudah dikembalikan?</p>
-      <div>
-        <a class="waves-effect waves-light btn">Ya</a>
-        <a class="waves-effect waves-light btn modal-close">tidak</a>
-      </div>
-    </div>
+		<a class="waves-effect waves-light btn right kananBawah disabled" id="terimaTerpilih">terima terpilih</a>
   </div>
 </body>

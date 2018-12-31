@@ -12,6 +12,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RestController
@@ -52,6 +54,20 @@ public class DetailTransaksiController {
     public DetailTransaksi editDetailTransaksiNotExist(@Valid @RequestBody DetailTransaksi detailTransaksiRequest) {
         detailTransaksiRequest.setExist(false);
         return detailTransaksiRepository.save(detailTransaksiRequest);
+    }
+
+    @PutMapping("/api/detailtransaksi/kembali/{id}")
+    public String kembalikanBarang(@PathVariable Long id){
+      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiByIdDetailTransaksi(id);
+      LocalDateTime localDateTime = LocalDateTime.now();
+      detailTransaksi.setTgKembali(localDateTime);
+      SubBarang subBarang = detailTransaksi.getSubBarang();
+      subBarang.setStatusSubBarang(true);
+
+      detailTransaksiRepository.save(detailTransaksi);
+      subBarangRepository.save(subBarang);
+
+      return "Barang berhasil dikembalikan";
     }
 
 

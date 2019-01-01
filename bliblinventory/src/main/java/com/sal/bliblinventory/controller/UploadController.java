@@ -66,13 +66,18 @@ public class UploadController {
 ////        } catch (IOException e) {
 ////            e.printStackTrace();
 ////        }
-
-
-        File uploadedFile = new File(fileExcel.getOriginalFilename());
-        uploadedFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(uploadedFile);
-        fos.write(fileExcel.getBytes());
+        
+        File excel = File.createTempFile(UUID.randomUUID().toString(), "temp");
+        FileOutputStream fos = new FileOutputStream(excel);
+        IOUtils.copy(fileExcel.getInputStream(), fos);
         fos.close();
+
+
+//        File uploadedFile = new File("tambahBulk/" + fileExcel.getOriginalFilename());
+//        uploadedFile.createNewFile();
+//        FileOutputStream fos = new FileOutputStream(uploadedFile);
+//        fos.write(fileExcel.getBytes());
+//        fos.close();
 
         /**
          * save file to temp
@@ -101,7 +106,7 @@ public class UploadController {
 
         //membaca isi dari dokumen excel
         try {
-            FileInputStream excelFile = new FileInputStream(uploadedFile);
+            FileInputStream excelFile = new FileInputStream(excel);
             Workbook workbook = new XSSFWorkbook(excelFile);
             Sheet datatypeSheet = workbook.getSheetAt(0);
             Iterator<Row> iterator = datatypeSheet.iterator();
@@ -110,7 +115,7 @@ public class UploadController {
             String nama = " ";
             String deskripsi = " ";
             String gambar = " ";
-            double kuantitas;
+            double kuantitas = 0;
             Long harga = 0L;
             String kategori = " ";
 
@@ -147,7 +152,20 @@ public class UploadController {
                         Barang barang = new Barang(kode,nama,gambar,deskripsi,harga,true,category);
                         barangRepository.save(barang);
 
-//                        SubBarang subBarang = new SubBarang()
+                        // Menambah sub barang berdasarkan kuantitas
+                        for(int i=1;i<=kuantitas;i++){
+                            String s = "";
+                            if(i<10)
+                                s = "000";
+                            else if(i < 100)
+                                s = "00";
+                            else if(i < 1000)
+                                s = "0";
+                            String kodeSubBarang = kode + s + i;
+                            SubBarang subBarang = new SubBarang(kodeSubBarang, barang);
+
+                            subBarangRepository.save(subBarang);
+                        }
                     }
                     if(kolom == 6)
                         baris++;

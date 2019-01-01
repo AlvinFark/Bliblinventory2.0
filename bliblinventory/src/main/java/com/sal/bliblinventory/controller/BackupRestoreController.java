@@ -3,10 +3,9 @@ package com.sal.bliblinventory.controller;
 import com.smattme.MysqlExportService;
 import com.smattme.MysqlImportService;
 import org.apache.poi.util.IOUtils;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import sun.text.resources.FormatData;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -37,14 +36,14 @@ public class BackupRestoreController {
 
 
     @GetMapping("/backup")
-    private void backupDB() throws Exception{
+    private String backupDB() throws Exception{
         Properties properties = new Properties();
         properties.put(MysqlExportService.DB_NAME, "bliblinventory");
         properties.setProperty(MysqlExportService.DB_USERNAME, "root");
         properties.setProperty(MysqlExportService.DB_PASSWORD, "");
         properties.setProperty(MysqlExportService.JDBC_DRIVER_NAME, "com.mysql.cj.jdbc.Driver");
 
-        properties.setProperty(MysqlExportService.TEMP_DIR, new File("external").getPath());
+        //properties.setProperty(MysqlExportService.TEMP_DIR, new File("backup").getPath());
         properties.setProperty(MysqlExportService.PRESERVE_GENERATED_ZIP, "true");
 
         MysqlExportService mysqlExportService = new MysqlExportService(properties);
@@ -54,21 +53,25 @@ public class BackupRestoreController {
         File file = mysqlExportService.getGeneratedZipFile();
 
         byte[] bytes = Files.readAllBytes(file.toPath());
-        savePath = "D:/" + file.getName();
+        savePath = "D:/bliblinventory/backup/" + file.getName();
         Path path = Paths.get(savePath);
 
         Files.write(path, bytes);
+
+        return file.getName();
     }
 
-    @GetMapping("/restore")
-    private void restoreDB() throws Exception{
-        String sql = new String(Files.readAllBytes(Paths.get("D:/31_12_2019_20_22_40_bliblinventory_database_dump.sql")));
+    @PostMapping("/restore")
+    private void restoreDB(@RequestParam("dbRestore") MultipartFile fileDB) throws Exception{
+
+
+        String sql = new String(fileDB.getBytes());
 
         MysqlImportService.builder()
-                .setDatabase("bbb")
+                .setDatabase("bliblirestore")
                 .setSqlString(sql)
                 .setUsername("blibli")
-                .setPassword("CRYwWIPzqDDd8LMg")
+                .setPassword("future")
                 .setJdbcDriver("com.mysql.cj.jdbc.Driver")
                 .setDeleteExisting(true)
                 .setDropExisting(true)

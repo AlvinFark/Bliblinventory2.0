@@ -227,7 +227,7 @@ function ajaxGetProductDetail(idBarang) {
                 '</div>' +
                 '</div>');
           $("#detailFotoBarang").css({
-            'background-image': 'url("http://127.0.0.1:8000/bliblinventoryimages/barang/'+result.gambar+'")'
+            'background-image': 'url("http://127.0.0.1:8000/images/barang/'+result.gambar+'")'
           });
         },
         error : function(e) {

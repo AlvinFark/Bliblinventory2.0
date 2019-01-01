@@ -473,4 +473,19 @@ $( document ).ready(function() {
         }
       });
     })
+
+    //untuk print daftar barang
+    $("#btnPrintDaftarBarang").click(function () {
+        $.ajax({
+            type : "GET",
+            url : "api/printDaftarBarang",
+            success: function(result){
+
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+                window.alert("error ajaxGetSelectKategori");
+            }
+        });
+    });
 });

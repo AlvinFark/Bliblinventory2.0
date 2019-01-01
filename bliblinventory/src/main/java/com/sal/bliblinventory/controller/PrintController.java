@@ -39,10 +39,9 @@ public class PrintController {
     @Autowired
     DetailTransaksiRepository detailTransaksiRepository;
 
-    //testing
     @RequestMapping(value = "api/printDaftarBarang", method = RequestMethod.GET)
     public void testing(){
-        String FILE_NAME = "D:/bliblinventory/testing.xlsx";
+        String FILE_NAME = "D:/bliblinventory/file-to-print/print-daftar-barang.xlsx";
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Daftar Barang Inventaris");
 

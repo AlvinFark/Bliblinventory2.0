@@ -381,6 +381,7 @@ $( document ).ready(function() {
     });
   }));
 
+
   $( document ).on("change","#ubahKategoriBarang",function (){
     var selcategory=$("#ubahKategoriBarang").val();
     if (selcategory=="tambahKategoriBaru"){

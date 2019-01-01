@@ -2,6 +2,7 @@ package com.sal.bliblinventory.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 @Table(name = "detailTransaksi")
@@ -31,6 +32,9 @@ public class DetailTransaksi {
         this.transaksi = transaksi;
         this.subBarang = subBarang;
         this.isExist = true;
+        String str = "1970-01-01 00:00:00";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.tgKembali = LocalDateTime.parse(str, formatter);
     }
 
     //getter setter

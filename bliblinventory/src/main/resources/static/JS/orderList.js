@@ -86,7 +86,7 @@ function ajaxGetOrderList(url) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
+            window.alert("error ajaxGetOrderList");
         }
     });
 }

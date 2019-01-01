@@ -19,7 +19,7 @@
 		<li class="divider"></li>
 		<li><a id="klikPengembalianBarang">Pengembalian Barang Inventaris</a></li>
 		<li class="divider"></li>
-		<li><a class="modal-trigger" href="#modalBeliProduk">Buat Permintaan Pembelian Barang Inventaris</a></li>
+		<li><a id="klikRequestBeliBarang" class="modal-trigger" href="#modalBeliProduk">Buat Permintaan Pembelian Barang Inventaris</a></li>
 		<li class="divider"></li>
 		<li><a id="klikDaftarKaryawan">Daftar Karyawan</a></li>
 		<li class="divider"></li>
@@ -58,21 +58,18 @@
 <div id="modalBeliProduk" class="modal modal-fixed-footer">
 	<div class="modal-content">
 		<h4 class="headerModal">Request Pembelian Barang</h4>
+		<br/>
 		<table class="tableNoBorder smallPadding">
-			<tr>
-				<td class="tdAtrib">ID Request</td>
-				<td>82738264</td>
-			</tr>
 			<tr>
 				<td class="tdAtrib">Nama Barang</td>
 				<td>
-					<textarea name="NamaBarang" cols="30" rows="1"></textarea>
+					<textarea id="inputNamaBarangBeli" name="NamaBarang" cols="30" rows="1"></textarea>
 				</td>
 			</tr>
 			<tr>
 				<td class="tdAtrib">Nama Brand</td>
 				<td>
-					<textarea name="NamaBrand" cols="30" rows="1"></textarea>
+					<textarea id="inputNamaBrandBeli" name="NamaBrand" cols="30" rows="1"></textarea>
 				</td>
 			</tr>
 			<tr>
@@ -80,8 +77,7 @@
 				<td class="tdAtrib">Kategori</td>
 				<td>
 					<div class="input-field containerSelect valign-wrapper" style="background-color:transparent">
-						<select>
-							<option disabled value="0">Pilih Kategori</option>
+						<select id="selectKategoriBeli">
 							<option value="1">Elektronik</option>
 						</select>
 					</div>					
@@ -90,26 +86,26 @@
 			<tr>
 				<td class="tdAtrib">Supplier</td>
 				<td>
-					<textarea name="NamaSupplier" cols="30" rows="1"></textarea>
+					<textarea id="inputSupplierBeli" name="NamaSupplier" cols="30" rows="1"></textarea>
 				</td>
 			</tr>
 			<tr>
 				<td class="tdAtrib">Kuantitas</td>
 				<td>
-					<input type="number" value="1" min="1" style="width: 50px"/>
+					<input id="inputKuantitasBeli" type="number" value="1" min="1" style="width: 50px"/>
 				</td>
 			</tr>
 			<tr>
 				<td class="tdAtrib">Catatan</td>
 				<td>
-					<textarea class="formLarge" name="Catatan" cols="30" rows="1" placeholder="(opsional)"></textarea>
+					<textarea id="inputCatatanBeli" class="formLarge" name="Catatan" cols="30" rows="1" placeholder="(opsional)"></textarea>
 				</td>
 			</tr>
 		</table>
 	</div>
 	<div class="modal-footer">
 		<a class="modal-close btn-flat left">tutup</a>
-		<a id="buttonReasdquestPinjam" class="waves-effect waves-light btn" style="margin-right: 4px;">kirim</a>
+		<a href="http://127.0.0.1:8000/file-to-print/print-request-pembelian.pdf" id="btnRequestBeliBarang" class="waves-effect waves-light btn" style="margin-right: 4px;">kirim</a>
 	</div>
 </div>
 <div id="modalBackup" class="modal">

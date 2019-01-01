@@ -1,5 +1,8 @@
 package com.sal.bliblinventory.controller;
 
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.sal.bliblinventory.model.Barang;
 import com.sal.bliblinventory.model.DetailTransaksi;
 import com.sal.bliblinventory.model.SubBarang;
@@ -7,6 +10,8 @@ import com.sal.bliblinventory.repository.BarangRepository;
 import com.sal.bliblinventory.repository.CategoryRepository;
 import com.sal.bliblinventory.repository.DetailTransaksiRepository;
 import com.sal.bliblinventory.repository.SubBarangRepository;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
@@ -15,15 +20,15 @@ import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -42,7 +47,7 @@ public class PrintController {
     DetailTransaksiRepository detailTransaksiRepository;
 
     @RequestMapping(value = "api/printDaftarBarang", method = RequestMethod.GET)
-    public void testing(){
+    public void printDaftarBarang(){
         String FILE_NAME = "D:/bliblinventory/file-to-print/print-daftar-barang.xlsx";
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Daftar Barang Inventaris");
@@ -144,5 +149,177 @@ public class PrintController {
             e.printStackTrace();
         }
         System.out.println("Done");
+    }
+
+    @RequestMapping(value = "api/printRequestBeli/{namaBarang}/{namaBrand}/{namaSupplier}/{kuantitas}/{namaKategori}/{tanggal}/{catatan}", method = RequestMethod.GET)
+    public void printRequestBeliDenganCatatan(@PathVariable(value = "namaBarang") String namaBarang, @PathVariable(value = "namaBrand") String namaBrand, @PathVariable(value = "namaSupplier") String namaSupplier,
+                        @PathVariable(value = "kuantitas") String kuantitas, @PathVariable(value = "namaKategori") String namaKategori, @PathVariable(value = "tanggal") String tanggal, @PathVariable(value = "catatan") String catatan) {
+        try {
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream("D:/bliblinventory/file-to-print/print-request-pembelian.pdf"));
+            document.open();
+
+            Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 17, BaseColor.BLACK);
+            Font fontContentBold = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, BaseColor.BLACK);
+            Font fontContent = FontFactory.getFont(FontFactory.TIMES, 12, BaseColor.BLACK);
+
+            //buat judul
+            Chunk chunk = new Chunk("Request Pembelian Barang Inventaris", fontTitle);
+            Paragraph centerTitle = new Paragraph(chunk);
+            centerTitle.setAlignment(Element.ALIGN_CENTER);
+            document.add( centerTitle );
+            document.add( Chunk.NEWLINE );
+            document.add( Chunk.NEWLINE );
+
+            //buat content
+            Paragraph p = new Paragraph();
+            p.add(new Chunk("Tanggal", fontContentBold));
+            p.setTabSettings(new TabSettings(130f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+tanggal, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Nama Barang", fontContentBold));
+            p.setTabSettings(new TabSettings(65f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+namaBarang, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Nama Brand Barang", fontContentBold));
+            p.setTabSettings(new TabSettings(65f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+namaBrand, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Kategori Barang", fontContentBold));
+            p.setTabSettings(new TabSettings(65f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+namaKategori, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Kuantitas Barang", fontContentBold));
+            p.setTabSettings(new TabSettings(65f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+kuantitas+" unit", fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Nama Supplier", fontContentBold));
+            p.setTabSettings(new TabSettings(65f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+namaSupplier, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Catatan", fontContentBold));
+            p.setTabSettings(new TabSettings(130f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+catatan, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            document.close();
+        }
+        catch (DocumentException de) {
+            de.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "api/printRequestBeli/{namaBarang}/{namaBrand}/{namaSupplier}/{kuantitas}/{namaKategori}/{tanggal}", method = RequestMethod.GET)
+    public void printRequestBeliTanpaCatatan(@PathVariable(value = "namaBarang") String namaBarang, @PathVariable(value = "namaBrand") String namaBrand, @PathVariable(value = "namaSupplier") String namaSupplier,
+                        @PathVariable(value = "kuantitas") String kuantitas, @PathVariable(value = "namaKategori") String namaKategori, @PathVariable(value = "tanggal") String tanggal) {
+        try {
+            Document document = new Document();
+            PdfWriter.getInstance(document, new FileOutputStream("D:/bliblinventory/file-to-print/print-request-pembelian.pdf"));
+            document.open();
+
+            Font fontTitle = FontFactory.getFont(FontFactory.TIMES_BOLD, 17, BaseColor.BLACK);
+            Font fontContentBold = FontFactory.getFont(FontFactory.TIMES_BOLD, 12, BaseColor.BLACK);
+            Font fontContent = FontFactory.getFont(FontFactory.TIMES, 12, BaseColor.BLACK);
+
+            //buat judul
+            Chunk chunk = new Chunk("Request Pembelian Barang Inventaris", fontTitle);
+            Paragraph centerTitle = new Paragraph(chunk);
+            centerTitle.setAlignment(Element.ALIGN_CENTER);
+            document.add( centerTitle );
+            document.add( Chunk.NEWLINE );
+            document.add( Chunk.NEWLINE );
+
+            //buat content
+            Paragraph p = new Paragraph();
+            p.add(new Chunk("Tanggal", fontContentBold));
+            p.setTabSettings(new TabSettings(130f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+tanggal, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Nama Barang", fontContentBold));
+            p.setTabSettings(new TabSettings(65f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+namaBarang, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Nama Brand Barang", fontContentBold));
+            p.setTabSettings(new TabSettings(65f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+namaBrand, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Kategori Barang", fontContentBold));
+            p.setTabSettings(new TabSettings(65f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+namaKategori, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Kuantitas Barang", fontContentBold));
+            p.setTabSettings(new TabSettings(65f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+kuantitas+" unit", fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Nama Supplier", fontContentBold));
+            p.setTabSettings(new TabSettings(65f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": "+namaSupplier, fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            p = new Paragraph();
+            p.add(new Chunk("Catatan", fontContentBold));
+            p.setTabSettings(new TabSettings(130f));
+            p.add(Chunk.TABBING);
+            p.add(new Chunk(": -", fontContent));
+            document.add(p);
+            document.add( Chunk.NEWLINE );
+
+            document.close();
+        }
+        catch (DocumentException de) {
+            de.printStackTrace();
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

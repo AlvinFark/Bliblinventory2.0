@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -42,7 +43,10 @@ public class DetailTransaksiController {
 
     @GetMapping("/api/permintaan")
     public List<DetailTransaksi> getAllDetailTransaksi() {
-      return detailTransaksiRepository.getAllByIsExistAndTgKembali(true, null);
+      String str = "1970-01-01 00:00:00";
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+      LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
+      return detailTransaksiRepository.getAllByIsExistAndTgKembali(true, localDateTime);
     }
 
     @RequestMapping(value = "api/getDetailTransaksiByIdTransaksi/{idTransaksi}", method = RequestMethod.GET)

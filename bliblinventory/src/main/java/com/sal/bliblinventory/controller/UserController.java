@@ -59,6 +59,9 @@ public class UserController {
     user.setIsActive(userRequest.getIsActive());
     if (userRequest.getPasswordBaru()==true){
       user.setPassword(passwordEncoder.encode(user.getPassword()));
+    } else {
+      User user1 = userRepository.getUserById(id);
+      user.setPassword(user1.getPassword());
     }
 
     return userRepository.findById(id).map(u -> {

@@ -13,7 +13,7 @@ public class CategoryController {
     @Autowired
     CategoryRepository categoryRepository;
 
-    @RequestMapping(value = {"employee/getAllCategory", "superior/getAllCategory"}, method = RequestMethod.GET)
+    @RequestMapping(value = {"employee/getAllCategory", "superior/getAllCategory", "admin/getAllCategory"}, method = RequestMethod.GET)
     public List<Category> getAllCategory(){
         return categoryRepository.findAll();
     }

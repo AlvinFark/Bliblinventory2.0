@@ -133,6 +133,10 @@ table td textarea.formLarge, table td input.formLarge{
   color: #004666 !important;
   background-color: white !important;
 }
+.btn-red{
+  color: white !important;
+  background-color: hotpink !important;
+}
 .kananBawah{
   margin: 5px 0 0 5px;
 }

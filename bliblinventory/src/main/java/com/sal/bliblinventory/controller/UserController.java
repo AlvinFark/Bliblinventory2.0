@@ -48,10 +48,9 @@ public class UserController {
 
     Role userRole = roleRepository.findById(userRequest.getRoleId())
         .orElseThrow(() -> new AppException("User Role not set."));
-    User superior = userRepository.getUserById(userRequest.getSuperiorId());
 
     user.setRoles(Collections.singleton(userRole));
-    user.setSuperior(superior);
+    user.setSuperiorId(userRequest.getSuperiorId());
     user.setId(id);
     user.setIsActive(userRequest.getIsActive());
 

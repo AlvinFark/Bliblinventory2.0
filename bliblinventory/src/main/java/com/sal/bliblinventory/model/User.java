@@ -49,9 +49,7 @@ public class User {
 
     private String phoneNumber;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "superiorId")
-    private User superior;
+    private Long superiorId;
 
     private boolean isActive;
 
@@ -137,8 +135,12 @@ public class User {
     this.phoneNumber = phoneNumber;
   }
 
-  public void setSuperior(User superior) {
-    this.superior = superior;
+  public void setSuperiorId(Long superiorId) {
+    this.superiorId = superiorId;
+  }
+
+  public Long getSuperiorId() {
+    return superiorId;
   }
 
   public String getGender() {
@@ -155,10 +157,6 @@ public class User {
 
   public String getPhoneNumber() {
     return phoneNumber;
-  }
-
-  public User getSuperior() {
-    return superior;
   }
 
   public void setIsActive(boolean isActive) {

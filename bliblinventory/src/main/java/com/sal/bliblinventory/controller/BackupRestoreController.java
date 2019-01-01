@@ -2,12 +2,9 @@ package com.sal.bliblinventory.controller;
 
 import com.smattme.MysqlExportService;
 import com.smattme.MysqlImportService;
-import org.apache.poi.util.IOUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
-import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -16,10 +13,6 @@ import java.util.*;
 @RestController
 @RequestMapping("/api")
 public class BackupRestoreController {
-    //required properties for exporting of db
-    Properties properties = new Properties();
-
-
 
     //properties relating to email config
 //    properties.setProperty(MysqlExportService.EMAIL_HOST, "smtp.mailtrap.io");
@@ -33,9 +26,9 @@ public class BackupRestoreController {
 
     String savePath;
 
-
     @GetMapping("/backup")
     private String backupDB() throws Exception{
+        //required properties for exporting of db
         Properties properties = new Properties();
         properties.put(MysqlExportService.DB_NAME, "bliblinventory");
         properties.setProperty(MysqlExportService.DB_USERNAME, "root");
@@ -61,10 +54,9 @@ public class BackupRestoreController {
     }
 
     @PostMapping("/restore")
-    private void restoreDB(@RequestParam("dbRestore") MultipartFile fileDB) throws Exception{
+    private void restoreDB(@RequestParam("dbRestore") MultipartFile fileSQL) throws Exception{
 
-
-        String sql = new String(fileDB.getBytes());
+        String sql = new String(fileSQL.getBytes());
 
         MysqlImportService.builder()
                 .setDatabase("bliblirestore")

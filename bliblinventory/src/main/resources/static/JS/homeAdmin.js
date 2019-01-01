@@ -77,6 +77,44 @@ $( document ).ready(function() {
     $("#klikLogout").click(function(){
 
     });
+
+    $('#btnBackup').on('click', function () {
+        $.ajax({
+            url: '/api/backup',
+            method: 'GET',
+            dataType : 'text',
+            success: function (data) {
+                 var a = document.createElement('a');
+                // var url = window.URL.createObjectURL(data);
+                var s = "http://127.0.0.1:8000/backup/" + data;
+                a.href = s;
+                a.download = data;
+                a.click();
+                // window.URL.revokeObjectURL(url);
+            }
+        });
+    });
+
+    $('#btnRestore').on('click',(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            type :'POST',
+            url : "/api/restore",
+            data : formData,
+            cache : false,
+            contentType : false,
+            processData : false,
+            success:function(data){
+                console.log("success");
+                console.log(data);
+            },
+            error: function(data){
+                console.log("error");
+                console.log(data);
+            }
+        });
+    }));
 });
 
 function page1(){

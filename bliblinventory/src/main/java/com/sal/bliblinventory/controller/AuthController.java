@@ -1,5 +1,6 @@
 package com.sal.bliblinventory.controller;
 
+import com.sal.bliblinventory.model.Gender;
 import com.sal.bliblinventory.security.JwtTokenProvider;
 import com.sal.bliblinventory.exception.AppException;
 import com.sal.bliblinventory.model.Role;
@@ -79,8 +80,10 @@ public class AuthController {
           HttpStatus.BAD_REQUEST);
     }
 
+    Gender gender = Gender.valueOf(signUpRequest.getGender());
+
     User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
-        signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getGender(),
+        signUpRequest.getEmail(), signUpRequest.getPassword(), gender,
         signUpRequest.getAddress(), signUpRequest.getDateOfBirth(), signUpRequest.getPhoneNumber(), signUpRequest.getGambar());
 
     user.setPassword(passwordEncoder.encode(user.getPassword()));

@@ -2,6 +2,7 @@ package com.sal.bliblinventory.controller;
 
 import com.sal.bliblinventory.exception.AppException;
 import com.sal.bliblinventory.exception.ResourceNotFoundException;
+import com.sal.bliblinventory.model.Gender;
 import com.sal.bliblinventory.model.Role;
 import com.sal.bliblinventory.model.User;
 import com.sal.bliblinventory.payload.SignUpRequest;
@@ -46,8 +47,10 @@ public class UserController {
   @PutMapping("/id/{id}")
   public User editUser(@PathVariable Long id, @Valid @RequestBody SignUpRequest userRequest) {
 
+    Gender gender = Gender.valueOf(userRequest.getGender());
+
     User user = new User(userRequest.getName(), userRequest.getUsername(),
-        userRequest.getEmail(), userRequest.getPassword(), userRequest.getGender(),
+        userRequest.getEmail(), userRequest.getPassword(), gender,
         userRequest.getAddress(), userRequest.getDateOfBirth(), userRequest.getPhoneNumber(), userRequest.getGambar());
 
     Role userRole = roleRepository.findById(userRequest.getRoleId())

@@ -205,4 +205,14 @@ public class UploadController {
 
       Files.copy(fotoKaryawan.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
     }
+
+    @PostMapping("/upload/barang/")
+    public void singleFileUploadBarang(@RequestParam("fotoBarang") MultipartFile fotoBarang, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse) throws Exception {
+
+      String fileName = StringUtils.cleanPath(fotoBarang.getOriginalFilename());
+      Path destination = Paths.get("D:/bliblinventory/images/barang/").toAbsolutePath().normalize();
+      Path targetLocation = destination.resolve(fileName);
+
+      Files.copy(fotoBarang.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+    }
 }

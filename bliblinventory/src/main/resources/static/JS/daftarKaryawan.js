@@ -91,13 +91,13 @@ $( document ).ready(function() {
 
   $( document ).on("click","#buttonYaGanti",function () {
     $('.hideGantiPassword').show();
-    $('.buttonYaGanti').hide();
+    $('#buttonYaGanti').hide();
   });
 
   $( document ).on("click","#buttonCancelGanti",function () {
     $('.hideGantiPassword').hide();
     $('#gantiPassword').val('');
-    $('.buttonYaGanti').show();
+    $('#buttonYaGanti').show();
   });
 
   var passworddetail;

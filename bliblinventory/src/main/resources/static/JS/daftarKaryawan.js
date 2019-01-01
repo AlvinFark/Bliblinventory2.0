@@ -169,6 +169,7 @@ $( document ).ready(function() {
 
   function ajaxGetDetailKaryawan(id) {
     $.ajax({
+      async: false,
       type: "GET",
       url: "/api/users/id/" + id,
       success: function (result) {
@@ -185,8 +186,16 @@ $( document ).ready(function() {
           roleuser="Admin";
           roleid=3;
         };
-        var usersuperior=((result || {}).superior || {}).name;
-        var usersuperiorid=((result || {}).superior || {}).id;
+        var usersuperiorid=result.superiorId;
+        var usersuperior;
+        $.ajax({
+          async : false,
+          type: "GET",
+          url: "/api/users/id/" + usersuperiorid,
+          success: function (result1) {
+            usersuperior = result1.name;
+          }
+        });
         $("#detailFotoKaryawan").css({
           'background-image': 'url("http://127.0.0.1:8000/images/users/'+result.gambar+'")'
         });

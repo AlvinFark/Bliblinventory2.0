@@ -14,22 +14,22 @@ public interface TransaksiRepository extends JpaRepository<Transaksi, Long> {
     List<Transaksi> findAllByUser_IdAndStatusTransaksiAndIsExist(Long userId, StatusTransaksi statusTransaksi, boolean isExist);
 
     //yang status transaksinya menunggu
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByTgPinjam(Long superiorId, boolean isExist, StatusTransaksi statusTransaksi);
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByIdTransaksi(Long superiorId, boolean isExist, StatusTransaksi statusTransaksi);
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByBarang_Nama(Long superiorId, boolean isExist, StatusTransaksi statusTransaksi);
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByUser_Name(Long superiorId, boolean isExist, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndStatusTransaksiOrderByTgPinjam(Long superiorId, boolean isExist, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndStatusTransaksiOrderByIdTransaksi(Long superiorId, boolean isExist, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndStatusTransaksiOrderByBarang_Nama(Long superiorId, boolean isExist, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndStatusTransaksiOrderByUser_Name(Long superiorId, boolean isExist, StatusTransaksi statusTransaksi);
 
     //search by user_name dan yang status transaksinya menunggu
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByTgPinjam(Long superiorId, boolean isExist, String userName, StatusTransaksi statusTransaksi);
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(Long superiorId, boolean isExist, String userName, StatusTransaksi statusTransaksi);
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByBarang_Nama(Long superiorId, boolean isExist, String userName, StatusTransaksi statusTransaksi);
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByUser_Name(Long superiorId, boolean isExist, String userName, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByTgPinjam(Long superiorId, boolean isExist, String userName, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(Long superiorId, boolean isExist, String userName, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByBarang_Nama(Long superiorId, boolean isExist, String userName, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByUser_Name(Long superiorId, boolean isExist, String userName, StatusTransaksi statusTransaksi);
 
     //search by barang_nama dan yang status transaksinya menunggu
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByTgPinjam(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByIdTransaksi(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByBarang_Nama(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
-    List<Transaksi> findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByUser_Name(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByTgPinjam(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByIdTransaksi(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByBarang_Nama(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
+    List<Transaksi> findAllByUser_SuperiorIdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByUser_Name(Long superiorId, boolean isExist, String namaBarang, StatusTransaksi statusTransaksi);
 
     //yang status transaksinya disetujui
     List<Transaksi> findAllByIsExistAndStatusTransaksiOrderByTgPinjam(boolean isExist, StatusTransaksi statusTransaksi);

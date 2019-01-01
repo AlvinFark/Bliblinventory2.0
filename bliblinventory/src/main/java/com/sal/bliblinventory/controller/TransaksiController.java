@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -73,7 +75,7 @@ public class TransaksiController {
     @RequestMapping(value = "superior/getAllEmployeeRequest", method = RequestMethod.GET)
     public List<Transaksi> getAllEmployeeRequestFromSuperior() {
         //sementara pakai user id statis 3L
-        return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByTgPinjam(3L, true, StatusTransaksi.menunggu);
+        return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndStatusTransaksiOrderByTgPinjam(3L, true, StatusTransaksi.menunggu);
     }
 
     //mendapatkan list permintaan pinjaman employee (dari superior) dengan filter dan keyword
@@ -84,29 +86,29 @@ public class TransaksiController {
         if(searchBy==0){ //search by Nama Karyawan yang request
             switch (sortBy){
                 //sort by tgPinjam
-                case 0: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByTgPinjam(3L, true, keyword, StatusTransaksi.menunggu);
+                case 0: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByTgPinjam(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by noOrder
-                case 1: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
+                case 1: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by namaPeminjam
-                case 2: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByUser_Name(3L, true, keyword, StatusTransaksi.menunggu);
+                case 2: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByUser_Name(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by namaBarang
-                case 3: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByBarang_Nama(3L, true, keyword, StatusTransaksi.menunggu);
+                case 3: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByBarang_Nama(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by tgOrder
-                default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
+                default: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
             }
         }
         else{ //search by Nama Barang
             switch (sortBy){
                 //sort by tgPinjam
-                case 0: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByTgPinjam(3L, true, keyword, StatusTransaksi.menunggu);
+                case 0: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByTgPinjam(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by noOrder
-                case 1: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
+                case 1: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by namaPeminjam
-                case 2: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByUser_Name(3L, true, keyword, StatusTransaksi.menunggu);
+                case 2: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByUser_Name(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by namaBarang
-                case 3: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByBarang_Nama(3L, true, keyword, StatusTransaksi.menunggu);
+                case 3: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndBarang_NamaContainingAndStatusTransaksiOrderByBarang_Nama(3L, true, keyword, StatusTransaksi.menunggu);
                 //sort by tgOrder
-                default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
+                default: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndUser_NameContainingAndStatusTransaksiOrderByIdTransaksi(3L, true, keyword, StatusTransaksi.menunggu);
             }
         }
     }
@@ -118,15 +120,15 @@ public class TransaksiController {
         //sementara pakai user id statis 3L
         switch (sortBy){
             //sort by tgPinjam
-            case 0: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByTgPinjam(3L,true, StatusTransaksi.menunggu);
+            case 0: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndStatusTransaksiOrderByTgPinjam(3L,true, StatusTransaksi.menunggu);
             //sort by noOrder
-            case 1: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByIdTransaksi(3L,true, StatusTransaksi.menunggu);
+            case 1: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndStatusTransaksiOrderByIdTransaksi(3L,true, StatusTransaksi.menunggu);
             //sort by namaPeminjam
-            case 2: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByUser_Name(3L,true, StatusTransaksi.menunggu);
+            case 2: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndStatusTransaksiOrderByUser_Name(3L,true, StatusTransaksi.menunggu);
             //sort by namaBarang
-            case 3: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByBarang_Nama(3L,true, StatusTransaksi.menunggu);
+            case 3: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndStatusTransaksiOrderByBarang_Nama(3L,true, StatusTransaksi.menunggu);
             //sort by tgOrder
-            default: return transaksiRepository.findAllByUser_Superior_IdAndIsExistAndStatusTransaksiOrderByIdTransaksi(3L,true, StatusTransaksi.menunggu);
+            default: return transaksiRepository.findAllByUser_SuperiorIdAndIsExistAndStatusTransaksiOrderByIdTransaksi(3L,true, StatusTransaksi.menunggu);
         }
     }
 
@@ -197,7 +199,10 @@ public class TransaksiController {
     @GetMapping("api/transaksi/subbarang/{kodesubbarang}")
     public Transaksi transaksiPerSubBarang(@PathVariable String kodesubbarang){
       SubBarang subBarang = subBarangRepository.getSubBarangByKodeSubBarang(kodesubbarang);
-      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExistAndTgKembali(subBarang, true, null);
+      String str = "1970-01-01 00:00:00";
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+      LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
+      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExistAndTgKembali(subBarang, true, localDateTime);
       Transaksi transaksi = detailTransaksi.getTransaksi();
       return transaksi;
     }

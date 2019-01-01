@@ -256,6 +256,7 @@ $( document ).ready(function() {
         success: function(result){
           $("#daftarKaryawan").html('');
           $("#selectUbahSuperior").html('');
+          $("#IdSuperiorKaryawanBaru").html('');
           for(var i = 0; i < result.length; i++){
             var roleuser, filterRole;
             var roleapi=((result[i] || {}).roles[0] || {}).name;
@@ -266,6 +267,7 @@ $( document ).ready(function() {
               roleuser="Superior";
               filterRole=2;
               $("#selectUbahSuperior").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
+              $("#IdSuperiorKaryawanBaru").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
             } else {
               roleuser="Admin";
               filterRole=3;

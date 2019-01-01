@@ -22,6 +22,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -39,10 +41,9 @@ public class PrintController {
     @Autowired
     DetailTransaksiRepository detailTransaksiRepository;
 
-    //testing
     @RequestMapping(value = "api/printDaftarBarang", method = RequestMethod.GET)
     public void testing(){
-        String FILE_NAME = "D:/bliblinventory/testing.xlsx";
+        String FILE_NAME = "D:/bliblinventory/file-to-print/print-daftar-barang.xlsx";
         XSSFWorkbook workbook = new XSSFWorkbook();
         XSSFSheet sheet = workbook.createSheet("Daftar Barang Inventaris");
 
@@ -110,8 +111,11 @@ public class PrintController {
                 }
                 else{
                     cell.setCellValue("Dipinjam");
-                    //ganti tanggal kembali jadi 000000..
-                    DetailTransaksi detailTransaksi= detailTransaksiRepository.getDetailTransaksiBySubBarang_KodeSubBarangAndTgKembaliAndIsExist(subBarangList.get(j).getKodeSubBarang(), null, true);
+                    String str = "1970-01-01 00:00:00";
+                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    LocalDateTime dateTime = LocalDateTime.parse(str, formatter);
+
+                    DetailTransaksi detailTransaksi= detailTransaksiRepository.getDetailTransaksiBySubBarang_KodeSubBarangAndTgKembaliAndIsExist(subBarangList.get(j).getKodeSubBarang(), dateTime, true);
                     cell = row.createCell(colSubBarang++);
                     cell.setCellValue((String) detailTransaksi.getTransaksi().getUser().getName());
                     cell = row.createCell(colSubBarang++);

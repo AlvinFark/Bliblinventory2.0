@@ -138,7 +138,7 @@ function ajaxGetAllProduct(){
                     '<a class="col s6 l2 m3 modal-trigger productCard" href="#modalDetailPinjam">\n' +
                     '<div class="card">\n' +
                     '<div class="card-image">\n' +
-                    '<img src="/images/barang/'+result[i].gambar+'" style="height:203px; width:100%">\n' +
+                    '<img src="http://127.0.0.1:8000/images/barang/'+result[i].gambar+'" style="height:203px; width:100%">\n' +
                     '</div>\n' +
                     '<div class="card-content">\n' +
                     '<p>'+result[i].kode+'</p>\n' +
@@ -227,7 +227,7 @@ function ajaxGetProductDetail(idBarang) {
                 '</div>' +
                 '</div>');
           $("#detailFotoBarang").css({
-            'background-image': 'url("http://127.0.0.1:8000/bliblinventoryimages/barang/'+result.gambar+'")'
+            'background-image': 'url("http://127.0.0.1:8000/images/barang/'+result.gambar+'")'
           });
         },
         error : function(e) {
@@ -284,7 +284,7 @@ function ajaxGetProductCustom(url){
                     '<a class="col s6 l2 m3 modal-trigger" href="#modalDetailPinjam">\n' +
                     '<div class="card">\n' +
                     '<div class="card-image">\n' +
-                    '<img src="/images/barang/'+result[i].gambar+'" style="height:203px; width:100%">\n' +
+                    '<img src="http://127.0.0.1:8000/images/barang/'+result[i].gambar+'" style="height:203px; width:100%">\n' +
                     '</div>\n' +
                     '<div class="card-content">\n' +
                     '<p>'+result[i].kode+'</p>\n' +

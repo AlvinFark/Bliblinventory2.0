@@ -15,6 +15,8 @@ $( document ).ready(function() {
         for (var i=0; i<result.length; i++){
           $("#selectorKategoriTable").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
         }
+        $("#ubahKategoriBarang").append('<option value="tambahKategoriBaru">tambah kategori...</option>')
+        $("#kategoriBarangBaru").append('<option value="tambahKategoriBaru">tambah kategori...</option>')
       }
     });
 
@@ -84,6 +86,7 @@ $( document ).ready(function() {
     }
 
     function ajaxGetBarangTable(keyword, filter) {
+      $(".tambahKategoriBaru").hide();
       var count=0;
       $.ajax({
         type : "GET",
@@ -185,13 +188,14 @@ $( document ).ready(function() {
   });
 
     $(document).on("click", ".triggerModalTable", function(){
+      $(".tambahKategoriEdit").hide();
       kode = jQuery(this).parent("td").parent("tr"). children(".kodeBarangTable").text();
       $.ajax({
         type : "GET",
         url : "employee/getDetailProduct/"+kode,
         success: function(result) {
           $("#imgModalBarang").css({
-            'background-image': 'url("http://127.0.0.1:8000/bliblinventoryimages/barang/'+result.gambar+'")'
+            'background-image': 'url("http://127.0.0.1:8000/images/barang/'+result.gambar+'")'
           });
 
           var kategoriBarang = ((result || {}).category || {}).name;
@@ -223,8 +227,22 @@ $( document ).ready(function() {
               "gambar" : gambar,
               "isExist" : true
             };
+            if (keyword=="tambahKategoriBaru"){
+              keyword = $("#formTambahKategoriEdit").val();
+              var jsonKategoriBaru = {
+                "name" : keyword
+              };
+              $.ajax({
+                type : "POST",
+                url : "/api/category/",
+                contentType : 'application/json',
+                data : JSON.stringify(jsonKategoriBaru),
+                async : false
+              })
+            }
             $.ajax({
               type : "PUT",
+              async : false,
               url : "/api/barang/"+keyword,
               contentType: 'application/json',
               data: JSON.stringify(jsonUbahKaryawan),
@@ -363,6 +381,23 @@ $( document ).ready(function() {
     });
   }));
 
+
+  $( document ).on("change","#ubahKategoriBarang",function (){
+    var selcategory=$("#ubahKategoriBarang").val();
+    if (selcategory=="tambahKategoriBaru"){
+      $(".tambahKategoriEdit").show();} else {
+      $(".tambahKategoriEdit").hide();
+    }
+  });
+
+  $( document ).on("change","#kategoriBarangBaru",function (){
+    var selcategory=$("#kategoriBarangBaru").val();
+    if (selcategory=="tambahKategoriBaru"){
+      $(".tambahKategoriBaru").show();} else {
+      $(".tambahKategoriBaru").hide();
+    }
+  });
+
     $(document).on("click", "#submitBarangBaru", function(){
       $('#formGambarBarangBaru').submit();
       var keyword = $("#kategoriBarangBaru").val();
@@ -376,7 +411,21 @@ $( document ).ready(function() {
         "gambar" : fileGambar,
         "isExist" : true
       };
+      if (keyword=="tambahKategoriBaru"){
+        keyword = $("#formTambahKategoriBaru").val();
+        var jsonKategoriBaru = {
+          "name" : keyword
+        };
+        $.ajax({
+          type : "POST",
+          url : "/api/category/",
+          contentType : 'application/json',
+          data : JSON.stringify(jsonKategoriBaru),
+          async : false
+        })
+      }
       $.ajax({
+        async : false,
         type : "PUT",
         url : "/api/barang/"+keyword,
         contentType: 'application/json',

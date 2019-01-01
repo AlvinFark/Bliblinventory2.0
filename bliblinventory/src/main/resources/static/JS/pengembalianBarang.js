@@ -48,7 +48,7 @@ $( document ).ready(function() {
           var status = ((arrObject[i] || {}).transaksi || {}).statusTransaksi;
           var param;
           if (filter=="user"){param=namaUser} else {param=namaBarang};
-          if (status=="diassign"&&result[i].tgKembali==null&&param.toLowerCase().includes(keyword)&&(filterKategori=="All"||filterKategori==kategoriBarang)){
+          if (status=="diassign"&&result[i].tgKembali=="1970-01-01T00:00:00"&&param.toLowerCase().includes(keyword)&&(filterKategori=="All"||filterKategori==kategoriBarang)){
             document.getElementById("tabelKembaliBarang").innerHTML += '' +
               '<tr>\n' +
               '  <td class="checkboxTd"><p><label><input type="checkbox" id="cbxback'+result[i].idDetailTransaksi+'" class="cbxBack cbxBackBody" /><span></span></label></p></td>\n' +

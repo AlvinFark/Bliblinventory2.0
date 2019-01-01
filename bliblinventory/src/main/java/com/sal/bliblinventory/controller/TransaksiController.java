@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -197,7 +199,10 @@ public class TransaksiController {
     @GetMapping("api/transaksi/subbarang/{kodesubbarang}")
     public Transaksi transaksiPerSubBarang(@PathVariable String kodesubbarang){
       SubBarang subBarang = subBarangRepository.getSubBarangByKodeSubBarang(kodesubbarang);
-      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExistAndTgKembali(subBarang, true, null);
+      String str = "1970-01-01 00:00:00";
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+      LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
+      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExistAndTgKembali(subBarang, true, localDateTime);
       Transaksi transaksi = detailTransaksi.getTransaksi();
       return transaksi;
     }

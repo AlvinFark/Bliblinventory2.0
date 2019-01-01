@@ -188,7 +188,7 @@ $( document ).ready(function() {
         var usersuperior=((result || {}).superior || {}).name;
         var usersuperiorid=((result || {}).superior || {}).id;
         $("#detailFotoKaryawan").css({
-          'background-image': 'url("http://127.0.0.1:8000/bliblinventoryimages/users/'+result.gambar+'")'
+          'background-image': 'url("http://127.0.0.1:8000/images/users/'+result.gambar+'")'
         });
 
         $("#detailIdKaryawan").html(result.id);
@@ -278,7 +278,7 @@ $( document ).ready(function() {
                 '<div class="card">\n' +
                 '<div class="card-image" style="padding:15px">\n' +
                 '<div class="kontainerImgCard" style="' +
-                'background-image: url(http://127.0.0.1:8000/bliblinventoryimages/users/'+result[i].gambar+');">' +
+                'background-image: url(http://127.0.0.1:8000/images/users/'+result[i].gambar+');">' +
                 '</div>' +
                 '</div>\n' +
                 '<div class="card-content">\n' +

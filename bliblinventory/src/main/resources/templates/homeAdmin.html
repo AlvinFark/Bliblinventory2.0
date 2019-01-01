@@ -115,14 +115,19 @@
 			<tr>
 				<td class="tdAtrib">Backup</td>
 				<td>
-					<a class="waves-effect waves-light btn btn-small">unduh</a>
+					<a id="btnBackup" class="waves-effect waves-light btn btn-small">unduh</a>
 				</td>
 			</tr>
 			<tr>
-				<td class="tdAtrib">Restore</td>
-				<td>
-					<input class="" id="fileusdapload" type="file" name="files[]" style="padding:0">
-				</td>
+				<form>
+					<td class="tdAtrib">Restore</td>
+					<td>
+						<input class="" id="dbRestore" type="file" accept=".sql" name="dbRestore" style="padding:0">
+					</td>
+					<td>
+						<input type="submit" id="btnRestore" value="RESTORE" class="waves-effect waves-light btn" style="margin-right: 4px;">
+					</td>
+				</form>
 			</tr>
 		</table>
 	</div>

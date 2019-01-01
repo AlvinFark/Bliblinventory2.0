@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,6 +22,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -64,13 +66,18 @@ public class UploadController {
 ////        } catch (IOException e) {
 ////            e.printStackTrace();
 ////        }
-
-
-        File uploadedFile = new File(fileExcel.getOriginalFilename());
-        uploadedFile.createNewFile();
-        FileOutputStream fos = new FileOutputStream(uploadedFile);
-        fos.write(fileExcel.getBytes());
+        
+        File excel = File.createTempFile(UUID.randomUUID().toString(), "temp");
+        FileOutputStream fos = new FileOutputStream(excel);
+        IOUtils.copy(fileExcel.getInputStream(), fos);
         fos.close();
+
+
+//        File uploadedFile = new File("tambahBulk/" + fileExcel.getOriginalFilename());
+//        uploadedFile.createNewFile();
+//        FileOutputStream fos = new FileOutputStream(uploadedFile);
+//        fos.write(fileExcel.getBytes());
+//        fos.close();
 
         /**
          * save file to temp
@@ -99,7 +106,7 @@ public class UploadController {
 
         //membaca isi dari dokumen excel
         try {
-            FileInputStream excelFile = new FileInputStream(uploadedFile);
+            FileInputStream excelFile = new FileInputStream(excel);
             Workbook workbook = new XSSFWorkbook(excelFile);
             Sheet datatypeSheet = workbook.getSheetAt(0);
             Iterator<Row> iterator = datatypeSheet.iterator();
@@ -108,7 +115,7 @@ public class UploadController {
             String nama = " ";
             String deskripsi = " ";
             String gambar = " ";
-            double kuantitas;
+            double kuantitas = 0;
             Long harga = 0L;
             String kategori = " ";
 
@@ -145,7 +152,20 @@ public class UploadController {
                         Barang barang = new Barang(kode,nama,gambar,deskripsi,harga,true,category);
                         barangRepository.save(barang);
 
-//                        SubBarang subBarang = new SubBarang()
+                        // Menambah sub barang berdasarkan kuantitas
+                        for(int i=1;i<=kuantitas;i++){
+                            String s = "";
+                            if(i<10)
+                                s = "000";
+                            else if(i < 100)
+                                s = "00";
+                            else if(i < 1000)
+                                s = "0";
+                            String kodeSubBarang = kode + s + i;
+                            SubBarang subBarang = new SubBarang(kodeSubBarang, barang);
+
+                            subBarangRepository.save(subBarang);
+                        }
                     }
                     if(kolom == 6)
                         baris++;
@@ -174,5 +194,25 @@ public class UploadController {
         //return "redirect:/admin";
 
         httpResponse.sendRedirect("/admin");
+    }
+
+    @PostMapping("/upload/users/")
+    public void singleFileUploadUser(@RequestParam("fotoKaryawan") MultipartFile fotoKaryawan, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse) throws Exception {
+
+      String fileName = StringUtils.cleanPath(fotoKaryawan.getOriginalFilename());
+      Path destination = Paths.get("D:/bliblinventory/images/users/").toAbsolutePath().normalize();
+      Path targetLocation = destination.resolve(fileName);
+
+      Files.copy(fotoKaryawan.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+    }
+
+    @PostMapping("/upload/barang/")
+    public void singleFileUploadBarang(@RequestParam("fotoBarang") MultipartFile fotoBarang, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse) throws Exception {
+
+      String fileName = StringUtils.cleanPath(fotoBarang.getOriginalFilename());
+      Path destination = Paths.get("D:/bliblinventory/images/barang/").toAbsolutePath().normalize();
+      Path targetLocation = destination.resolve(fileName);
+
+      Files.copy(fotoBarang.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
     }
 }

@@ -38,7 +38,27 @@ public class SignUpRequest {
 
     private boolean isActive;
 
-    public String getName() {
+    private String gambar;
+
+    private boolean passwordBaru;
+
+  public void setPasswordBaru(boolean passwordBaru) {
+    this.passwordBaru = passwordBaru;
+  }
+
+  public boolean getPasswordBaru(){
+    return this.passwordBaru;
+  }
+
+  public void setGambar(String gambar) {
+    this.gambar = gambar;
+  }
+
+  public String getGambar() {
+    return gambar;
+  }
+
+  public String getName() {
         return name;
     }
 

@@ -54,6 +54,7 @@ $( document ).ready(function() {
     function deleteBarang(kode) {
       $.ajax({
         type : "GET",
+        async : false,
         url : "/api/barang/"+kode+"/subbarang",
         success: function (result1) {
           for (var i=0; i<result1.length; i++){
@@ -69,7 +70,6 @@ $( document ).ready(function() {
               contentType: 'application/json',
               data: JSON.stringify(jsonSubBarang),
               complete: function(result3) {
-                alert(result3.responseText);
               }
             })
           }
@@ -247,13 +247,13 @@ $( document ).ready(function() {
               contentType: 'application/json',
               data: JSON.stringify(jsonUbahKaryawan),
               success: function(result) {
-                alert('data barang berhasil diubah');
-                ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
               },
               error: function (result) {
                 alert(JSON.stringify(result))
               }
             });
+            alert('data barang berhasil diubah');
+            ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
           });
 
           $("#tombolHapusBarang").click(function () {
@@ -344,7 +344,7 @@ $( document ).ready(function() {
     var formData = new FormData(this);
     $.ajax({
       type:'POST',
-      url: "/api/upload/barang/" + $("#kodeBarangTable").text(),
+      url: "/api/upload/barang/",
       data:formData,
       cache:false,
       contentType: false,
@@ -365,7 +365,7 @@ $( document ).ready(function() {
     var formData = new FormData(this);
     $.ajax({
       type:'POST',
-      url: "/api/upload/barang/" + $("#idBarangBaru").val(),
+      url: "/api/upload/barang/",
       data:formData,
       cache:false,
       contentType: false,
@@ -431,13 +431,25 @@ $( document ).ready(function() {
         contentType: 'application/json',
         data: JSON.stringify(jsonKaryawanBaru),
         success: function(result) {
-          alert('barang baru berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar barang');
-          ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
         },
         error: function (result) {
           alert(JSON.stringify(result))
         }
       });
+      for (var i=1; i<=$("#jumlahBarangBaru").val(); i++){
+        var str = "" + i;
+        var kodeBarang = $("#idBarangBaru").val();
+        var kodeSubBarang = kodeBarang + ('0000'+str).substring(str.length);
+        $.ajax({
+          async: false,
+          type: "POST",
+          url: "/api/barang/" + kodeBarang + "/" + kodeSubBarang,
+          success: function (result) {
+          }
+        });
+      }
+      alert('barang baru berhasil ditambahkan');
+      ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
     });
 
     $("#triggerTambahBarangSatuan").click(function () {

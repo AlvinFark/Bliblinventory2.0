@@ -33,6 +33,9 @@ $( document ).ready(function() {
         $("#buttonBackToDetailCard").fadeIn();
         $("#buttonPinjam").hide();
         $("#detailBarangCard").fadeOut();
+        $("#inputDate").val(getDateNow());
+        $("#inputTotalOrder").val(1);
+        $("#keteranganPinjam").val("");
     });
 
     $("#buttonBackToDetailCard").click(function(){

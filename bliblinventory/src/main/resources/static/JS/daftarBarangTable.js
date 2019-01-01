@@ -210,6 +210,7 @@ $( document ).ready(function() {
           $('#ubahKategoriBarang option[value="'+kategoriBarang+'"]').prop('selected', true);
 
           $("#tombolSimpanEditan").click(function () {
+            $('#formGantiFotoBarang').submit();
             var keyword = $("#ubahKategoriBarang").val();
             var path = $("#fileUploadGantiFotoBarang").val();
             var gambar = path.split('\\').pop();
@@ -320,7 +321,50 @@ $( document ).ready(function() {
       });
     });
 
+  $('#formGantiFotoBarang').on('submit',(function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    $.ajax({
+      type:'POST',
+      url: "/api/upload/barang/" + $("#kodeBarangTable").text(),
+      data:formData,
+      cache:false,
+      contentType: false,
+      processData: false,
+      success:function(data){
+        console.log("success");
+        console.log(data);
+      },
+      error: function(data){
+        console.log("error");
+        console.log(data);
+      }
+    });
+  }));
+
+  $('#formGambarBarangBaru').on('submit',(function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    $.ajax({
+      type:'POST',
+      url: "/api/upload/barang/" + $("#idBarangBaru").val(),
+      data:formData,
+      cache:false,
+      contentType: false,
+      processData: false,
+      success:function(data){
+        console.log("success");
+        console.log(data);
+      },
+      error: function(data){
+        console.log("error");
+        console.log(data);
+      }
+    });
+  }));
+
     $(document).on("click", "#submitBarangBaru", function(){
+      $('#formGambarBarangBaru').submit();
       var keyword = $("#kategoriBarangBaru").val();
       var path = $("#gambarBarangBaru").val();
       var fileGambar = path.split('\\').pop();
@@ -375,8 +419,8 @@ $( document ).ready(function() {
                 alert('sub barang baru berhasil ditambahkan');
               }
             });
-            ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
           }
+          ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
         }
       });
     })

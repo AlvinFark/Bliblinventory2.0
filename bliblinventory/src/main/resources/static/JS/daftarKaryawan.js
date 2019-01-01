@@ -124,7 +124,7 @@ $( document ).ready(function() {
     var password = $('#gantiPassword').val();
     var passbaru;
     if (password=="") {
-      password = passworddetail;
+      password = "password";
       passbaru = false;
     } else {
       passbaru = true;

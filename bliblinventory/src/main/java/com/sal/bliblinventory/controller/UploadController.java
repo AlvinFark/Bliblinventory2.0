@@ -12,6 +12,7 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -21,6 +22,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Iterator;
 import java.util.UUID;
 
@@ -174,5 +176,15 @@ public class UploadController {
         //return "redirect:/admin";
 
         httpResponse.sendRedirect("/admin");
+    }
+
+    @PostMapping("/upload/users/")
+    public void singleFileUploadUser(@RequestParam("fotoKaryawan") MultipartFile fotoKaryawan, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse) throws Exception {
+
+      String fileName = StringUtils.cleanPath(fotoKaryawan.getOriginalFilename());
+      Path destination = Paths.get("D:/bliblinventory/images/users/").toAbsolutePath().normalize();
+      Path targetLocation = destination.resolve(fileName);
+
+      Files.copy(fotoKaryawan.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
     }
 }

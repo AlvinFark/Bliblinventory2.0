@@ -52,7 +52,7 @@ $( document ).ready(function() {
     var formData = new FormData(this);
     $.ajax({
       type:'POST',
-      url: "/api/upload/users/" + $("#detailIdKaryawan").text(),
+      url: "/api/upload/users/",
       data:formData,
       cache:false,
       contentType: false,
@@ -89,6 +89,20 @@ $( document ).ready(function() {
     });
   }));
 
+  $( document ).on("click","#buttonYaGanti",function () {
+    $('.hideGantiPassword').show();
+    $('.buttonYaGanti').hide();
+  });
+
+  $( document ).on("click","#buttonCancelGanti",function () {
+    $('.hideGantiPassword').hide();
+    $('#gantiPassword').val('');
+    $('.buttonYaGanti').show();
+  });
+
+  var passworddetail;
+  var gambardetail;
+
   $("#buttonSimpanUbahanKaryawan").click(function(){
     $('#formGantiGambarKaryawan').submit();
     var id=$('#detailIdKaryawan').text();
@@ -104,7 +118,17 @@ $( document ).ready(function() {
     var uname=$("#detailUsernameKaryawan").text();
     var path = $("#gantiFotoKaryawan").val();
     var gambar = path.split('\\').pop();
-    if (gambar=="") {gambar = result.gambar};
+    if (gambar=="") {
+      gambar = gambardetail
+    };
+    var password = $('#gantiPassword').val();
+    var passbaru;
+    if (password=="") {
+      password = passworddetail;
+      passbaru = false;
+    } else {
+      passbaru = true;
+    }
     var jsonUbahDetail={
       "name" : name,
       "username" : uname,
@@ -113,10 +137,12 @@ $( document ).ready(function() {
       "dateOfBirth" : dob,
       "phoneNumber" : hp,
       "email" : email,
-      "password" : hp,
+      "password" : password,
       "superiorId" : superiorId,
       "roleId" : roleId,
-      "isActive" : true
+      "isActive" : true,
+      "gambar" : gambar,
+      "passwordBaru" : passbaru
     };
     $.ajax({
       type: "PUT",
@@ -168,12 +194,18 @@ $( document ).ready(function() {
   });
 
   function ajaxGetDetailKaryawan(id) {
+    $('.hideGantiPassword').hide();
+    $('#gantiPassword').val('');
+    $('.buttonYaGanti').show();
     $.ajax({
+      async: false,
       type: "GET",
       url: "/api/users/id/" + id,
       success: function (result) {
         console.log(result);
         var roleuser, roleid;
+        passworddetail = result.password;
+        gambardetail = result.gambar;
         var roleapi=((result || {}).roles[0] || {}).name;
         if (roleapi=="ROLE_EMPLOYEE"){
           roleuser="Staff";
@@ -185,8 +217,16 @@ $( document ).ready(function() {
           roleuser="Admin";
           roleid=3;
         };
-        var usersuperior=((result || {}).superior || {}).name;
-        var usersuperiorid=((result || {}).superior || {}).id;
+        var usersuperiorid=result.superiorId;
+        var usersuperior;
+        $.ajax({
+          async : false,
+          type: "GET",
+          url: "/api/users/id/" + usersuperiorid,
+          success: function (result1) {
+            usersuperior = result1.name;
+          }
+        });
         $("#detailFotoKaryawan").css({
           'background-image': 'url("http://127.0.0.1:8000/images/users/'+result.gambar+'")'
         });
@@ -226,94 +266,96 @@ $( document ).ready(function() {
     });
   };
 
-    ajaxGetUsers("",0);
+  ajaxGetUsers("",0);
 
-    $('select').formSelect();
-    $('.modal').modal();
- 
-    $(".card").hover(function(){
-        $(this).addClass('z-depth-3');}, function(){$(this).removeClass('z-depth-3');
-    });
+  $('select').formSelect();
+  $('.modal').modal();
 
-    var roleawalkb=$("#roleKaryawanBaru").prop('selectedIndex');
-    if (roleawalkb==0){
+  $(".card").hover(function(){
+      $(this).addClass('z-depth-3');}, function(){$(this).removeClass('z-depth-3');
+  });
+
+  var roleawalkb=$("#roleKaryawanBaru").prop('selectedIndex');
+  if (roleawalkb==0){
+    $(".tambahSuperior").show();} else {
+    $(".tambahSuperior").hide();
+  }
+
+  $( document ).on("change","#roleKaryawanBaru",function (){
+    var rolekb=$("#roleKaryawanBaru").prop('selectedIndex');
+    if (rolekb==0){
       $(".tambahSuperior").show();} else {
       $(".tambahSuperior").hide();
     }
+  });
 
-    $( document ).on("change","#roleKaryawanBaru",function (){
-      var rolekb=$("#roleKaryawanBaru").prop('selectedIndex');
-      if (rolekb==0){
-        $(".tambahSuperior").show();} else {
-        $(".tambahSuperior").hide();
-      }
-    });
-
-    function ajaxGetUsers(keyword, filter){
-      $.ajax({
-        type : "GET",
-        url : "/api/users/"+keyword,
-        success: function(result){
-          $("#daftarKaryawan").html('');
-          $("#selectUbahSuperior").html('');
-          $("#IdSuperiorKaryawanBaru").html('');
-          for(var i = 0; i < result.length; i++){
-            var roleuser, filterRole;
-            var roleapi=((result[i] || {}).roles[0] || {}).name;
-            if (roleapi=="ROLE_EMPLOYEE"){
-              roleuser="Staff";
-              filterRole=1;
-            } else if (roleapi=="ROLE_SUPERIOR"){
-              roleuser="Superior";
-              filterRole=2;
-              $("#selectUbahSuperior").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
-              $("#IdSuperiorKaryawanBaru").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
-            } else {
-              roleuser="Admin";
-              filterRole=3;
-            };
-            if ((filter==0||filterRole==filter)&&result[i].isActive==1){
-              $("#daftarKaryawan").append('' +
-                '<a class="col s6 l2 m3 modal-trigger triggerDetailKaryawan" id="" href="#modalDetailKaryawan">\n' +
-                '<div class="card">\n' +
-                '<div class="card-image" style="padding:15px">\n' +
-                '<div class="kontainerImgCard" style="' +
-                'background-image: url(http://127.0.0.1:8000/images/users/'+result[i].gambar+');">' +
-                '</div>' +
-                '</div>\n' +
-                '<div class="card-content">\n' +
-                '<p style="margin-bottom:0" hidden>'+result[i].id+'</p>\n' +
-                '<h6 style="margin-bottom:0">'+result[i].name+'</h6>\n' +
-                '<p>'+roleuser+'</p>\n' +
-                '</div>\n' +
-                '</div>\n' +
-                '</a>');
-            }
+  function ajaxGetUsers(keyword, filter){
+    passworddetail = "";
+    gambardetail = "";
+    $.ajax({
+      type : "GET",
+      url : "/api/users/"+keyword,
+      success: function(result){
+        $("#daftarKaryawan").html('');
+        $("#selectUbahSuperior").html('');
+        $("#IdSuperiorKaryawanBaru").html('');
+        for(var i = 0; i < result.length; i++){
+          var roleuser, filterRole;
+          var roleapi=((result[i] || {}).roles[0] || {}).name;
+          if (roleapi=="ROLE_EMPLOYEE"){
+            roleuser="Staff";
+            filterRole=1;
+          } else if (roleapi=="ROLE_SUPERIOR"){
+            roleuser="Superior";
+            filterRole=2;
+            $("#selectUbahSuperior").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
+            $("#IdSuperiorKaryawanBaru").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
+          } else {
+            roleuser="Admin";
+            filterRole=3;
+          };
+          if ((filter==0||filterRole==filter)&&result[i].isActive==1){
+            $("#daftarKaryawan").append('' +
+              '<a class="col s6 l2 m3 modal-trigger triggerDetailKaryawan" id="" href="#modalDetailKaryawan">\n' +
+              '<div class="card">\n' +
+              '<div class="card-image" style="padding:15px">\n' +
+              '<div class="kontainerImgCard" style="' +
+              'background-image: url(http://127.0.0.1:8000/images/users/'+result[i].gambar+');">' +
+              '</div>' +
+              '</div>\n' +
+              '<div class="card-content">\n' +
+              '<p style="margin-bottom:0" hidden>'+result[i].id+'</p>\n' +
+              '<h6 style="margin-bottom:0">'+result[i].name+'</h6>\n' +
+              '<p>'+roleuser+'</p>\n' +
+              '</div>\n' +
+              '</div>\n' +
+              '</a>');
           }
-        },
-        error : function(e) {
-          console.log("ERROR: ", e);
-          window.alert("error");
         }
-      });
-    }
-
-    $("#searchKaryawan").keypress(function(e) {
-      if(e.which == 13) {
-        ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
+      },
+      error : function(e) {
+        console.log("ERROR: ", e);
+        window.alert("error");
       }
     });
+  }
 
-    $( document ).on("change","#filterKaryawan",function (){
+  $("#searchKaryawan").keypress(function(e) {
+    if(e.which == 13) {
       ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
-    });
+    }
+  });
 
-   $("#btnRefreshListKaryawan").click(function() {
+  $( document ).on("change","#filterKaryawan",function (){
+    ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
+  });
+
+  $("#btnRefreshListKaryawan").click(function() {
     ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
   });
 
   $("#btnKirimKaryawanBaru").click(function(){
-    $('#formGambarKaryawanBaru').submit;
+    $('#formGambarKaryawanBaru').submit();
     var nname=$('#namaKaryawanBaru').val();
     var ngender=$("#genderKaryawanBaru").val();
     var naddress=$("#alamatKaryawanBaru").val();

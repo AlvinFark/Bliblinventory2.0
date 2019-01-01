@@ -8,6 +8,7 @@ import com.sal.bliblinventory.payload.SignUpRequest;
 import com.sal.bliblinventory.repository.RoleRepository;
 import com.sal.bliblinventory.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -23,6 +24,9 @@ public class UserController {
 
   @Autowired
   UserRepository userRepository;
+
+  @Autowired
+  PasswordEncoder passwordEncoder;
 
   @GetMapping
   public List<User> listAllUser(){
@@ -44,7 +48,7 @@ public class UserController {
 
     User user = new User(userRequest.getName(), userRequest.getUsername(),
         userRequest.getEmail(), userRequest.getPassword(), userRequest.getGender(),
-        userRequest.getAddress(), userRequest.getDateOfBirth(), userRequest.getPhoneNumber());
+        userRequest.getAddress(), userRequest.getDateOfBirth(), userRequest.getPhoneNumber(), userRequest.getGambar());
 
     Role userRole = roleRepository.findById(userRequest.getRoleId())
         .orElseThrow(() -> new AppException("User Role not set."));
@@ -53,6 +57,12 @@ public class UserController {
     user.setSuperiorId(userRequest.getSuperiorId());
     user.setId(id);
     user.setIsActive(userRequest.getIsActive());
+    if (userRequest.getPasswordBaru()==true){
+      user.setPassword(passwordEncoder.encode(user.getPassword()));
+    } else {
+      User user1 = userRepository.getUserById(id);
+      user.setPassword(user1.getPassword());
+    }
 
     return userRepository.findById(id).map(u -> {
       u = user;

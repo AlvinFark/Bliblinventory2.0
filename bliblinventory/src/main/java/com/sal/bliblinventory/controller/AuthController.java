@@ -81,7 +81,7 @@ public class AuthController {
 
     User user = new User(signUpRequest.getName(), signUpRequest.getUsername(),
         signUpRequest.getEmail(), signUpRequest.getPassword(), signUpRequest.getGender(),
-        signUpRequest.getAddress(), signUpRequest.getDateOfBirth(), signUpRequest.getPhoneNumber());
+        signUpRequest.getAddress(), signUpRequest.getDateOfBirth(), signUpRequest.getPhoneNumber(), signUpRequest.getGambar());
 
     user.setPassword(passwordEncoder.encode(user.getPassword()));
 

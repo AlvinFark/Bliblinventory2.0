@@ -69,7 +69,7 @@ public class BarangController {
     }
 
     @RequestMapping(value = {"employee/getDetailProduct/{param1}", "superior/getDetailProduct/{param1}"}, method = RequestMethod.GET)
-    public Barang getDetailBarang(Model md, @PathVariable(value = "param1") String param1){
+    public Barang getDetailBarang(@PathVariable(value = "param1") String param1){
         return barangRepository.findBarangByKode(param1);
     }
 

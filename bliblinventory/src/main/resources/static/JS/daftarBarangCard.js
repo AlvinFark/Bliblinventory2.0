@@ -193,13 +193,14 @@ function ajaxGetProductDetail(idBarang) {
         type : "GET",
         url : window.location + "/getDetailProduct/" + idBarang,
         success: function(result){
-            $("#detailBarangCard").html('<div>\n' +
-                '<img src="/images/barang/'+result.gambar+'" style="height:300px; width:auto"/>\n' +
-                '</div>\n' +
-                '<div>\n' +
-                '<table class="tableNoBorder">\n' +
+            $("#detailBarangCard").html('' +
+                '<h4 class="headerModal">Detail Barang</h4>' +
+                '<div class="valign-wrapper">\n' +
+                '<div class="kontainerImgModalBarang" id="detailFotoBarang"></div>' +
+                '<div>' +
+                '<table class="tableNoBorder smallPadding">\n' +
                 '<tr>\n' +
-                '<td class="tdAtrib" width="120">Kode</td>\n' +
+                '<td class="tdAtrib" width="150px">Kode</td>\n' +
                 '<td class="tdInfo">'+result.kode+'</td>\n' +
                 '</tr>\n' +
                 '<tr>\n' +
@@ -220,11 +221,14 @@ function ajaxGetProductDetail(idBarang) {
                 '</tr>\n' +
                 '<tr>\n' +
                 '<td class="tdAtrib">Deskripsi</td>\n' +
-                '<td class="tdInfo" style="height: 185px; overflow-y: scroll;">'+result.deskripsi+'</td>\n' +
+                '<td class="tdInfo">'+result.deskripsi+'</td>\n' +
                 '</tr>\n' +
                 '</table>\n' +
+                '</div>' +
                 '</div>');
-
+          $("#detailFotoBarang").css({
+            'background-image': 'url("http://127.0.0.1:8000/bliblinventoryimages/barang/'+result.gambar+'")'
+          });
         },
         error : function(e) {
             console.log("ERROR: ", e);

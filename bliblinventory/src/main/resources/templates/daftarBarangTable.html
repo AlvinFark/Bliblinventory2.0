@@ -42,11 +42,11 @@
 		<div class="modal-content">
 			<div id="detailBarangTable">
 				<h4 class="headerModal">Detail Barang</h4>
-				<div class="valign-wrapper">
-          <div class="kontainerImgModal" id="imgModalBarang" style="background-image: url('/a.jpg');">
+				<div class="valign-wrapper" style="margin-bottom: 15px">
+          <div class="kontainerImgModalBarang" id="imgModalBarang">
           </div>
 					<div>
-						<table class="tableNoBorder">
+						<table class="tableNoBorder smallPadding">
 							<tr>
 								<td class="tdAtrib" width="120">Kode</td>
 								<td class="tdInfo" id="kodeBarangTable"></td>
@@ -127,7 +127,9 @@
 							<tr>
 								<td class="tdAtrib">Gambar Produk</td>
 								<td>
-									<input id="ubahGambarProduk" type="file" name="files[]" value="" style="padding:0">
+                  <form id="formGantiFotoBarang" name="formGantiFoto">
+                    <p> File : &ensp;<input id="fileUploadGantiFotoBarang" class="file-input" type="file" name="fileUploadGantiFotoBarang" style="padding:0"> </p>
+                  </form>
 								</td>
 							</tr>
 							<tr>
@@ -146,21 +148,20 @@
 				<h4 class="headerModal">Tambah Barang Satuan</h4>
 				<div id="tambahBarangSatuan" style="margin-top: 10px">
           <div class="valign-wrapper">
-            <div class="tdAtrib" style="width:100px;">ID Satuan</div>
-            <textarea class="barangSatuan" name="satuan" cols="30" rows="1" style="height:30px; padding: 5px 0 0 5px;"></textarea>
+            <div class="tdAtrib" style="width:100px;">Jumlah</div>
+            <input id="jumlahTambahSatuan" type="number" name="id" value="">
           </div>
 				</div>
-				<a class="waves-effect waves-light btn" id="triggerTambahBarangSatuan" style="margin: 10px 0 0 285px;">tambah lagi</a>
 			</div>
 		</div>
     <div class="modal-footer">
-			<a href="#!" class="modal-close btn-flat left clickDetailTable">tutup</a>
-			<a id="backToDetailTable" href="#" class="btn-flat left clickDetailTable">kembali</a>
+			<a class="modal-close btn-flat left clickDetailTable">tutup</a>
+			<a id="backToDetailTable" class="btn-flat left clickDetailTable">kembali</a>
       <a id="tombolHapusBarang" class="modal-close waves-effect waves-light btn">hapus</a>
 			<a id="tombolEditBarang" class="waves-effect waves-light btn clickEditTable">ubah</a>
-			<a id="clickTambahSatuan" class="waves-effect waves-light btn">tambah satuan</a>
-			<a id="tombolSimpanEditan" class="modal-close waves-effect waves-light btn">simpan</a>
-			<a id="tombolSimpanSatuan" class="modal-close waves-effect waves-light btn">simpan</a>
+			<a id="tombolTambahSatuan" class="waves-effect waves-light btn clickTambahSatuan">tambah satuan</a>
+      <a id="tombolSimpanEditan" class="waves-effect waves-light btn modal-close">simpan</a>
+      <a id="tombolSimpanSatuan" class="modal-close waves-effect waves-light btn">tambah</a>
     </div>
 	</div>
   <div id="modalTambahProduk" class="modal modal-fixed-footer">
@@ -206,7 +207,9 @@
 				<tr>
 					<td class="tdAtrib">Gambar Barang</td>
 					<td>
-						<input id="gambarBarangBaru" type="file" name="files[]" style="padding:0">
+            <form id="formGambarBarangBaru" name="formGambarBarangBaru">
+              <p> File : &ensp;<input id="gambarBarangBaru" class="file-input" type="file" name="gambarBarangBaru" style="padding:0"> </p>
+            </form>
 					</td>
 				</tr>
 				<tr>
@@ -220,7 +223,7 @@
 			</table>
 		</div>
     <div class="modal-footer">
-			<a href="#!" class="modal-close btn-flat left">tutup</a>
+			<a class="modal-close btn-flat left">tutup</a>
 			<a class="modal-close waves-effect waves-light btn" id="submitBarangBaru" style="margin-right: 4px;">kirim</a>
     </div>
 	</div>

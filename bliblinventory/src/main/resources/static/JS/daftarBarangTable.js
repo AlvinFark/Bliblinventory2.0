@@ -18,17 +18,6 @@ $( document ).ready(function() {
       }
     });
 
-    $("#clickTambahSatuan").click(function(){
-        $("#editBarangTable").hide();
-        $("#tambahSatuanTable").show();
-        $("#detailBarangTable").hide();
-        $("#backToDetailTable").show();
-        $("#tombolSimpanEditan").hide();
-        $("#tombolSimpanSatuan").show();
-        $("#tombolEditBarang").hide();
-        $("#clickTambahSatuan").hide();
-    });
-
   $( document ).on("click",".cbxBarang",function (){
     //kalau checkbox All di klik, semua ikut checked / unchecked
     if(this.id == "cbxAllBarang"){
@@ -114,11 +103,22 @@ $( document ).ready(function() {
               '  <td class="unitTersediaTable"></td>\n' +
               '  <td>' + result[i].hargaBeli + '</td>\n' +
               '  <td width=100px>\n' +
+              '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickTambahSatuan" href="#modalDetailBarangTable"><i class="material-icons">add</i></a>\n' +
               '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickEditTable" href="#modalDetailBarangTable"><i class="material-icons">edit</i></a>\n' +
               '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickDetailTable" href="#modalDetailBarangTable"><i class="material-icons">search</i></a>\n' +
               '  </td>\n' +
               '</tr>\n';
           }
+          $(".clickTambahSatuan").click(function(){
+            $("#editBarangTable").hide();
+            $("#tambahSatuanTable").show();
+            $("#detailBarangTable").hide();
+            $("#backToDetailTable").show();
+            $("#tombolSimpanEditan").hide();
+            $("#tombolSimpanSatuan").show();
+            $("#tombolEditBarang").hide();
+            $("#tombolTambahSatuan").hide();
+          });
           $(".clickDetailTable").click(function(){
             $("#editBarangTable").hide();
             $("#tambahSatuanTable").hide();
@@ -127,7 +127,7 @@ $( document ).ready(function() {
             $("#tombolSimpanEditan").hide();
             $("#tombolSimpanSatuan").hide();
             $("#tombolEditBarang").show();
-            $("#clickTambahSatuan").show();
+            $("#tombolTambahSatuan").show();
           });
 
           $(".clickEditTable").click(function(){
@@ -138,7 +138,7 @@ $( document ).ready(function() {
             $("#tombolSimpanEditan").show();
             $("#tombolSimpanSatuan").hide();
             $("#tombolEditBarang").hide();
-            $("#clickTambahSatuan").hide();
+            $("#tombolTambahSatuan").hide();
           });
           $( ".kodeBarangTable" ).each(function() {
             var kode = $(this).text();
@@ -181,6 +181,7 @@ $( document ).ready(function() {
         deleteBarang(kode);
       }
     });
+    ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
   });
 
     $(document).on("click", ".triggerModalTable", function(){
@@ -190,10 +191,10 @@ $( document ).ready(function() {
         url : "employee/getDetailProduct/"+kode,
         success: function(result) {
           $("#imgModalBarang").css({
-            'background-image': 'url("images/barang/'+result.gambar+'")'
+            'background-image': 'url("http://127.0.0.1:8000/bliblinventoryimages/barang/'+result.gambar+'")'
           });
-          var kategoriBarang = ((result || {}).category || {}).name;
 
+          var kategoriBarang = ((result || {}).category || {}).name;
           $("#kodeBarangTable").html(kode);
           $("#namaBarangTable").html(result.nama);
           $("#kategoriBarangTable").html(kategoriBarang);
@@ -209,8 +210,10 @@ $( document ).ready(function() {
           $('#ubahKategoriBarang option[value="'+kategoriBarang+'"]').prop('selected', true);
 
           $("#tombolSimpanEditan").click(function () {
+            $('#formGantiFotoBarang').submit();
             var keyword = $("#ubahKategoriBarang").val();
-            var gambar = $("#ubahGambarProduk").val();
+            var path = $("#fileUploadGantiFotoBarang").val();
+            var gambar = path.split('\\').pop();
             if (gambar=="") {gambar = result.gambar};
             var jsonUbahKaryawan = {
               "kode" : $("#kodeBarangTable").text(),
@@ -226,7 +229,8 @@ $( document ).ready(function() {
               contentType: 'application/json',
               data: JSON.stringify(jsonUbahKaryawan),
               success: function(result) {
-                alert('data barang berhasil diubah, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
+                alert('data barang berhasil diubah');
+                ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
               },
               error: function (result) {
                 alert(JSON.stringify(result))
@@ -237,6 +241,8 @@ $( document ).ready(function() {
           $("#tombolHapusBarang").click(function () {
             var kode = $("#kodeBarangTable").text();
             deleteBarang(kode);
+            ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
+
           });
         }
       });
@@ -275,7 +281,7 @@ $( document ).ready(function() {
               '  <td class="namaPeminjam">'+ peminjam +'</td>\n' +
               '  <td class="tanggalPinjam">'+ peminjam +'</td>\n' +
               '  <td class="tdDeleteSubBarang" width=100px>\n' +
-              '    <a class="waves-effect waves-light btn right btn-small modal-trigger triggerDeleteSubBarang"><i class="material-icons">delete</i></a>\n' +
+              '    <a class="waves-effect waves-light btn right btn-small modal-close triggerDeleteSubBarang"><i class="material-icons">delete</i></a>\n' +
               '  </td>\n' +
               '</tr>')
           }
@@ -307,6 +313,7 @@ $( document ).ready(function() {
               data: JSON.stringify(jsonSubBarang),
               success: function(result) {
                 alert(result);
+                ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
               }
             });
           });
@@ -314,7 +321,50 @@ $( document ).ready(function() {
       });
     });
 
+  $('#formGantiFotoBarang').on('submit',(function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    $.ajax({
+      type:'POST',
+      url: "/api/upload/barang/" + $("#kodeBarangTable").text(),
+      data:formData,
+      cache:false,
+      contentType: false,
+      processData: false,
+      success:function(data){
+        console.log("success");
+        console.log(data);
+      },
+      error: function(data){
+        console.log("error");
+        console.log(data);
+      }
+    });
+  }));
+
+  $('#formGambarBarangBaru').on('submit',(function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    $.ajax({
+      type:'POST',
+      url: "/api/upload/barang/" + $("#idBarangBaru").val(),
+      data:formData,
+      cache:false,
+      contentType: false,
+      processData: false,
+      success:function(data){
+        console.log("success");
+        console.log(data);
+      },
+      error: function(data){
+        console.log("error");
+        console.log(data);
+      }
+    });
+  }));
+
     $(document).on("click", "#submitBarangBaru", function(){
+      $('#formGambarBarangBaru').submit();
       var keyword = $("#kategoriBarangBaru").val();
       var path = $("#gambarBarangBaru").val();
       var fileGambar = path.split('\\').pop();
@@ -333,6 +383,7 @@ $( document ).ready(function() {
         data: JSON.stringify(jsonKaryawanBaru),
         success: function(result) {
           alert('barang baru berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar barang');
+          ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
         },
         error: function (result) {
           alert(JSON.stringify(result))
@@ -350,15 +401,27 @@ $( document ).ready(function() {
 
     $(document).on("click", "#tombolSimpanSatuan", function () {
       var kodeBarang = $("#kodeBarangTable").text();
-      $( ".barangSatuan" ).each(function() {
-        var kodeSubBarang = $(this).val();
-        $.ajax({
-          type: "POST",
-          url: "/api/barang/" + kodeBarang + "/" + kodeSubBarang,
-          success: function (result) {
-            alert('sub barang baru berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar barang');
+      $.ajax({
+        type: "GET",
+        url: "/employee/countTotalSubBarang/" + kodeBarang,
+        success: function (result1) {
+          var amount = $("#jumlahTambahSatuan").val();
+          var kodeBarang = $("#kodeBarangTable").text();
+          amount = parseInt(amount, 10) + parseInt(result1, 10);
+          for (var i=parseInt(result1, 10)+1; i<=amount; i++){
+            var str = "" + i;
+            var kodeSubBarang = kodeBarang + ('0000'+str).substring(str.length);
+            $.ajax({
+              async: false,
+              type: "POST",
+              url: "/api/barang/" + kodeBarang + "/" + kodeSubBarang,
+              success: function (result) {
+                alert('sub barang baru berhasil ditambahkan');
+              }
+            });
           }
-        })
-      })
+          ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
+        }
+      });
     })
 });

@@ -36,6 +36,11 @@ public class SubBarangController {
         return subBarangRepository.countSubBarangByBarangKodeAndStatusSubBarangAndIsExist(kodeBarang, true, true);
     }
 
+    @RequestMapping(value = {"employee/countTotalSubBarang/{kodeBarang}", "superior/countTotalSubBarang/{kodeBarang}"}, method = RequestMethod.GET)
+    public int countTotalSubBarang(@PathVariable(value = "kodeBarang") String kodeBarang){
+      return subBarangRepository.countSubBarangByBarangKode(kodeBarang);
+    }
+
     @RequestMapping(value = {"superior/changeStateSubBarangToBorrowed"}, method = RequestMethod.PUT)
     public SubBarang changeStateSubBarangToBorrowed(@Valid @RequestBody SubBarang subBarangRequest){
         subBarangRequest.setStatusSubBarang(false);

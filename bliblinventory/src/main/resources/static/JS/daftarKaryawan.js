@@ -47,7 +47,50 @@ $( document ).ready(function() {
     }
   });
 
+  $('#formGantiGambarKaryawan').on('submit',(function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    $.ajax({
+      type:'POST',
+      url: "/api/upload/users/" + $("#detailIdKaryawan").text(),
+      data:formData,
+      cache:false,
+      contentType: false,
+      processData: false,
+      success:function(data){
+        console.log("success");
+        console.log(data);
+      },
+      error: function(data){
+        console.log("error");
+        console.log(data);
+      }
+    });
+  }));
+
+  $('#formGambarKaryawanBaru').on('submit',(function(e) {
+    e.preventDefault();
+    var formData = new FormData(this);
+    $.ajax({
+      type:'POST',
+      url: "/api/upload/users/",
+      data:formData,
+      cache:false,
+      contentType: false,
+      processData: false,
+      success:function(data){
+        console.log("success");
+        console.log(data);
+      },
+      error: function(data){
+        console.log("error");
+        console.log(data);
+      }
+    });
+  }));
+
   $("#buttonSimpanUbahanKaryawan").click(function(){
+    $('#formGantiGambarKaryawan').submit();
     var id=$('#detailIdKaryawan').text();
     var name=$('#ubahNamaKaryawan').val();
     var gender=$("#ubahGenderKaryawan").val();
@@ -59,6 +102,9 @@ $( document ).ready(function() {
     var hp=$("#hpKaryawan").val();
     var email=$("#emailKaryawan").val();
     var uname=$("#detailUsernameKaryawan").text();
+    var path = $("#gantiFotoKaryawan").val();
+    var gambar = path.split('\\').pop();
+    if (gambar=="") {gambar = result.gambar};
     var jsonUbahDetail={
       "name" : name,
       "username" : uname,
@@ -78,7 +124,8 @@ $( document ).ready(function() {
       contentType: 'application/json',
       data: JSON.stringify(jsonUbahDetail),
       success: function(result) {
-        alert('detail karyawan berhasil diubah, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
+        alert('detail karyawan berhasil diubah');
+        ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
       }
     });
   });
@@ -114,7 +161,8 @@ $( document ).ready(function() {
       contentType: 'application/json',
       data: JSON.stringify(jsonUbahDetail),
       success: function(result) {
-        alert('data karyawan ' + name + ' berhasil dihapus. Silahkan klik GO untuk merefresh list karyawan');
+        alert('data karyawan ' + name + ' berhasil dihapus');
+        ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
       }
     });
   });
@@ -140,7 +188,7 @@ $( document ).ready(function() {
         var usersuperior=((result || {}).superior || {}).name;
         var usersuperiorid=((result || {}).superior || {}).id;
         $("#detailFotoKaryawan").css({
-          'background-image': 'url("images/users/'+result.id+'.jpg")'
+          'background-image': 'url("http://127.0.0.1:8000/bliblinventoryimages/users/'+result.gambar+'")'
         });
 
         $("#detailIdKaryawan").html(result.id);
@@ -228,7 +276,7 @@ $( document ).ready(function() {
                 '<div class="card">\n' +
                 '<div class="card-image" style="padding:15px">\n' +
                 '<div class="kontainerImgCard" style="' +
-                'background-image: url(/images/users/'+result[i].id+'.jpg);">' +
+                'background-image: url(http://127.0.0.1:8000/bliblinventoryimages/users/'+result[i].gambar+');">' +
                 '</div>' +
                 '</div>\n' +
                 '<div class="card-content">\n' +
@@ -263,6 +311,7 @@ $( document ).ready(function() {
   });
 
   $("#btnKirimKaryawanBaru").click(function(){
+    $('#formGambarKaryawanBaru').submit;
     var nname=$('#namaKaryawanBaru').val();
     var ngender=$("#genderKaryawanBaru").val();
     var naddress=$("#alamatKaryawanBaru").val();
@@ -274,6 +323,8 @@ $( document ).ready(function() {
     var nhp=$("#hpKaryawanBaru").val();
     var nemail=$("#emailKaryawanBaru").val();
     var nuname=$("#usernameKaryawanBaru").val();
+    var path = $("#gambarKaryawanBaru").val();
+    var fileGambar = path.split('\\').pop();
     var jsonTambahKaryawan={
       "name" : nname,
       "username" : nuname,
@@ -284,7 +335,8 @@ $( document ).ready(function() {
       "email" : nemail,
       "password" : npassword,
       "superiorId" : nsuperiorId,
-      "roleId" : nroleId
+      "roleId" : nroleId,
+      "gambar" :fileGambar
     };
     $.ajax({
       type: "POST",
@@ -292,7 +344,8 @@ $( document ).ready(function() {
       contentType: 'application/json',
       data: JSON.stringify(jsonTambahKaryawan),
       success: function(result) {
-        alert('karyawan baru berhasil ditambahkan, silahkan klik tombol "GO" untuk merefresh daftar karyawan');
+        alert('karyawan baru berhasil ditambahkan');
+        ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
       },
       error: function (result) {
         alert(JSON.stringify(result))

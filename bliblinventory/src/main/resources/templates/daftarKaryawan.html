@@ -20,7 +20,6 @@
 				</select>
 			</div>
 		</div>
-    <a id="btnRefreshListKaryawan" class="waves-effect waves-light btn btn-white" style="padding-bottom: 5px;">go</a>
 	</div>
 	<div class="row" id="daftarKaryawan">
 	</div>
@@ -155,17 +154,19 @@
           <tr>
             <td class="tdAtrib">Foto</td>
             <td>
-              <input id="gantiFotoKaryawan" type="file" name="file" multiple style="padding:0">
+              <form id="formGantiGambarKaryawan" name="formGantiGambarKaryawan">
+                <p> File : &ensp;<input id="gantiFotoKaryawan" class="file-input" type="file" name="gantiFotoKaryawan" style="padding:0"> </p>
+              </form>
             </td>
           </tr>
         </table>
       </div>
     </div>
     <div class="modal-footer">
-      <a href="#!" class="modal-close btn-flat left">tutup</a>
-      <a id="buttonBackToDetailKaryawan" href="#" class="btn-flat left">kembali</a>
-      <a id="buttonHapusKaryawan" href="#hapusKaryawan" class="modal-close waves-effect waves-light btn" style="margin-right: 4px;">hapus</a>
-      <a id="buttonUbahDetailKaryawan" href="#ubahDetailKaryawan" class="waves-effect waves-light btn" style="margin-right: 4px;">ubah</a>
+      <a class="modal-close btn-flat left">tutup</a>
+      <a id="buttonBackToDetailKaryawan" class="btn-flat left">kembali</a>
+      <a id="buttonHapusKaryawan" class="modal-close waves-effect waves-light btn" style="margin-right: 4px;">hapus</a>
+      <a id="buttonUbahDetailKaryawan" class="waves-effect waves-light btn" style="margin-right: 4px;">ubah</a>
       <a id="buttonSimpanUbahanKaryawan" class="modal-close waves-effect waves-light btn" style="margin-right: 4px;">simpan</a>
     </div><script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
 	</div>
@@ -212,7 +213,9 @@
 					<tr>
 						<td class="tdAtrib">Foto</td>
 						<td>
-							<input id="fileuploadFoto" type="file" name="files[]" style="padding:0">
+              <form id="formGambarKaryawanBaru" name="formGambarKaryawanBaru">
+                <p> File : &ensp;<input id="gambarKaryawanBaru" class="file-input" type="file" name="gambarKaryawanBaru" style="padding:0"> </p>
+              </form>
 						</td>
 					</tr>
 					<tr>
@@ -272,7 +275,7 @@
 			</div>
 		</div>
     <div class="modal-footer">
-			<a href="#" class="modal-close btn-flat left">tutup</a>
+			<a class="modal-close btn-flat left">tutup</a>
       <a id="btnKirimKaryawanBaru" class="modal-close waves-effect waves-light btn">kirim</a>
     </div>
 	</div>

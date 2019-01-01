@@ -120,6 +120,7 @@ $( document ).ready(function() {
   $( document ).on("click",".btnTerima",function (){
     var kode = (this.id).substring(6);
     terimaTransaksi(kode);
+    refreshList($("#selectSortPengembalian").val(),$("#selectSearchPengembalian").val(),$("#selectKategoriPengembalian").val(),$("#searchInputPengembalian").val());
   })
 
   $( document ).on("click","#terimaTerpilih",function (){
@@ -129,6 +130,7 @@ $( document ).ready(function() {
         terimaTransaksi(kode);
       }
     });
+    refreshList($("#selectSortPengembalian").val(),$("#selectSearchPengembalian").val(),$("#selectKategoriPengembalian").val(),$("#searchInputPengembalian").val());
   });
 
   function terimaTransaksi(kode) {

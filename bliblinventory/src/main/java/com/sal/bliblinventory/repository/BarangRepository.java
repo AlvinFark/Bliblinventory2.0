@@ -4,6 +4,7 @@ import com.sal.bliblinventory.model.Barang;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Repository
@@ -17,4 +18,6 @@ public interface BarangRepository extends JpaRepository<Barang, String> {
     List<Barang> findByNamaContainingAndIsExistOrderByKode(String namaBarang, Boolean isExist);
     List<Barang> findByNamaContainingAndIsExistAndCategory_IdOrderByNama(String namaBarang, Boolean isExist, Long idCategory);
     List<Barang> findByNamaContainingAndIsExistAndCategory_IdOrderByKode(String namaBarang, Boolean isExist, Long idCategory);
+    List<Barang> findByCategory_NameContainingOrderByKodeDesc(String categoryId, Pageable pageable);
+
 }

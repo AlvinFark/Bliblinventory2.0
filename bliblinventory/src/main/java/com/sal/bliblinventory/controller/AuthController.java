@@ -5,14 +5,12 @@ import com.sal.bliblinventory.security.JwtTokenProvider;
 import com.sal.bliblinventory.exception.AppException;
 import com.sal.bliblinventory.model.Role;
 import com.sal.bliblinventory.model.User;
-import com.sal.bliblinventory.payload.ApiResponse;
 import com.sal.bliblinventory.payload.JwtAuthenticationResponse;
 import com.sal.bliblinventory.payload.LoginRequest;
 import com.sal.bliblinventory.payload.SignUpRequest;
 import com.sal.bliblinventory.repository.RoleRepository;
 import com.sal.bliblinventory.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -84,7 +82,6 @@ public class AuthController {
 
     user.setRoles(Collections.singleton(userRole));
     user.setSuperiorId(signUpRequest.getSuperiorId());
-    user.setGambar(user.getId()+"."+user.getGambar());
 
     User result = userRepository.save(user);
 
@@ -92,6 +89,6 @@ public class AuthController {
         .fromCurrentContextPath().path("/api/users/{username}")
         .buildAndExpand(result.getUsername()).toUri();
 
-    return user;
+    return result;
   }
 }

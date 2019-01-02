@@ -17,7 +17,7 @@
 				</select>
 			</div>
 		</div>
-        <a href="http://127.0.0.1:8000/file-to-print/print-daftar-barang.xlsx" download id="btnPrintDaftarBarang" class="waves-effect waves-light btn btn-white right" style="margin: 10px 10px 20px 0; margin-left: 300px;">PRINT DAFTAR BARANG</a>
+        <a href="http://127.0.0.1:8000/file-to-print/print-daftar-barang.xlsx" download id="btnPrintDaftarBarang" class="waves-effect waves-light btn btn-white right" style="position:absolute;margin-left:82%;margin-bottom:5px;">PRINT DAFTAR BARANG</a>
 	</div>
 	<div id="whiteBoard"  class="z-depth-2"  style="position:absolute">
 		<table class="highlight noPadding">
@@ -166,7 +166,7 @@
     <div class="modal-footer">
 			<a class="modal-close btn-flat left clickDetailTable">tutup</a>
 			<a id="backToDetailTable" class="btn-flat left clickDetailTable">kembali</a>
-      <a id="tombolHapusBarang" class="modal-close waves-effect waves-light btn">hapus</a>
+      <a id="tombolHapusBarang" class="modal-close waves-effect waves-light btn">hapus barang</a>
 			<a id="tombolEditBarang" class="waves-effect waves-light btn clickEditTable">ubah</a>
 			<a id="tombolTambahSatuan" class="waves-effect waves-light btn clickTambahSatuan">tambah satuan</a>
       <a id="tombolSimpanEditan" class="waves-effect waves-light btn modal-close">simpan</a>
@@ -177,14 +177,6 @@
 		<div class="modal-content">
 			<h4 class="headerModal">Tambah Barang Inventaris</h4>
 			<table class="tableNoBorder smallPadding">
-				<tr>
-					<td class="tdAtrib">ID Barang</td>
-					<td>
-            <form>
-              <input id="idBarangBaru" name="id" value="">
-            </form>
-          </td>
-				</tr>
 				<tr>
 					<td class="tdAtrib">Nama Barang</td>
           <td>

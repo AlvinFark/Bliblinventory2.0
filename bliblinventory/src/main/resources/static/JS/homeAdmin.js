@@ -50,11 +50,29 @@ $( document ).ready(function() {
     $("#klikTambahBulk").click(function () {
         $("#fileExcel").val(null);
         $("#fileGambar").val(null);
-    })
+        $("#btnUpdateBulk").prop("disabled",true);
+    });
+
+    $("#fileExcel").change(function () {
+       cekInput();
+    });
+
+    $("#fileGambar").change(function () {
+        cekInput();
+    });
 
     $("#klikBackupRestore").click(function () {
         $("#dbRestore").val(null);
-    })
+        $("#btnRestore").prop("disabled",true);
+    });
+
+    $("#dbRestore").change(function () {
+        if($("#dbRestore").val())
+            $("#btnRestore").prop("disabled",false);
+        else $("#btnRestore").prop("disabled",true);
+    });
+
+
 
     //print request beli barang
     $("#btnRequestBeliBarang").click(function(){
@@ -72,12 +90,14 @@ $( document ).ready(function() {
     });
 
     $('#formTambahBulk').on('submit',(function(e) {
+        $("#btnUpdateBulk").prop("disabled",true);
         e.preventDefault();
         var formData = new FormData(this);
         $.ajax({
             type :'POST',
             url : "/api/upload/bulk",
             data : formData,
+            async : false,
             cache : false,
             contentType : false,
             processData : false,
@@ -115,6 +135,7 @@ $( document ).ready(function() {
     });
 
     $('#formRestore').on('submit',(function(e) {
+        $("#btnRestore").prop("disabled",true);
         e.preventDefault();
         var formData = new FormData(this);
         $.ajax({
@@ -174,6 +195,12 @@ function page4(){
 
 function page5(){
     $("#includePageContent").load("permintaanPembelianKaryawan.html");
+}
+
+function cekInput() {
+    if($("#fileExcel").val() && $("#fileGambar").val())
+        $("#btnUpdateBulk").prop("disabled",false);
+    else $("#btnUpdateBulk").prop("disabled",true);
 }
 
 

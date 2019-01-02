@@ -47,6 +47,15 @@ $( document ).ready(function() {
         createFormBeli();
     });
 
+    $("#klikTambahBulk").click(function () {
+        $("#fileExcel").val(null);
+        $("#fileGambar").val(null);
+    })
+
+    $("#klikBackupRestore").click(function () {
+        $("#dbRestore").val(null);
+    })
+
     //print request beli barang
     $("#btnRequestBeliBarang").click(function(){
         var idDataValid = cekDataFormBeli();
@@ -61,6 +70,32 @@ $( document ).ready(function() {
             $("#modalBeliProduk").modal("close");
         }
     });
+
+    $('#formTambahBulk').on('submit',(function(e) {
+        e.preventDefault();
+        var formData = new FormData(this);
+        $.ajax({
+            type :'POST',
+            url : "/api/upload/bulk",
+            data : formData,
+            cache : false,
+            contentType : false,
+            processData : false,
+            success:function(data){
+                console.log("success");
+                console.log(data);
+                $('#modalTambahBulk').modal('close');
+                page1();
+                alert("Berhasil menambahkan barang secara bulk");
+            },
+            error: function(data){
+                console.log("error");
+                console.log(data);
+                $('#modalTambahBulk').modal('close');
+                alert("Gagal menambahkan barang secara bulk");
+            }
+        });
+    }));
 
     $('#btnBackup').on('click', function () {
         $.ajax({
@@ -79,7 +114,7 @@ $( document ).ready(function() {
         });
     });
 
-    $('#btnRestore').on('click',(function(e) {
+    $('#formRestore').on('submit',(function(e) {
         e.preventDefault();
         var formData = new FormData(this);
         $.ajax({
@@ -92,10 +127,14 @@ $( document ).ready(function() {
             success:function(data){
                 console.log("success");
                 console.log(data);
+                $('#modalBackup').modal('close');
+                alert("Restore database berhasil");
             },
             error: function(data){
                 console.log("error");
                 console.log(data);
+                $('#modalBackup').modal('close');
+                alert("Restore database gagal");
             }
         });
     }));

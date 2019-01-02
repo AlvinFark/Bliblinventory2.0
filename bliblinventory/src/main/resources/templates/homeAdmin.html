@@ -15,7 +15,7 @@
 	<ul id="menuDropdownEmployee" class="dropdown-content">
 		<li><a id="klikDaftarBarang">Daftar Barang inventaris</a></li>
 		<li class="divider"></li>
-		<li><a class="modal-trigger" href="#modalTambahBatch">Tambah Barang secara Batch</a></li>
+		<li><a id="klikTambahBulk" class="modal-trigger" href="#modalTambahBulk">Tambah Barang secara Bulk</a></li>
 		<li class="divider"></li>
 		<li><a id="klikPengembalianBarang">Pengembalian Barang Inventaris</a></li>
 		<li class="divider"></li>
@@ -27,7 +27,7 @@
 		<li class="divider"></li>
 		<li><a id="klikPermintaanPembelianKaryawan">Daftar Permintaan Pembelian Karyawan</a></li>
 		<li class="divider"></li>
-		<li><a class="modal-trigger" href="#modalBackup">Backup dan Restore</a></li>
+		<li><a id="klikBackupRestore" class="modal-trigger" href="#modalBackup">Backup dan Restore</a></li>
 		<li class="divider"></li>
         <li><a href="http://localhost:8080/" id="klikLogout">Logout</a></li>
 	</ul>
@@ -40,14 +40,15 @@
 	<div id="includePengembalianBarang" style="position:absolute; width:inherit"></div>
 	<div id="includePermintaanKaryawan" style="position:absolute; width:inherit"></div>-->
 </div>
-<div id="modalTambahBatch" class="modal modal-fixed-footer">
-	<form action="/api/upload" enctype="multipart/form-data" method="POST">
+<div id="modalTambahBulk" class="modal modal-fixed-footer">
+	<form id="formTambahBulk">
 		<div class="modal-content">
-			<h4 class="headerModal">Tambah Barang secara Batch</h4>
-			<p style="padding-top:80px;"> File barang (.xlsx) : &ensp;<input id="fileUpload" type="file" accept=".xlsx" name="fileExcel" style="padding:0"> </p>
-			<p style="padding-top:80px;"> File gambar (.zip) : &ensp;<input id="fileUpload" type="file" accept=".zip" name="fileGambar" style="padding:0"> </p>
+			<h4 class="headerModal">Tambah Barang secara Bulk</h4>
+			<p style="padding-top:80px;"> File barang (.xlsx) : &ensp;<input id="fileExcel" type="file" accept=".xlsx" name="fileExcel" style="padding:0"> </p>
+			<p style="padding-top:40px;"> File gambar (.zip) : &ensp;<input id="fileGambar" type="file" accept=".zip" name="fileGambar" style="padding:0"> </p>
 			<p> Catatan : <br> File Excel yang dipilih harus menggunakan format penulisan untuk penambahan produk yang sudah ditetapkan.
-			<br> Format file dapat diunduh <a href="../../format-tambah-barang-bulk.xlsx" download>disini</a></p>
+			<br> Format file dapat diunduh <a href="../../format-tambah-barang-bulk.xlsx" download>disini</a>
+			<br> File gambar (.zip) berisi gambar yang filename nya sama dengan yang ada di dalam kolom gambar pada file excel.</p>
 		</div>
 		<div class="modal-footer">
 			<a class="modal-close btn-flat left">tutup</a>
@@ -119,15 +120,13 @@
 				</td>
 			</tr>
 			<tr>
-				<form>
-					<td class="tdAtrib">Restore</td>
-					<td>
+				<td class="tdAtrib">Restore</td>
+				<td>
+					<form id="formRestore">
 						<input class="" id="dbRestore" type="file" accept=".sql" name="dbRestore" style="padding:0">
-					</td>
-					<td>
 						<input type="submit" id="btnRestore" value="RESTORE" class="waves-effect waves-light btn" style="margin-right: 4px;">
-					</td>
-				</form>
+					</form>
+				</td>
 			</tr>
 		</table>
 	</div>

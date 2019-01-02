@@ -46,8 +46,8 @@ public class UploadController {
     private Long numericValue;
     private int baris,kolom = 0;
 
-    @PostMapping("/upload")
-    public void singleFileUpload(@RequestParam("fileExcel") MultipartFile fileExcel, @RequestParam("fileGambar") MultipartFile fileGambar, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse) throws Exception {
+    @PostMapping("/upload/bulk")
+    public void singleFileUpload(@RequestParam("fileExcel") MultipartFile fileExcel, @RequestParam("fileGambar") MultipartFile fileGambar) throws Exception {
 
 //        if (file.isEmpty()) {
 ////            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
@@ -165,6 +165,7 @@ public class UploadController {
                             SubBarang subBarang = new SubBarang(kodeSubBarang, barang);
 
                             subBarangRepository.save(subBarang);
+                            //System.out.print("------------------" + i + "----------------------------");
                         }
                     }
                     if(kolom == 6)
@@ -172,7 +173,6 @@ public class UploadController {
                     kolom++;
                 }
                 System.out.println();
-
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -190,10 +190,6 @@ public class UploadController {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        //return new ModelAndView("redirect:/admin", model);
-        //return "redirect:/admin";
-
-        httpResponse.sendRedirect("/admin");
     }
 
     @PostMapping("/upload/users/")

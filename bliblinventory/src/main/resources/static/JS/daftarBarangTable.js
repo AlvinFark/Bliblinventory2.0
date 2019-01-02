@@ -188,11 +188,12 @@ $( document ).ready(function() {
   var barangDetail;
 
   $("#tombolSimpanEditan").click(function () {
-    $('#formGantiFotoBarang').submit();
     var keyword = $("#ubahKategoriBarang").val();
     var path = $("#fileUploadGantiFotoBarang").val();
-    var gambar = path.split('\\').pop();
-    if (gambar=="") {gambar = barangDetail};
+    var gambar = path.split('.').pop();
+    if (gambar=="") {
+      gambar = barangDetail.split('.').pop();
+    };
     var jsonUbahBarang = {
       "kode" : $("#kodeBarangTable").text(),
       "nama" : $("#ubahNamaBarang").val(),
@@ -214,6 +215,28 @@ $( document ).ready(function() {
         async : false
       })
     }
+    $('#formGantiFotoBarang').on('submit',(function(e) {
+      e.preventDefault();
+      var formData = new FormData(this);
+      $.ajax({
+        type:'POST',
+        url: "/api/upload/barang/" + kode + "." + gambar,
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        async: false,
+        success:function(data){
+          console.log("success");
+          console.log(data);
+        },
+        error: function(data){
+          console.log("error");
+          console.log(data);
+        }
+      });
+    }));
+    $('#formGantiFotoBarang').submit();
     $.ajax({
       type : "PUT",
       async : false,
@@ -341,49 +364,6 @@ $( document ).ready(function() {
       }
     });
   });
-  
-  $('#formGantiFotoBarang').on('submit',(function(e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    $.ajax({
-      type:'POST',
-      url: "/api/upload/barang/",
-      data:formData,
-      cache:false,
-      contentType: false,
-      processData: false,
-      success:function(data){
-        console.log("success");
-        console.log(data);
-      },
-      error: function(data){
-        console.log("error");
-        console.log(data);
-      }
-    });
-  }));
-
-  $('#formGambarBarangBaru').on('submit',(function(e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    $.ajax({
-      type:'POST',
-      url: "/api/upload/barang/",
-      data:formData,
-      cache:false,
-      contentType: false,
-      processData: false,
-      success:function(data){
-        console.log("success");
-        console.log(data);
-      },
-      error: function(data){
-        console.log("error");
-        console.log(data);
-      }
-    });
-  }));
-
 
   $( document ).on("change","#ubahKategoriBarang",function (){
     var selcategory=$("#ubahKategoriBarang").val();
@@ -402,10 +382,9 @@ $( document ).ready(function() {
   });
 
     $(document).on("click", "#submitBarangBaru", function(){
-      $('#formGambarBarangBaru').submit();
       var keyword = $("#kategoriBarangBaru").val();
       var path = $("#gambarBarangBaru").val();
-      var fileGambar = path.split('\\').pop();
+      var fileGambar = path.split('.').pop();
       var jsonBarangBaru = {
         "kode" : "blablabla",
         "nama" : $("#namaBarangBaru").val(),
@@ -434,6 +413,28 @@ $( document ).ready(function() {
         contentType: 'application/json',
         data: JSON.stringify(jsonBarangBaru),
         success: function(result) {
+          $('#formGambarBarangBaru').on('submit',(function(e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+              type:'POST',
+              url: "/api/upload/barang/" + result.gambar,
+              data:formData,
+              cache:false,
+              contentType: false,
+              processData: false,
+              async : false,
+              success:function(data){
+                console.log("success");
+                console.log(data);
+              },
+              error: function(data){
+                console.log("error");
+                console.log(data);
+              }
+            });
+          }));
+          $('#formGambarBarangBaru').submit();
           var kodeBarang = result.kode;
           for (var i=1; i<=$("#jumlahBarangBaru").val(); i++){
             var str = "" + i;

@@ -2,23 +2,19 @@ package com.sal.bliblinventory.controller;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.tool.xml.XMLWorkerHelper;
 import com.sal.bliblinventory.model.Barang;
+import com.sal.bliblinventory.model.Category;
 import com.sal.bliblinventory.model.DetailTransaksi;
 import com.sal.bliblinventory.model.SubBarang;
 import com.sal.bliblinventory.repository.BarangRepository;
 import com.sal.bliblinventory.repository.CategoryRepository;
 import com.sal.bliblinventory.repository.DetailTransaksiRepository;
 import com.sal.bliblinventory.repository.SubBarangRepository;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFFont;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.xssf.usermodel.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,7 +24,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Iterator;
 import java.util.List;
 
 @RestController
@@ -320,6 +315,39 @@ public class PrintController {
             de.printStackTrace();
         }catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @RequestMapping(value = "api/downloadFormatTambahBarangBulk", method = RequestMethod.GET)
+    public void downloadFormatTambahBarangBulk() {
+        try {
+            FileInputStream fis = new FileInputStream("D:/bliblinventory/file-to-print/format-tambah-barang-bulk.xlsx");
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            Sheet sheet = workbook.getSheetAt(1);
+            List<Category> categoryList = categoryRepository.findAll();
+            int idxRow = 0;
+            int idxCell = 0;
+            Row row;
+            Cell cell;
+            for(int i=0;i<categoryList.size();i++){
+                idxCell=0;
+                row = sheet.createRow(idxRow++);
+                cell = row.createCell(idxCell++);
+                cell.setCellValue((Long) categoryList.get(i).getId());
+                cell = row.createCell(idxCell++);
+                cell.setCellValue((String) categoryList.get(i).getName());
+            }
+            fis.close();
+            FileOutputStream fos = new FileOutputStream(new File("D:/bliblinventory/file-to-print/format-tambah-barang-bulk.xlsx"));
+            workbook.write(fos);
+            fos.close();
+            System.out.println("Done");
+        }
+        catch (FileNotFoundException e){
+
+        }
+        catch (IOException e){
+
         }
     }
 }

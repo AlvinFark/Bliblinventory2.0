@@ -138,6 +138,22 @@ $( document ).ready(function() {
             }
         });
     }));
+
+    //download excel format tambah barang bulk
+    $("#btnDownloadFormatTambahBarangBulk").click(function(){
+        $.ajax({
+            type : "GET",
+            url : "api/downloadFormatTambahBarangBulk",
+            success: function(result){
+
+            },
+            error : function(e) {
+                console.log("ERROR: ", e);
+                window.alert("error downloadFormatTambahBarangBulk");
+            },
+            async:false
+        });
+    });
 });
 
 function page1(){

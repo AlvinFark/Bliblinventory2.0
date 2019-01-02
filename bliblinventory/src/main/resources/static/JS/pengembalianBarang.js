@@ -111,10 +111,8 @@ $( document ).ready(function() {
   $( document ).on("change",".refreshpermintaan-trigger",function (){
     refreshList($("#selectSortPengembalian").val(),$("#selectSearchPengembalian").val(),$("#selectKategoriPengembalian").val(),$("#searchInputPengembalian").val());
   });
-  $("#searchInputPengembalian").keypress(function(e) {
-    if(e.which == 13) {
+  $("#searchInputPengembalian").keyup(function(e) {
       refreshList($("#selectSortPengembalian").val(),$("#selectSearchPengembalian").val(),$("#selectKategoriPengembalian").val(),$("#searchInputPengembalian").val());
-    }
   });
 
   $( document ).on("click",".btnTerima",function (){

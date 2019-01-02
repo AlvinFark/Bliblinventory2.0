@@ -3,6 +3,8 @@ $( document ).ready(function() {
     $('.sidenav').sidenav();
     $('select').formSelect();
     $('.modal').modal();
+    $("#inputSearch").hide();
+    $("#iconSearch").hide();
 
     $('select').on('contentChanged', function() {
         $(this).formSelect();

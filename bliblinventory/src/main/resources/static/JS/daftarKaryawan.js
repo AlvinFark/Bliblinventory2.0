@@ -340,10 +340,8 @@ $( document ).ready(function() {
     });
   }
 
-  $("#searchKaryawan").keypress(function(e) {
-    if(e.which == 13) {
+  $("#searchKaryawan").keyup(function(e) {
       ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
-    }
   });
 
   $( document ).on("change","#filterKaryawan",function (){

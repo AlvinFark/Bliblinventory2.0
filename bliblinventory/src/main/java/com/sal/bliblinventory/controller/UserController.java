@@ -66,6 +66,7 @@ public class UserController {
       User user1 = userRepository.getUserById(id);
       user.setPassword(user1.getPassword());
     }
+    user.setGambar(user.getId()+"."+user.getGambar());
 
     return userRepository.findById(id).map(u -> {
       u = user;

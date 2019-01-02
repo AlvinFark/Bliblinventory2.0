@@ -41,15 +41,16 @@ public class UploadController {
     @Autowired
     CategoryRepository categoryRepository;
 
-    public static String filename;
-    private static String UPLOADED_FOLDER = "D:/";
-
     private String stringValue;
     private Long numericValue;
     private int baris,kolom = 0;
 
     @PostMapping("/upload/bulk")
     public void singleFileUpload(@RequestParam("fileExcel") MultipartFile fileExcel, @RequestParam("fileGambar") MultipartFile fileGambar) throws Exception {
+        stringValue = null;
+        numericValue = null;
+        baris = 0;
+        kolom = 0;
 
 //        if (file.isEmpty()) {
 ////            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
@@ -178,13 +179,13 @@ public class UploadController {
                         baris++;
                     kolom++;
                 }
-                for(Barang b : barangList){
-                    barangRepository.save(b);
-                }
-                for(SubBarang sb : subBarangList){
-                    subBarangRepository.save(sb);
-                }
                 System.out.println();
+            }
+            for(Barang b : barangList){
+                barangRepository.save(b);
+            }
+            for(SubBarang sb : subBarangList){
+                subBarangRepository.save(sb);
             }
         } catch (FileNotFoundException e) {
             e.printStackTrace();

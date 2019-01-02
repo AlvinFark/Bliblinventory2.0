@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zeroturnaround.zip.commons.FilenameUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -161,6 +162,8 @@ public class UploadController {
                         //barangRepository.save(barang);
                         Pageable limit = new PageRequest(0, 1);
                         String kodeHead = kategori.substring(0,3).toUpperCase();    //PER
+
+                        //Cek apakah barang sudah ada di database
                         List<Barang> lastBarang = barangRepository.findByCategory_NameContainingOrderByKodeDesc(kodeHead,limit);
                         if (lastBarang.isEmpty()){
                             kode = kodeHead+"0001";  //PER0001
@@ -175,17 +178,23 @@ public class UploadController {
                             isSubBarangExist = true;
                         }
 
-                        //Cek apakah barang sudah ada di database
-
                         List<SubBarang> listSubBarangInDatabase = subBarangRepository.findAllByBarang_KodeAndIsExistOrderByKodeSubBarangDesc(kode, limit,true);
 
                         boolean isNotExist = listSubBarangInDatabase.isEmpty();
 
                         int lastIdSubBarang = 1;
 
+                        //Mengubah filename gambar menjadi sama dengan id barang
+                        File f = new File(destination+gambar);
+                        int p = gambar.lastIndexOf('.');
+                        String ext = gambar.substring(p);
+                        File newFile = new File(destination+kode+ext);
+                        f.renameTo(newFile);
+
+                        gambar = kode + ext;
+
                         Barang barang = new Barang(kode,nama,gambar,deskripsi,harga,true,category);
                         if(isNotExist){
-                            //barangList.add(barang);
                             barangRepository.save(barang);
                         }
                         else{
@@ -201,10 +210,8 @@ public class UploadController {
                             String kodeSubBarang = barang.getKode() + kodeTail;
 
                             SubBarang subBarang = new SubBarang(kodeSubBarang, barang);
-                            //subBarangList.add(subBarang);
                             subBarangRepository.save(subBarang);
                             lastIdSubBarang++;
-                            //subBarangRepository.save(subBarang);
                             //System.out.print("------------------" + i + "----------------------------");
                         }
                     }
@@ -214,12 +221,6 @@ public class UploadController {
                 }
                 System.out.println();
             }
-//            for(Barang b : barangList){
-//                barangRepository.save(b);
-//            }
-//            for(SubBarang sb : subBarangList){
-//                subBarangRepository.save(sb);
-//            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

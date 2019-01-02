@@ -1,10 +1,15 @@
 package com.sal.bliblinventory.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "barang")
 public class Barang {

@@ -23,7 +23,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -118,6 +120,9 @@ public class UploadController {
             double kuantitas = 0;
             Long harga = 0L;
             String kategori = " ";
+            int countBarang = 0;
+            ArrayList<Barang> barangList = new ArrayList<Barang>();
+            ArrayList<SubBarang> subBarangList = new ArrayList<SubBarang>();
 
             while (iterator.hasNext()) {
 
@@ -150,7 +155,8 @@ public class UploadController {
                     if(kolom % 7 == 6 && baris != 0){
                         Category category = categoryRepository.findByName(kategori);
                         Barang barang = new Barang(kode,nama,gambar,deskripsi,harga,true,category);
-                        barangRepository.save(barang);
+                        barangList.add(barang);
+                        //barangRepository.save(barang);
 
                         // Menambah sub barang berdasarkan kuantitas
                         for(int i=1;i<=kuantitas;i++){
@@ -163,14 +169,20 @@ public class UploadController {
                                 s = "0";
                             String kodeSubBarang = kode + s + i;
                             SubBarang subBarang = new SubBarang(kodeSubBarang, barang);
-
-                            subBarangRepository.save(subBarang);
+                            subBarangList.add(subBarang);
+                            //subBarangRepository.save(subBarang);
                             //System.out.print("------------------" + i + "----------------------------");
                         }
                     }
                     if(kolom == 6)
                         baris++;
                     kolom++;
+                }
+                for(Barang b : barangList){
+                    barangRepository.save(b);
+                }
+                for(SubBarang sb : subBarangList){
+                    subBarangRepository.save(sb);
                 }
                 System.out.println();
             }

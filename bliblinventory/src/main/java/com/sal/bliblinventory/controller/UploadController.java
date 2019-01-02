@@ -12,6 +12,8 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.util.IOUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -143,50 +145,81 @@ public class UploadController {
                         numericValue = Double.valueOf(currentCell.getNumericCellValue()).longValue();
                     }
                     if(baris != 0){
-                        switch (kolom % 7){
-                            case 0 : kode = stringValue;break;
-                            case 1 : nama = stringValue;break;
-                            case 2 : deskripsi = stringValue;break;
-                            case 3 : kuantitas = numericValue;break;
-                            case 4 : gambar = stringValue;break;
-                            case 5 : harga = numericValue;break;
-                            case 6 : kategori = stringValue;break;
+                        switch (kolom % 6){
+                            case 0 : nama = stringValue;break;
+                            case 1 : deskripsi = stringValue;break;
+                            case 2 : kuantitas = numericValue;break;
+                            case 3 : gambar = stringValue;break;
+                            case 4 : harga = numericValue;break;
+                            case 5 : kategori = stringValue;break;
                         }
                     }
-                    if(kolom % 7 == 6 && baris != 0){
+                    if(kolom % 6 == 5 && baris != 0){
                         Category category = categoryRepository.findByName(kategori);
-                        Barang barang = new Barang(kode,nama,gambar,deskripsi,harga,true,category);
-                        barangList.add(barang);
+                        boolean isSubBarangExist = false;
+
                         //barangRepository.save(barang);
+                        Pageable limit = new PageRequest(0, 1);
+                        String kodeHead = kategori.substring(0,3).toUpperCase();    //PER
+                        List<Barang> lastBarang = barangRepository.findByCategory_NameContainingOrderByKodeDesc(kodeHead,limit);
+                        if (lastBarang.isEmpty()){
+                            kode = kodeHead+"0001";  //PER0001
+                            isSubBarangExist = false;
+                        } else {
+                            String lastIndexString = lastBarang.get(0).getKode().substring(3,7);
+                            int lastIndex = Integer.parseInt(lastIndexString);
+                            lastIndex++;
+                            String kodeTail = "0000" + lastIndex;
+                            kodeTail = kodeTail.substring(kodeTail.length()-4);
+                            kode = kodeHead+kodeTail;
+                            isSubBarangExist = true;
+                        }
+
+                        //Cek apakah barang sudah ada di database
+
+                        List<SubBarang> listSubBarangInDatabase = subBarangRepository.findAllByBarang_KodeAndIsExistOrderByKodeSubBarangDesc(kode, limit,true);
+
+                        boolean isNotExist = listSubBarangInDatabase.isEmpty();
+
+                        int lastIdSubBarang = 1;
+
+                        Barang barang = new Barang(kode,nama,gambar,deskripsi,harga,true,category);
+                        if(isNotExist){
+                            //barangList.add(barang);
+                            barangRepository.save(barang);
+                        }
+                        else{
+                            lastIdSubBarang = Integer.parseInt(listSubBarangInDatabase.get(0).getKodeSubBarang().substring(3,7));
+                        }
 
                         // Menambah sub barang berdasarkan kuantitas
                         for(int i=1;i<=kuantitas;i++){
-                            String s = "";
-                            if(i<10)
-                                s = "000";
-                            else if(i < 100)
-                                s = "00";
-                            else if(i < 1000)
-                                s = "0";
-                            String kodeSubBarang = kode + s + i;
+
+                            String kodeTail = "0000" + lastIdSubBarang;
+                            kodeTail = kodeTail.substring(kodeTail.length()-4);
+
+                            String kodeSubBarang = barang.getKode() + kodeTail;
+
                             SubBarang subBarang = new SubBarang(kodeSubBarang, barang);
-                            subBarangList.add(subBarang);
+                            //subBarangList.add(subBarang);
+                            subBarangRepository.save(subBarang);
+                            lastIdSubBarang++;
                             //subBarangRepository.save(subBarang);
                             //System.out.print("------------------" + i + "----------------------------");
                         }
                     }
-                    if(kolom == 6)
+                    if(kolom == 5)
                         baris++;
                     kolom++;
                 }
                 System.out.println();
             }
-            for(Barang b : barangList){
-                barangRepository.save(b);
-            }
-            for(SubBarang sb : subBarangList){
-                subBarangRepository.save(sb);
-            }
+//            for(Barang b : barangList){
+//                barangRepository.save(b);
+//            }
+//            for(SubBarang sb : subBarangList){
+//                subBarangRepository.save(sb);
+//            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {

@@ -26,6 +26,9 @@ $( document ).ready(function() {
     $("#buttonHapusKaryawan").hide();
     $("#buttonBackToDetailKaryawan").fadeIn();
     $("#buttonSimpanUbahanKaryawan").show();
+    $('.hideGantiPassword').hide();
+    $('#gantiPassword').val('');
+    $('#buttonYaGanti').show();
   });
 
   $( document ).on("click",".triggerDetailKaryawan",function () {
@@ -172,9 +175,6 @@ $( document ).ready(function() {
   });
 
   function ajaxGetDetailKaryawan(id) {
-    $('.hideGantiPassword').hide();
-    $('#gantiPassword').val('');
-    $('.buttonYaGanti').show();
     $.ajax({
       async: false,
       type: "GET",

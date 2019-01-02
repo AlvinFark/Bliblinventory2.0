@@ -44,6 +44,17 @@ public class UserController {
     return userRepository.getUserById(id);
   }
 
+  @PutMapping("/usernameforgambar/{username}")
+  public User getUserByUsername(@PathVariable String username){
+    User user = userRepository.getUserByUsername(username);
+    if (user!=null) {
+      user.setGambar(user.getId() + "." + user.getGambar());
+      userRepository.save(user);
+    }
+    return user;
+  }
+
+
   @PutMapping("/id/{id}")
   public User editUser(@PathVariable Long id, @Valid @RequestBody SignUpRequest userRequest) {
 

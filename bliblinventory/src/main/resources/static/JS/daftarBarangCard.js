@@ -205,7 +205,7 @@ function ajaxGetProductDetail(idBarang) {
                 '<h4 class="headerModal">Detail Barang</h4>' +
                 '<div class="valign-wrapper">\n' +
                 '<div class="kontainerImgModalBarang" id="detailFotoBarang"></div>' +
-                '<div>' +
+                '<div style="width:70%">' +
                 '<table class="tableNoBorder smallPadding">\n' +
                 '<tr>\n' +
                 '<td class="tdAtrib" width="150px">Kode</td>\n' +

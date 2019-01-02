@@ -1,9 +1,15 @@
 package com.sal.bliblinventory.model;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 
+@Builder
+@AllArgsConstructor
 @Entity
 @Table(name = "Category")
 public class Category {
@@ -17,6 +23,10 @@ public class Category {
 
   //constructor
   public Category(){}
+
+  public Category(String name){
+      this.name = name;
+  }
 
   //getter setter
   public void setId(Long id) {

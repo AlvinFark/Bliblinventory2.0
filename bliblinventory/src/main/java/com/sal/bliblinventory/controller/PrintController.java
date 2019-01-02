@@ -337,6 +337,16 @@ public class PrintController {
                 cell = row.createCell(idxCell++);
                 cell.setCellValue((String) categoryList.get(i).getName());
             }
+            for(int i=0;i<10;i++){
+                idxCell=0;
+                if(sheet.getRow(idxRow)!=null){
+                    if(sheet.getRow(idxRow).getCell(idxCell)!=null){
+                        sheet.getRow(idxRow).removeCell(sheet.getRow(idxRow).getCell(idxCell++));
+                        sheet.getRow(idxRow).removeCell(sheet.getRow(idxRow).getCell(idxCell++));
+                    }
+                }
+                idxRow++;
+            }
             fis.close();
             FileOutputStream fos = new FileOutputStream(new File("D:/bliblinventory/file-to-print/format-tambah-barang-bulk.xlsx"));
             workbook.write(fos);

@@ -5,6 +5,8 @@ import com.smattme.MysqlImportService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -35,7 +37,7 @@ public class BackupRestoreController {
         properties.setProperty(MysqlExportService.DB_PASSWORD, "");
         properties.setProperty(MysqlExportService.JDBC_DRIVER_NAME, "com.mysql.cj.jdbc.Driver");
 
-        //properties.setProperty(MysqlExportService.TEMP_DIR, new File("backup").getPath());
+        properties.setProperty(MysqlExportService.TEMP_DIR, new File("backup").getPath());
         properties.setProperty(MysqlExportService.PRESERVE_GENERATED_ZIP, "true");
 
         MysqlExportService mysqlExportService = new MysqlExportService(properties);
@@ -49,6 +51,18 @@ public class BackupRestoreController {
         Path path = Paths.get(savePath);
 
         Files.write(path, bytes);
+
+        //Menghapus file temp hasil backup
+        try{
+            Path p = Paths.get("backup/" + file.getName());
+            Files.delete(p);
+            p = Paths.get("backup");
+            Files.delete(p);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         return file.getName();
     }

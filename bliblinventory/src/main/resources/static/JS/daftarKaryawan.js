@@ -47,48 +47,6 @@ $( document ).ready(function() {
     }
   });
 
-  $('#formGantiGambarKaryawan').on('submit',(function(e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    $.ajax({
-      type:'POST',
-      url: "/api/upload/users/",
-      data:formData,
-      cache:false,
-      contentType: false,
-      processData: false,
-      success:function(data){
-        console.log("success");
-        console.log(data);
-      },
-      error: function(data){
-        console.log("error");
-        console.log(data);
-      }
-    });
-  }));
-
-  $('#formGambarKaryawanBaru').on('submit',(function(e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    $.ajax({
-      type:'POST',
-      url: "/api/upload/users/",
-      data:formData,
-      cache:false,
-      contentType: false,
-      processData: false,
-      success:function(data){
-        console.log("success");
-        console.log(data);
-      },
-      error: function(data){
-        console.log("error");
-        console.log(data);
-      }
-    });
-  }));
-
   $( document ).on("click","#buttonYaGanti",function () {
     $('.hideGantiPassword').show();
     $('#buttonYaGanti').hide();
@@ -104,7 +62,6 @@ $( document ).ready(function() {
   var gambardetail;
 
   $("#buttonSimpanUbahanKaryawan").click(function(){
-    $('#formGantiGambarKaryawan').submit();
     var id=$('#detailIdKaryawan').text();
     var name=$('#ubahNamaKaryawan').val();
     var gender=$("#ubahGenderKaryawan").val();
@@ -117,7 +74,7 @@ $( document ).ready(function() {
     var email=$("#emailKaryawan").val();
     var uname=$("#detailUsernameKaryawan").text();
     var path = $("#gantiFotoKaryawan").val();
-    var gambar = path.split('\\').pop();
+    var gambar = path.split('.').pop();
     if (gambar=="") {
       gambar = gambardetail
     };
@@ -144,6 +101,27 @@ $( document ).ready(function() {
       "gambar" : gambar,
       "passwordBaru" : passbaru
     };
+    $('#formGantiGambarKaryawan').on('submit',(function(e) {
+      e.preventDefault();
+      var formData = new FormData(this);
+      $.ajax({
+        type:'POST',
+        url: "/api/upload/users/" + id + "." + gambar,
+        data:formData,
+        cache:false,
+        contentType: false,
+        processData: false,
+        success:function(data){
+          console.log("success");
+          console.log(data);
+        },
+        error: function(data){
+          console.log("error");
+          console.log(data);
+        }
+      });
+    }));
+    $('#formGantiGambarKaryawan').submit();
     $.ajax({
       type: "PUT",
       url: "/api/users/id/" + id,
@@ -355,7 +333,6 @@ $( document ).ready(function() {
   });
 
   $("#btnKirimKaryawanBaru").click(function(){
-    $('#formGambarKaryawanBaru').submit();
     var nname=$('#namaKaryawanBaru').val();
     var ngender=$("#genderKaryawanBaru").val();
     var naddress=$("#alamatKaryawanBaru").val();
@@ -368,7 +345,7 @@ $( document ).ready(function() {
     var nemail=$("#emailKaryawanBaru").val();
     var nuname=$("#usernameKaryawanBaru").val();
     var path = $("#gambarKaryawanBaru").val();
-    var fileGambar = path.split('\\').pop();
+    var fileGambar = path.split('.').pop();
     var jsonTambahKaryawan={
       "name" : nname,
       "username" : nuname,
@@ -388,6 +365,27 @@ $( document ).ready(function() {
       contentType: 'application/json',
       data: JSON.stringify(jsonTambahKaryawan),
       success: function(result) {
+        $('#formGambarKaryawanBaru').on('submit',(function(e) {
+          e.preventDefault();
+          var formData = new FormData(this);
+          $.ajax({
+            type:'POST',
+            url: "/api/upload/users/" + result.gambar,
+            data:formData,
+            cache:false,
+            contentType: false,
+            processData: false,
+            success:function(data){
+              console.log("success");
+              console.log(data);
+            },
+            error: function(data){
+              console.log("error");
+              console.log(data);
+            }
+          });
+        }));
+        $('#formGambarKaryawanBaru').submit();
         alert('karyawan baru berhasil ditambahkan');
         ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
       },

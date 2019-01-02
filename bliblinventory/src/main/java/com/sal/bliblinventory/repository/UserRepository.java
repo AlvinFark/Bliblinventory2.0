@@ -17,10 +17,13 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Boolean existsByEmail(String email);
 
   User getUserById(Long userId);
+  User getUserByUsername(String username);
   List<User> findAllByOrderByName();
   List<User> findAllByNameContainingOrderByName(String partName);
   List<User> getAllUserByName(String name);
   List<User> getAllUserByRoles(Long roleId);
+
+  User getFirstByOrderByIdDesc();
 
   Boolean deleteUserById(Long userId);
 }

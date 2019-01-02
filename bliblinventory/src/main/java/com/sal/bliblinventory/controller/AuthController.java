@@ -84,7 +84,6 @@ public class AuthController {
 
     user.setRoles(Collections.singleton(userRole));
     user.setSuperiorId(signUpRequest.getSuperiorId());
-    user.setGambar(user.getId()+"."+user.getGambar());
 
     User result = userRepository.save(user);
 
@@ -92,6 +91,6 @@ public class AuthController {
         .fromCurrentContextPath().path("/api/users/{username}")
         .buildAndExpand(result.getUsername()).toUri();
 
-    return user;
+    return result;
   }
 }

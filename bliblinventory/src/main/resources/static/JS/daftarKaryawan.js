@@ -174,6 +174,7 @@ $( document ).ready(function() {
   function ajaxGetDetailKaryawan(id) {
     $('.hideGantiPassword').hide();
     $('#gantiPassword').val('');
+    $("#gantiFotoKaryawan").val(null);
     $('.buttonYaGanti').show();
     $.ajax({
       async: false,
@@ -316,6 +317,15 @@ $( document ).ready(function() {
         window.alert("error");
       }
     });
+    $('#namaKaryawanBaru').val('');
+    $("#genderKaryawanBaru").val('');
+    $("#alamatKaryawanBaru").val('');
+    $("#dobKaryawanBaru").val('');
+    $("#passwordKaryawanBaru").val('');
+    $("#hpKaryawanBaru").val('');
+    $("#emailKaryawanBaru").val('');
+    $("#usernameKaryawanBaru").val('');
+    $("#gambarKaryawanBaru").val(null);
   }
 
   $("#searchKaryawan").keypress(function(e) {
@@ -363,25 +373,34 @@ $( document ).ready(function() {
       type: "POST",
       url: "/api/auth/signup",
       contentType: 'application/json',
+      async : false,
       data: JSON.stringify(jsonTambahKaryawan),
       success: function(result) {
         $('#formGambarKaryawanBaru').on('submit',(function(e) {
           e.preventDefault();
           var formData = new FormData(this);
           $.ajax({
-            type:'POST',
-            url: "/api/upload/users/" + result.gambar,
-            data:formData,
-            cache:false,
-            contentType: false,
-            processData: false,
-            success:function(data){
-              console.log("success");
-              console.log(data);
-            },
-            error: function(data){
-              console.log("error");
-              console.log(data);
+            async: false,
+            type: "PUT",
+            url: "/api/users/usernameforgambar/" + nuname,
+            success: function (result1) {
+              $.ajax({
+                async:false,
+                type:'POST',
+                url: "/api/upload/users/" + result1.gambar,
+                data:formData,
+                cache:false,
+                contentType: false,
+                processData: false,
+                success:function(data){
+                  console.log("success");
+                  console.log(data);
+                },
+                error: function(data){
+                  console.log("error");
+                  console.log(data);
+                }
+              });
             }
           });
         }));

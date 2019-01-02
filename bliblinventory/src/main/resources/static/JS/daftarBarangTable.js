@@ -303,7 +303,7 @@ $( document ).ready(function() {
               '  <td class="namaPeminjam">'+ peminjam +'</td>\n' +
               '  <td class="tanggalPinjam">'+ peminjam +'</td>\n' +
               '  <td class="tdDeleteSubBarang" width=100px>\n' +
-              '    <a class="waves-effect waves-light btn right btn-small modal-close triggerDeleteSubBarang"><i class="material-icons">delete</i></a>\n' +
+              '    <a class="waves-effect waves-light btn right btn-small modal-close triggerDeleteSubBarang">hapus <i class="material-icons">delete</i></a>\n' +
               '  </td>\n' +
               '</tr>')
           }
@@ -322,27 +322,28 @@ $( document ).ready(function() {
               });
             };
           });
-          $(document).on("click", ".triggerDeleteSubBarang", function(){
-            var kodeSubBarang = $(this).parent("td").parent("tr.rowDetailSubBarang").children(".idDetailSubBarang").text();
-            var jsonSubBarang = {
-              "kodeSubBarang" : kodeSubBarang,
-              "isExist" : false
-            };
-            $.ajax({
-              type: "PUT",
-              url: "/api/subbarang/" + kodeSubBarang,
-              contentType: 'application/json',
-              data: JSON.stringify(jsonSubBarang),
-              success: function(result) {
-                alert(result);
-                ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
-              }
-            });
-          });
         }
       });
     });
 
+  $(document).on("click", ".triggerDeleteSubBarang", function(){
+    var kodeSubBarang = $(this).parent("td").parent("tr.rowDetailSubBarang").children(".idDetailSubBarang").text();
+    var jsonSubBarang = {
+      "kodeSubBarang" : kodeSubBarang,
+      "isExist" : false
+    };
+    $.ajax({
+      type: "PUT",
+      url: "/api/subbarang/" + kodeSubBarang,
+      contentType: 'application/json',
+      data: JSON.stringify(jsonSubBarang),
+      success: function(result7) {
+        alert(result7);
+        ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
+      }
+    });
+  });
+  
   $('#formGantiFotoBarang').on('submit',(function(e) {
     e.preventDefault();
     var formData = new FormData(this);

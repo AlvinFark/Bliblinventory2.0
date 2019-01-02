@@ -204,20 +204,20 @@ public class UploadController {
 //        }
     }
 
-    @PostMapping("/upload/users/")
-    public void singleFileUploadUser(@RequestParam("fotoKaryawan") MultipartFile fotoKaryawan, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse) throws Exception {
+    @PostMapping("/upload/users/{fotoname}")
+    public void singleFileUploadUser(@RequestParam("fotoKaryawan") MultipartFile fotoKaryawan, @PathVariable String fotoname, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse) throws Exception {
 
-      String fileName = StringUtils.cleanPath(fotoKaryawan.getOriginalFilename());
+      String fileName = fotoname;
       Path destination = Paths.get("D:/bliblinventory/images/users/").toAbsolutePath().normalize();
       Path targetLocation = destination.resolve(fileName);
 
       Files.copy(fotoKaryawan.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
     }
 
-    @PostMapping("/upload/barang/")
-    public void singleFileUploadBarang(@RequestParam("fotoBarang") MultipartFile fotoBarang, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse) throws Exception {
+    @PostMapping("/upload/barang/{fotoname}")
+    public void singleFileUploadBarang(@RequestParam("fotoBarang") MultipartFile fotoBarang, @PathVariable String fotoname, RedirectAttributes redirectAttributes, HttpServletResponse httpResponse) throws Exception {
 
-      String fileName = StringUtils.cleanPath(fotoBarang.getOriginalFilename());
+      String fileName = fotoname;
       Path destination = Paths.get("D:/bliblinventory/images/barang/").toAbsolutePath().normalize();
       Path targetLocation = destination.resolve(fileName);
 

@@ -79,6 +79,7 @@ public class BarangController {
     public Barang editBarang(@PathVariable String categoryName, @Valid @RequestBody Barang barangRequest) {
 
       Category category = categoryRepository.findByName(categoryName);
+      barangRequest.setGambar(barangRequest.getKode()+"."+barangRequest.getGambar());
       barangRequest.setCategory(category);
       barangRepository.save(barangRequest);
       return barangRequest;
@@ -90,7 +91,7 @@ public class BarangController {
       Pageable limit = new PageRequest(0, 1);
       String kodeHead = categoryName.substring(0,3).toUpperCase();    //PER
       List<Barang> lastBarang = barangRepository.findByCategory_NameContainingOrderByKodeDesc(kodeHead,limit);
-      if (lastBarang==null){
+      if (lastBarang.size()==0){
         barangRequest.setKode(kodeHead+"0001");  //PER0001
       } else {
         String lastIndexString = lastBarang.get(0).getKode().substring(3,7);
@@ -103,6 +104,7 @@ public class BarangController {
 
       Category category = categoryRepository.findByName(categoryName);
       barangRequest.setCategory(category);
+      barangRequest.setGambar(barangRequest.getKode()+"."+barangRequest.getGambar());
       barangRepository.save(barangRequest);
       return barangRequest;
     }

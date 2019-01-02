@@ -7,6 +7,8 @@ import com.sal.bliblinventory.repository.BarangRepository;
 import com.sal.bliblinventory.repository.CategoryRepository;
 import com.sal.bliblinventory.repository.SubBarangRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
@@ -73,13 +75,37 @@ public class BarangController {
         return barangRepository.findBarangByKode(param1);
     }
 
-  @PutMapping("/api/barang/{categoryName}")
-  public Barang editBarang(@PathVariable String categoryName, @Valid @RequestBody Barang barangRequest) {
+    @PutMapping("/api/barang/{categoryName}")
+    public Barang editBarang(@PathVariable String categoryName, @Valid @RequestBody Barang barangRequest) {
 
-    Category category = categoryRepository.findByName(categoryName);
-    barangRequest.setCategory(category);
-    return barangRepository.save(barangRequest);
-  }
+      Category category = categoryRepository.findByName(categoryName);
+      barangRequest.setCategory(category);
+      barangRepository.save(barangRequest);
+      return barangRequest;
+    }
+
+    @PutMapping("/api/barang/tambah/{categoryName}")
+    public Barang tambahBarang(@PathVariable String categoryName, @Valid @RequestBody Barang barangRequest) {
+
+      Pageable limit = new PageRequest(0, 1);
+      String kodeHead = categoryName.substring(0,3).toUpperCase();    //PER
+      List<Barang> lastBarang = barangRepository.findByCategory_NameContainingOrderByKodeDesc(kodeHead,limit);
+      if (lastBarang==null){
+        barangRequest.setKode(kodeHead+"0001");  //PER0001
+      } else {
+        String lastIndexString = lastBarang.get(0).getKode().substring(3,7);
+        int lastIndex = Integer.parseInt(lastIndexString);
+        lastIndex++;
+        String kodeTail = "0000" + lastIndex;
+        kodeTail = kodeTail.substring(kodeTail.length()-4);
+        barangRequest.setKode(kodeHead+kodeTail);
+      }
+
+      Category category = categoryRepository.findByName(categoryName);
+      barangRequest.setCategory(category);
+      barangRepository.save(barangRequest);
+      return barangRequest;
+    }
 
   @PutMapping("/api/barang/delete/{kodeBarang}")
   public String hapusBarang(@PathVariable String kodeBarang) {

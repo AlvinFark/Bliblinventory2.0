@@ -10,7 +10,7 @@ $( document ).ready(function() {
     });
 
     //ketika klik icon search
-    $( document ).on("click","#iconSearch",function (){
+    $( document ).on("keyup","#inputCari",function (){
         ajaxGetRequestListBySortAndSearch();
     });
 

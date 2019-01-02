@@ -171,10 +171,8 @@ $( document ).ready(function() {
       ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
     });
 
-    $("#searchTabelBarang").keypress(function(e) {
-      if(e.which == 13) {
+    $("#searchTabelBarang").keyup(function(e) {
         ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
-      }
     });
 
   $( document ).on("click","#btnDeleteSelectedBarang",function (){

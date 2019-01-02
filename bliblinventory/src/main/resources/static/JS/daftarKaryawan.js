@@ -26,6 +26,9 @@ $( document ).ready(function() {
     $("#buttonHapusKaryawan").hide();
     $("#buttonBackToDetailKaryawan").fadeIn();
     $("#buttonSimpanUbahanKaryawan").show();
+    $('.hideGantiPassword').hide();
+    $('#gantiPassword').val('');
+    $('#buttonYaGanti').show();
   });
 
   $( document ).on("click",".triggerDetailKaryawan",function () {
@@ -172,10 +175,6 @@ $( document ).ready(function() {
   });
 
   function ajaxGetDetailKaryawan(id) {
-    $('.hideGantiPassword').hide();
-    $('#gantiPassword').val('');
-    $("#gantiFotoKaryawan").val(null);
-    $('.buttonYaGanti').show();
     $.ajax({
       async: false,
       type: "GET",
@@ -328,10 +327,8 @@ $( document ).ready(function() {
     $("#gambarKaryawanBaru").val(null);
   }
 
-  $("#searchKaryawan").keypress(function(e) {
-    if(e.which == 13) {
+  $("#searchKaryawan").keyup(function(e) {
       ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
-    }
   });
 
   $( document ).on("change","#filterKaryawan",function (){

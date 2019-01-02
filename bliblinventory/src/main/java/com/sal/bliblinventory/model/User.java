@@ -39,8 +39,8 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    @NotBlank
-    private String gender;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
 
     @NotBlank
     private String address;
@@ -59,7 +59,7 @@ public class User {
 
     }
 
-    public User(String name, String username, String email, String password, String gender, String address, Date dateOfBirth, String phoneNumber, String gambar) {
+    public User(String name, String username, String email, String password, Gender gender, String address, Date dateOfBirth, String phoneNumber, String gambar) {
       this.name = name;
       this.username = username;
       this.email = email;
@@ -128,7 +128,7 @@ public class User {
     this.dateOfBirth = dateOfBirth;
   }
 
-  public void setGender(String gender) {
+  public void setGender(Gender gender) {
     this.gender = gender;
   }
 
@@ -144,7 +144,7 @@ public class User {
     return superiorId;
   }
 
-  public String getGender() {
+  public Gender getGender() {
     return gender;
   }
 

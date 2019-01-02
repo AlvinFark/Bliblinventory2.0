@@ -71,6 +71,11 @@ $( document ).ready(function() {
     //ketika ada card barang yang diklik
     $( document ).on("click",".productCard",function () {
         var idBarang = jQuery(this).children(".card").children(".card-content").children("p:first-child").text();
+        $("#pinjamBarang").hide();
+        $("#buttonRequestPinjam").hide();
+        $("#buttonBackToDetailCard").hide();
+        $("#buttonPinjam").show();
+        $("#detailBarangCard").show();
         ajaxGetProductDetail(idBarang);
         ajaxGetFormOrder(idBarang);
     });

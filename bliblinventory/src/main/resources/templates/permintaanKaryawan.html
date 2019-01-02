@@ -1,112 +1,95 @@
-<!--<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<link type="text/css" rel="stylesheet" href="../css/styles.css">
-	<link type="text/css" rel="stylesheet" href="../materialize/css/materialize.min.css"	media="screen,projection"/>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.4.1/css/all.css" integrity="sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz" crossorigin="anonymous">
-	<script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
-	<script type="text/javascript" src="../JS/permintaanKaryawan.js"></script>
-	<script type="text/javascript" src="../materialize/js/materialize.min.js"></script>
-	<title>bliblinventory</title>
-</head>
-<body class="kontainer"> -->
-	<script type="text/javascript" src="../JS/permintaanKaryawan.js"></script>
-	<div style="display:flex; margin-top: 20px;">
-		<div class="containerSelectLogo valign-wrapper">
-			<p>Cari :</p>
-			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select id="selectSearchBy">
-					<option value="0">Nama Karyawan</option>
-					<option value="1">Nama Barang</option>
-				</select>
-			</div>
-			<div class="input-field containerSearch valign-wrapper z-depth-1">
-					<input type="text" id="inputCari" placeholder="Ketik yang ingin dicari"/>
-			</div>
-            <i class="material-icons" id="iconSearch">search</i>
+<script type="text/javascript" src="../JS/permintaanKaryawan.js"></script>
+<h4>Daftar Permintaan Pinjaman Karyawan</h4>
+<div style="display:flex; margin-top: 20px;">
+	<div class="containerSelectLogo valign-wrapper">
+		<p>Cari :</p>
+		<div class="input-field containerSelect valign-wrapper z-depth-1">
+			<select id="selectSearchBy">
+				<option value="0">Nama Karyawan</option>
+				<option value="1">Nama Barang</option>
+			</select>
 		</div>
-		<div class="containerSelectLogo valign-wrapper">
-			<i class="material-icons">sort</i>
-			<p>Urutkan :</p>
-			<div class="input-field containerSelect valign-wrapper z-depth-1">
-				<select id="selectSortBy">
-					<option value="0">Tg Pinjam Barang</option>
-                    <option value="1">No Order</option>
-					<option value="2">Nama Karyawan</option>
-                    <option value="3">Nama Barang</option>
-                    <option value="4">Tg Order</option>
-				</select>
-			</div>
+		<div class="input-field containerSearch valign-wrapper z-depth-1">
+				<input type="text" id="inputCari" placeholder="Ketik yang ingin dicari"/>
+		</div>
+		<i class="material-icons" id="iconSearch">search</i>
+	</div>
+	<div class="containerSelectLogo valign-wrapper">
+		<i class="material-icons">sort</i>
+		<p>Urutkan :</p>
+		<div class="input-field containerSelect valign-wrapper z-depth-1">
+			<select id="selectSortBy">
+				<option value="0">Tg Pinjam Barang</option>
+				<option value="1">No Order</option>
+				<option value="2">Nama Karyawan</option>
+				<option value="3">Nama Barang</option>
+				<option value="4">Tg Order</option>
+			</select>
 		</div>
 	</div>
-	<div id="whiteBoard"  class="z-depth-2"  style="position:absolute">
-		<table class="highlight noPadding">
-			<thead>
+</div>
+<div id="whiteBoard"  class="z-depth-2"  style="position:absolute">
+	<table class="highlight noPadding">
+		<thead>
+			<tr>
+				<th><p><label><input type="checkbox" id="cbxAll" class="cbx"/><span></span></label></p></th>
+				<th>No Order</th>
+				<th>Nama Karyawan</th>
+				<th>Nama Barang</th>
+				<th>Tg Pinjam Barang</th>
+				<th>Jumlah</th>
+				<th>Tanggal Order</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody id="listPermintaanPinjam">
+		</tbody>
+	</table>
+	<a class="waves-effect waves-light btn right kananBawah disabled" id="btnSetujui">Setujui</a>
+	<a class="waves-effect waves-light btn right kananBawah disabled" id="btnTolak">Tolak</a>
+</div>
+<div id="modalDetailRequest" class="modal modal-fixed-footer">
+<div class="modal-content valign-wrapper">
+		<div>
+			<table class="tableNoBorder smallPadding">
 				<tr>
-					<th><p><label><input type="checkbox" id="cbxAll" class="cbx"/><span></span></label></p></th>
-					<th>No Order</th>
-					<th>Nama Karyawan</th>
-					<th>Nama Barang</th>
-					<th>Tg Pinjam Barang</th>
-					<th>Jumlah</th>
-					<th>Tanggal Order</th>
-					<th></th>
+					<td class="tdAtrib" width="120">Nama Karyawan</td>
+					<td class="tdInfo" id="detailNamaKaryawan">Budhe Sumiyati</td>
 				</tr>
-			</thead>
-			<tbody id="listPermintaanPinjam">
-			</tbody>
-		</table>
-		<a class="waves-effect waves-light btn right kananBawah disabled" id="btnSetujui">Setujui</a>
-		<a class="waves-effect waves-light btn right kananBawah disabled" id="btnTolak">Tolak</a>
-	</div>
-	<div id="modalDetailRequest" class="modal modal-fixed-footer">
-    <div class="modal-content valign-wrapper">
-			<div>
-				<table class="tableNoBorder smallPadding">
-					<tr>
-						<td class="tdAtrib" width="120">Nama Karyawan</td>
-						<td class="tdInfo" id="detailNamaKaryawan">Budhe Sumiyati</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">No. Order</td>
-						<td class="tdInfo" id="detailIdTransaksi">B91103T</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">Tanggal Order</td>
-						<td class="tdInfo" id="detailTgOrder">3 Januari 2018</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">Nama Barang</td>
-						<td class="tdInfo" id="detailNamaBarang">Samsung Galaxy Tab S2</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">Kategori</td>
-						<td class="tdInfo" id="detailNamaKategori">Elektronik</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">Tanggal Pinjam Barang</td>
-						<td class="tdInfo" id="detailTgPinjam">1 Maret 2018</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">Jumlah</td>
-						<td class="tdInfo" id="detailJumlah">1</td>
-					</tr>
-					<tr>
-						<td class="tdAtrib">Keterangan</td>
-						<td class="tdInfo" id="detailKeterangan">Untuk main game</td>
-					</tr>
-				</table>
-			</div>
+				<tr>
+					<td class="tdAtrib">No. Order</td>
+					<td class="tdInfo" id="detailIdTransaksi">B91103T</td>
+				</tr>
+				<tr>
+					<td class="tdAtrib">Tanggal Order</td>
+					<td class="tdInfo" id="detailTgOrder">3 Januari 2018</td>
+				</tr>
+				<tr>
+					<td class="tdAtrib">Nama Barang</td>
+					<td class="tdInfo" id="detailNamaBarang">Samsung Galaxy Tab S2</td>
+				</tr>
+				<tr>
+					<td class="tdAtrib">Kategori</td>
+					<td class="tdInfo" id="detailNamaKategori">Elektronik</td>
+				</tr>
+				<tr>
+					<td class="tdAtrib">Tanggal Pinjam Barang</td>
+					<td class="tdInfo" id="detailTgPinjam">1 Maret 2018</td>
+				</tr>
+				<tr>
+					<td class="tdAtrib">Jumlah</td>
+					<td class="tdInfo" id="detailJumlah">1</td>
+				</tr>
+				<tr>
+					<td class="tdAtrib">Keterangan</td>
+					<td class="tdInfo" id="detailKeterangan">Untuk main game</td>
+				</tr>
+			</table>
 		</div>
-    <div class="modal-footer">
-			<a class="modal-close btn-flat left">tutup</a>
-			<a id="buttonTolakFromDetail" class="waves-effect waves-light btn" style="margin-right: 4px;">tolak</a>
-			<a id="buttonSetujuiFromDetail" class="waves-effect waves-light btn" style="margin-right: 4px;">setujui</a>
-    </div>
 	</div>
-<!--
-</body>-->
+<div class="modal-footer">
+		<a class="modal-close btn-flat left">tutup</a>
+		<a id="buttonTolakFromDetail" class="waves-effect waves-light btn" style="margin-right: 4px;">tolak</a>
+		<a id="buttonSetujuiFromDetail" class="waves-effect waves-light btn" style="margin-right: 4px;">setujui</a>
+</div>
+</div>

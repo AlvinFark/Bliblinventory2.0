@@ -88,24 +88,27 @@ public class BarangController {
     @PutMapping("/api/barang/tambah/{categoryName}")
     public Barang tambahBarang(@PathVariable String categoryName, @Valid @RequestBody Barang barangRequest) {
 
-      Pageable limit = new PageRequest(0, 1);
-      String kodeHead = categoryName.substring(0,3).toUpperCase();    //PER
-      List<Barang> lastBarang = barangRepository.findByCategory_NameContainingOrderByKodeDesc(kodeHead,limit);
-      if (lastBarang.size()==0){
-        barangRequest.setKode(kodeHead+"0001");  //PER0001
-      } else {
-        String lastIndexString = lastBarang.get(0).getKode().substring(3,7);
-        int lastIndex = Integer.parseInt(lastIndexString);
-        lastIndex++;
-        String kodeTail = "0000" + lastIndex;
-        kodeTail = kodeTail.substring(kodeTail.length()-4);
-        barangRequest.setKode(kodeHead+kodeTail);
-      }
+      Barang tmp = barangRepository.findBarangByNama(barangRequest.getNama());
+      if (tmp!=null) {
+        Pageable limit = new PageRequest(0, 1);
+        String kodeHead = categoryName.substring(0, 3).toUpperCase();    //PER
+        List<Barang> lastBarang = barangRepository.findByCategory_NameContainingOrderByKodeDesc(kodeHead, limit);
+        if (lastBarang.size() == 0) {
+          barangRequest.setKode(kodeHead + "0001");  //PER0001
+        } else {
+          String lastIndexString = lastBarang.get(0).getKode().substring(3, 7);
+          int lastIndex = Integer.parseInt(lastIndexString);
+          lastIndex++;
+          String kodeTail = "0000" + lastIndex;
+          kodeTail = kodeTail.substring(kodeTail.length() - 4);
+          barangRequest.setKode(kodeHead + kodeTail);
+        }
 
-      Category category = categoryRepository.findByName(categoryName);
-      barangRequest.setCategory(category);
-      barangRequest.setGambar(barangRequest.getKode()+"."+barangRequest.getGambar());
-      barangRepository.save(barangRequest);
+        Category category = categoryRepository.findByName(categoryName);
+        barangRequest.setCategory(category);
+        barangRequest.setGambar(barangRequest.getKode() + "." + barangRequest.getGambar());
+        barangRepository.save(barangRequest);
+      }
       return barangRequest;
     }
 

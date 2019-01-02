@@ -162,19 +162,34 @@ $( document ).ready(function() {
       "roleId" : roleId,
       "isActive" : false
     };
-    $.ajax({
-      type: "PUT",
-      url: "/api/users/id/" + id,
-      contentType: 'application/json',
-      data: JSON.stringify(jsonUbahDetail),
-      success: function(result) {
-        alert('data karyawan ' + name + ' berhasil dihapus');
-        ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
-      }
-    });
+    var c = confirm("Hapus karyawan "+ name + "?");
+    if (c) {
+      $.ajax({
+        type: "PUT",
+        url: "/api/users/id/" + id,
+        contentType: 'application/json',
+        data: JSON.stringify(jsonUbahDetail),
+        success: function (result) {
+          alert('data karyawan ' + name + ' berhasil dihapus');
+          ajaxGetUsers($("#searchKaryawan").val(), $("#filterKaryawan").prop('selectedIndex'));
+        }
+      });
+    }
   });
 
   function ajaxGetDetailKaryawan(id) {
+    $('#detailIdKaryawan').html("");
+    $('#ubahNamaKaryawan').val("");
+    $("#ubahGenderKaryawan").val("");
+    $("#alamatKaryawan").val("");
+    $("#ubahTanggalLahir").val(null);
+    $("#ubahRole").val("");
+    $("#selectUbahSuperior").val("");
+    $("#hpKaryawan").val("");
+    $("#emailKaryawan").val("");
+    $("#detailUsernameKaryawan").val("");
+    $('#gantiPassword').val("");
+    $("#gantiFotoKaryawan").val(null);
     $.ajax({
       async: false,
       type: "GET",

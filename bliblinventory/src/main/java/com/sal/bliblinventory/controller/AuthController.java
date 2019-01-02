@@ -69,16 +69,7 @@ public class AuthController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-    if(userRepository.existsByUsername(signUpRequest.getUsername())) {
-      return new ResponseEntity(new ApiResponse(false, "Username is already taken!"),
-          HttpStatus.BAD_REQUEST);
-    }
-
-    if(userRepository.existsByEmail(signUpRequest.getEmail())) {
-      return new ResponseEntity(new ApiResponse(false, "Email Address already in use!"),
-          HttpStatus.BAD_REQUEST);
-    }
+  public User registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
 
     Gender gender = Gender.valueOf(signUpRequest.getGender());
 
@@ -93,6 +84,7 @@ public class AuthController {
 
     user.setRoles(Collections.singleton(userRole));
     user.setSuperiorId(signUpRequest.getSuperiorId());
+    user.setGambar(user.getId()+"."+user.getGambar());
 
     User result = userRepository.save(user);
 
@@ -100,6 +92,6 @@ public class AuthController {
         .fromCurrentContextPath().path("/api/users/{username}")
         .buildAndExpand(result.getUsername()).toUri();
 
-    return ResponseEntity.created(location).body(new ApiResponse(true, "User registered successfully"));
+    return user;
   }
 }

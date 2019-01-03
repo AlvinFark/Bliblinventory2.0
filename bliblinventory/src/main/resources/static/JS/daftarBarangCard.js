@@ -4,9 +4,14 @@ $( document ).ready(function() {
     //buat dropdown sesuai kategori yang ada di DB
     ajaxGetSelectKategori();
 
+    //inisialisasi elemen-elemen yang ada
     $('select').formSelect();
     $('.modal').modal();
+    $("#buttonRequestPinjam").hide();
+    $("#buttonBackToDetailCard").hide();
+    $("#pinjamBarang").hide();
 
+    //jika isi dropdown berubah, maka me-load ulang tampilan dropdown-nya
     $('select').on('contentChanged', function() {
         $(this).formSelect();
     });
@@ -15,18 +20,7 @@ $( document ).ready(function() {
         $(this).addClass('z-depth-3');}, function(){$(this).removeClass('z-depth-3');
     });
 
-    $("#buttonRequestPinjam").hide();
-    $("#buttonBackToDetailCard").hide();
-    $("#pinjamBarang").hide();
-
-    $(".card").click(function(){
-        $("#pinjamBarang").hide();
-        $("#buttonRequestPinjam").hide();
-        $("#buttonBackToDetailCard").hide();
-        $("#buttonPinjam").show();
-        $("#detailBarangCard").show();
-    });
-
+    //ketika tombol pinjam diklik, maka ganti konten pop up menjadi form untuk pinjam
     $("#buttonPinjam").click(function(){
         $("#pinjamBarang").fadeIn();
         $("#buttonRequestPinjam").show();
@@ -38,6 +32,7 @@ $( document ).ready(function() {
         $("#keteranganPinjam").val("");
     });
 
+    //tombol untuk kembali dari form untuk pinjam ke popup detail barang
     $("#buttonBackToDetailCard").click(function(){
         $("#pinjamBarang").fadeOut();
         $("#buttonRequestPinjam").hide();
@@ -46,7 +41,7 @@ $( document ).ready(function() {
         $("#detailBarangCard").fadeIn();
     });
 
-    //tombol KIRIM diklik (mengirim request peminjaman barang)
+    //tombol kirim diklik (membuat request peminjaman barang)
     $("#buttonRequestPinjam").click(function(){
         var kodeBarang = $("#formKodePinjam").text();
         var tgPinjam = $("#inputDate").val();
@@ -58,6 +53,7 @@ $( document ).ready(function() {
         else
             url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + keteranganPinjam;
 
+        //dapatkan id transaksi setelah membuat transaksi baru
         var idTransaksi = ajaxSendRequestPinjam(url);
 
         //kalau superior dan request pinjamnya berhasil, requestnya langsung di-approve, dan sub barang langsung dipesankan
@@ -165,6 +161,8 @@ function ajaxGetAllProduct(){
 
 //dapatkan detail barang (lewat kode barang)
 function ajaxGetProductDetail(idBarang) {
+
+    //inisialisasi variabel untuk tampungan jumlah semua sub barang dan semua jumlah sub barang yang tesedia
     var allSubBarang = 0;
     var readySubBarang = 0;
 
@@ -182,7 +180,7 @@ function ajaxGetProductDetail(idBarang) {
         async:false
     });
 
-    //hitung total kuantitas sub barang yang TERSEDIA
+    //hitung total kuantitas sub barang yang tersedia saja
     $.ajax({
         type : "GET",
         url : window.location + "/countReadySubBarang/" + idBarang,
@@ -196,7 +194,7 @@ function ajaxGetProductDetail(idBarang) {
         async:false
     });
 
-    //tampilkan popup detail barang
+    //tampilkan popup detail barang sesuai barang yang di klik
     $.ajax({
         type : "GET",
         url : window.location + "/getDetailProduct/" + idBarang,
@@ -245,17 +243,22 @@ function ajaxGetProductDetail(idBarang) {
     });
 }
 
-//menyiapkan form untuk order (tg skrg dan banyak maksimum pinjam)
+//buat form untuk order
 function ajaxGetFormOrder(idBarang) {
+
+    //menyiapkan form untuk order (mengosongi inputan dan tampilkan tanggal hari ini)
     $("#dateOrderNow").text(changeDateFormat(getDateNow())); //fungsi changeDateFormat() dan getDateNow() ada di basePage.js
     $('#inputDate').val(getDateNow());
     $('#inputTotalOrder').val(1);
     $('#keteranganPinjam').val("");
     $("#formKodePinjam").text(idBarang);
+
+    //hitung sub barang yang ready
     $.ajax({
         type: "GET",
         url : window.location + "/countReadySubBarang/" + idBarang,
         success: function (result) {
+            //keperluan error handling dalam penginputan input
             $(":input").bind('keyup mouseup blur focusout', function () {
                 if($('#inputTotalOrder').val() > result){
                     window.alert("Barang yang tersedia hanya "+result.toString()+" unit");
@@ -309,6 +312,7 @@ function ajaxGetProductCustom(url){
     });
 }
 
+//membuat dan menyimpan request pinjam ke db
 function ajaxSendRequestPinjam(url) {
     var idTransaksi=0;
     $.ajax({
@@ -327,9 +331,13 @@ function ajaxSendRequestPinjam(url) {
     return idTransaksi;
 }
 
+//booking sub barang jika request peminjaman sudah disetujui
 function ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi) {
-    var sukses = 0;
-    var listSubBarang;
+
+    //deklarasi dan inisialisasi variabel yang dibutuhkan
+    var sukses = 0; //untuk cek booking-nya sukses atau tidak
+    var listSubBarang; //list sub barang yang akan dibooking
+
     $.ajax({
         type : "POST",
         url : window.location + "/createDetailTransaksi/" + kodeBarang + "/" +jumlahBarang + "/" + idTransaksi,

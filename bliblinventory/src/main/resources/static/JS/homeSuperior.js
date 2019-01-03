@@ -1,5 +1,5 @@
 $( document ).ready(function() {
-    //inisialisasi elemen-elemen pada awal homeEmployee.js di-load
+    //inisialisasi elemen-elemen pada awal homeSuperior.js di-load
     $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
     $('.datepicker').datepicker();
     $('.modal').modal();

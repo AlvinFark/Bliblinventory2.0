@@ -76,8 +76,27 @@ function ajaxGetOrderList(url) {
 
                     '</div>'
                 );
+                var jumlahDikembalikan=0;
+                $.ajax({
+                    type: "GET",
+                    url: "/api/getJumlahDikembalikanByIdTransaksi/"+result[i].idTransaksi,
+                    success: function (result2) {
+                        jumlahDikembalikan=result2;
+                    },
+                    error: function(e) {
+                        console.log("ERROR: ", e);
+                        window.alert("error getDetailTransaksiByIdTransaksi");
+                    },
+                    async:false
+                });
                 if(result[i].statusTransaksi=="diassign"){
                     $(".infoAssigned:last").css("display","block");
+                    if (jumlahDikembalikan==result[i].jumlah){
+                        $(".infoAssigned:last").html("Semua unit sudah dikembalikan");
+                    }
+                    else if (jumlahDikembalikan>0){
+                        $(".infoAssigned:last").html(jumlahDikembalikan+" unit sudah dikembalikan");
+                    }
                 }
                 else if(result[i].statusTransaksi=="disetujui" || result[i].statusTransaksi=="menunggu"){
                     $(".btnBatal:last").css("display","block");

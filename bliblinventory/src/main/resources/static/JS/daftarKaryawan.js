@@ -180,6 +180,7 @@ $( document ).ready(function() {
       "roleId" : roleId,
       "isActive" : false
     };
+    //konfirmasi penghapusan
     var c = confirm("Hapus karyawan "+ name + "?"); //konfirmasi hapus
     if (c) {
       $.ajax({

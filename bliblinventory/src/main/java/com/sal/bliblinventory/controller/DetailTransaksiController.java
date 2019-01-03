@@ -74,5 +74,11 @@ public class DetailTransaksiController {
       return "Barang berhasil dikembalikan";
     }
 
-
+    @GetMapping("/api/getJumlahDikembalikanByIdTransaksi/{idTransaksi}")
+    public int getJumlahDikembalikanByIdTransaksi(@PathVariable(value = "idTransaksi") Long idTransaksi) {
+        String str = "1970-01-01 00:00:00";
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
+        return detailTransaksiRepository.countByTransaksi_IdTransaksiAndTgKembaliNotAndIsExist(idTransaksi, localDateTime, true);
+    }
 }

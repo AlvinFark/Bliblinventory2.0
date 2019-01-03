@@ -70,8 +70,9 @@ $( document ).ready(function() {
               contentType: 'application/json',
               data: JSON.stringify(jsonSubBarang),
               complete: function(result3) {
+                console.log(kodeSubBarang);
               }
-            })
+            });
           }
           $.ajax({
             async: false,
@@ -79,6 +80,7 @@ $( document ).ready(function() {
             url : "/api/barang/delete/" + kode,
             complete: function(result2) {
               alert(result2.responseText);
+              console.log(kode);
             }
           });
         }

@@ -13,6 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -65,7 +67,10 @@ public class SubBarangController {
     @PutMapping("/api/subbarang/{kodeSubBarang}")
     public String hapusSubBarang(@PathVariable String kodeSubBarang, @Valid @RequestBody SubBarang subBarang) {
       SubBarang sub = subBarangRepository.getSubBarangByKodeSubBarang(kodeSubBarang);
-      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExistAndTgKembali(sub, true, null);
+      String str = "1970-01-01 00:00:00";
+      DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+      LocalDateTime localDateTime = LocalDateTime.parse(str, formatter);
+      DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiBySubBarangAndIsExistAndTgKembali(sub, true, localDateTime);
       if (detailTransaksi==null){
         sub.setExist(subBarang.getExist());
         subBarangRepository.save(sub);

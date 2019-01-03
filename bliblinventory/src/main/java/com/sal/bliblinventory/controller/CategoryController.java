@@ -15,16 +15,39 @@ public class CategoryController {
 
     @RequestMapping(value = {"employee/getAllCategory", "superior/getAllCategory", "admin/getAllCategory"}, method = RequestMethod.GET)
     public List<Category> getAllCategory(){
-        return categoryRepository.findAll();
+        return categoryRepository.findAllByIsExist(true);
     }
 
     @GetMapping("/category")
     public List<Category> listAllCategory(){
-      return categoryRepository.findAll();
+      return categoryRepository.findAllByIsExist(true);
     }
 
     @RequestMapping(value = {"/api/category"}, method = RequestMethod.POST)
     public Category addCategory(@Valid @RequestBody Category category) {
       return categoryRepository.save(category);
+    }
+
+    @GetMapping("api/getDetailCategory/{idKategori}")
+    public Category getDetailCategory(@PathVariable(value = "idKategori") Long idKategori){
+        return categoryRepository.getCategoryById(idKategori);
+    }
+
+    @PutMapping("/api/editKategori/{namaKategoriBaru}")
+    public Category editKategori(@PathVariable String namaKategoriBaru, @Valid @RequestBody Category categoryRequest) {
+        categoryRequest.setName(namaKategoriBaru);
+        return categoryRepository.save(categoryRequest);
+    }
+
+    @RequestMapping(value = "api/createNewCategory/{namaKategoriBaru}", method = RequestMethod.POST)
+    public void createNewCategory(@PathVariable(value = "namaKategoriBaru") String namaKategoriBaru){
+        Category categoryNew = new Category(namaKategoriBaru);
+        categoryRepository.save(categoryNew);
+    }
+
+    @PutMapping("/api/hapusKategori")
+    public Category hapusKategori(@Valid @RequestBody Category categoryRequest) {
+        categoryRequest.setExist(false);
+        return categoryRepository.save(categoryRequest);
     }
 }

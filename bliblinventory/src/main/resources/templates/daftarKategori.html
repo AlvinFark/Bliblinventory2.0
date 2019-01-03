@@ -1,0 +1,90 @@
+<script type="text/javascript" src="../js/daftarKategori.js"></script>
+<h4>Daftar Kategori Barang</h4>
+<div id="whiteBoard"  class="z-depth-2"  style="position:absolute">
+    <table class="highlight noPadding">
+        <thead style="height: 60px;">
+        <tr>
+            <th width="150px" style="padding-top: 7px;">ID Kategori</th>
+            <th>Nama Kategori</th>
+            <th width="50px"></th>
+        </tr>
+        </thead>
+        <tbody id="tabelDaftarKategori">
+        </tbody>
+    </table>
+    <a class="waves-effect waves-light btn right kananBawah modal-trigger" href="#modalTambahKategori" id="btnTambahKategori">tambah</a>
+</div>
+<div id="modalDetailKategoriTable" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <div id="detailKategoriTable">
+            <h4 class="headerModal">Detail Kategori</h4>
+            <br/><br/>
+            <div class="valign-wrapper" style="margin-bottom: 15px">
+                <div class="kontainerImgModalKategori" id="imgModalKategori">
+                </div>
+                <div style="width: 70% !important;">
+                    <table class="tableNoBorder smallPadding">
+                        <tr>
+                            <td class="tdAtrib" width="120">Kode</td>
+                            <td class="tdInfo" id="kodeKategoriTable"></td>
+                        </tr>
+                        <tr>
+                            <td class="tdAtrib">Nama Kategori</td>
+                            <td class="tdInfo" id="namaKategoriTable"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="editKategoriTable">
+            <h4 class="headerModal">Ubah Detail Kategori</h4>
+            <div class="valign-wrapper" style="display:flex">
+                <div style="width: 100%;">
+                    <table class="tableNoBorder smallPadding">
+                        <tr>
+                            <td class="tdAtrib">Kode</td>
+                            <td class="tdInfo" id="ubahKodeKategoriTable"></td>
+                        </tr>
+                        <tr>
+                            <td class="tdAtrib">Nama Kategori</td>
+                            <td class="tdInfo">
+                                <input id="ubahNamaKategori" name="id" value="">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div id="tambahSatuanTable">
+            <h4 class="headerModal">Tambah Kategori Satuan</h4>
+            <div id="tambahKategoriSatuan" style="margin-top: 10px">
+                <div class="valign-wrapper">
+                    <div class="tdAtrib" style="width:100px;">Nama Kategori</div>
+                    <input id="namaKategoriTambahSatuan" type="text" name="id" value="">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <a class="modal-close btn-flat left">tutup</a>
+        <a id="tombolSimpanEditan" class="waves-effect waves-light btn modal-close">simpan</a>
+        <a id="tombolSimpanSatuan" class="modal-close waves-effect waves-light btn">tambah</a>
+    </div>
+</div>
+<div id="modalTambahKategori" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4 class="headerModal">Tambah Kategori</h4>
+        <table class="tableNoBorder smallPadding">
+            <tr>
+                <td class="tdAtrib">Nama Kategori</td>
+                <td>
+                    <input id="namaKategoriBaru" name="id" value="">
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <a class="modal-close btn-flat left">tutup</a>
+        <a class="modal-close waves-effect waves-light btn" id="submitKategoriBaru" style="margin-right: 4px;">kirim</a>
+    </div>
+</div>

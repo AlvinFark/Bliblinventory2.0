@@ -69,48 +69,56 @@ $( document ).ready(function() {
 
     //pencet tombol tolak pada detail transaksi (popup)
     $( document ).on("click","#buttonTolakFromDetail",function (){
-        var idTransaksi = $("#detailIdTransaksi").text();
-        ajaxTolakPermintaanPinjam(idTransaksi);
+        if(confirm("Tolak permintaan peminjaman barang ini?")) {
+            var idTransaksi = $("#detailIdTransaksi").text();
+            ajaxTolakPermintaanPinjam(idTransaksi);
+        }
     });
 
     //pencet tombol setujui pada detail transaksi (popup)
     $( document ).on("click","#buttonSetujuiFromDetail",function (){
-        var idTransaksi = $("#detailIdTransaksi").text();
-        var stokCukup = cekStokBarang(idTransaksi);
-        if(stokCukup==1){
-            ajaxSetujuiPermintaanPinjam(idTransaksi);
+        if(confirm("Setujui permintaan peminjaman barang ini?")) {
+            var idTransaksi = $("#detailIdTransaksi").text();
+            var stokCukup = cekStokBarang(idTransaksi);
+            if (stokCukup == 1) {
+                ajaxSetujuiPermintaanPinjam(idTransaksi);
+            }
+            else
+                window.alert("Permintaan tidak bisa diproses karena stok barang inventaris tidak cukup");
         }
-        else
-            window.alert("Permintaan tidak bisa diproses karena stok barang inventaris tidak cukup");
     });
 
     //pencet tombol tolak secara bulk
     $( document ).on("click","#btnTolak",function (){
-        $('.cbx').filter(':checked').each(function() {
-            if (this.id!="cbxAll"){
-                var idTransaksi = (this.id).substring(3);
-                ajaxTolakPermintaanPinjam(idTransaksi);
-            }
-        });
+        if(confirm("Tolak semua permintaan peminjaman barang yang dipilih?")) {
+            $('.cbx').filter(':checked').each(function () {
+                if (this.id != "cbxAll") {
+                    var idTransaksi = (this.id).substring(3);
+                    ajaxTolakPermintaanPinjam(idTransaksi);
+                }
+            });
+        }
     });
 
     //pencet tombol setujui secara bulk
     $( document ).on("click","#btnSetujui",function (){
-        var unSuccess = 0;
-        $('.cbx').filter(':checked').each(function() {
-            if (this.id!="cbxAll"){
-                var idTransaksi = (this.id).substring(3);
-                var stokCukup = cekStokBarang(idTransaksi);
-                if(stokCukup==1){
-                    ajaxSetujuiPermintaanPinjam(idTransaksi);
+        if(confirm("Setujui semua permintaan peminjaman barang yang dipilih?")) {
+            var unSuccess = 0;
+            $('.cbx').filter(':checked').each(function () {
+                if (this.id != "cbxAll") {
+                    var idTransaksi = (this.id).substring(3);
+                    var stokCukup = cekStokBarang(idTransaksi);
+                    if (stokCukup == 1) {
+                        ajaxSetujuiPermintaanPinjam(idTransaksi);
+                    }
+                    else {
+                        unSuccess = unSuccess + 1;
+                    }
                 }
-                else{
-                    unSuccess = unSuccess+ 1;
-                }
+            });
+            if (unSuccess > 0) {
+                window.alert("Beberapa permintaan tidak bisa diproses karena stok barang inventaris tidak cukup");
             }
-        });
-        if(unSuccess>0){
-            window.alert("Beberapa permintaan tidak bisa diproses karena stok barang inventaris tidak cukup");
         }
     });
 });

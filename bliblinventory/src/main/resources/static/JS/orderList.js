@@ -1,26 +1,35 @@
 $(document).ready(function(){
+
+    //inisialisasi elemen yang ada
     $('.tabs').tabs();
 
+    //jika employee, maka cek tab yang dipilih untuk menentukan isi yang harus diload
     if(window.location.pathname == "/employee"){
         checkActiveTab();
     }
+    //jika superior, maka tab-nya ditiadakan (hidden), karena superior pasti permintaan pinjamannya disetujui
     else if(window.location.pathname == "/superior"){
         $("#tabOrderList").hide();
         url=window.location + "/getOrderList/approved";
         ajaxGetOrderList(url);
     }
 
+    //kalau ada tab yang diklik, cek tab apa yang aktif untuk menentukan isi yang harus di-load
     $("#tabOrderList").click(function (){
         checkActiveTab();
     });
 
+    //ketika tombol batal diklik, maka cancel reqeuest pinjam
     $( document ).on("click",".btnBatal",function () {
         var idTransaksi = (this.id).substring(3);
-        ajaxCancelRequestPinjam(idTransaksi);
+        if(confirm("Yakin akan membatalkan permintaan pinjaman ini?")){
+            ajaxCancelRequestPinjam(idTransaksi);
+        }
     });
 
 });
 
+//cek tab yang aktif untuk load daftar sesuai tab nya
 function checkActiveTab() {
     var url;
     if($("#tabMenunggu").hasClass("active")){
@@ -35,6 +44,7 @@ function checkActiveTab() {
     ajaxGetOrderList(url);
 }
 
+//get daftar request
 function ajaxGetOrderList(url) {
     $.ajax({
         type : "GET",
@@ -75,7 +85,11 @@ function ajaxGetOrderList(url) {
                             '<a id="btn'+result[i].idTransaksi+'" class="waves-light btn btnBatal" style="display: none; width:100px; margin-left:50px;"> batal</a> </div>\n' +
                         '</div>'
                 );
+
+                //inisialisasi variabel untuk jumlah sub barang yang sudah dikembalikan
                 var jumlahDikembalikan=0;
+
+                //get jumlah sub barang yang sudah dikembalikan
                 $.ajax({
                     type: "GET",
                     url: "/api/getJumlahDikembalikanByIdTransaksi/"+result[i].idTransaksi,
@@ -88,15 +102,20 @@ function ajaxGetOrderList(url) {
                     },
                     async:false
                 });
+
+                //kalau statusnya sudah di-assign, tampilkan keterangan barangnya
                 if(result[i].statusTransaksi=="diassign"){
                     $(".infoAssigned:last").css("display","block");
+                    //kalau semua barang sudah dikembalikan
                     if (jumlahDikembalikan==result[i].jumlah){
                         $(".infoAssigned:last").html("Semua unit sudah dikembalikan");
                     }
+                    //kalau ada yanng sudah dikembalikan tp belum semua
                     else if (jumlahDikembalikan>0){
                         $(".infoAssigned:last").html(jumlahDikembalikan+" unit sudah dikembalikan");
                     }
                 }
+                //kalau status disetujui atau menunggu, bisa dibatalkan permintaan pinjamannya
                 else if(result[i].statusTransaksi=="disetujui" || result[i].statusTransaksi=="menunggu"){
                     $(".btnBatal:last").css("display","block");
                 }
@@ -109,11 +128,13 @@ function ajaxGetOrderList(url) {
     });
 }
 
+//cancel permintaan pinjaman (ketika status permintaan peminjaman menunggu atau disetujui (belum diassign))
 function ajaxCancelRequestPinjam(idTransaksi){
     $.ajax({
         type : "GET",
         url : "api/getTransaksiByIdTransaksi/" + idTransaksi,
         success: function(result){
+            //soft delete transaksi (permintaan pinjaman)
             editTransaksiNotExist(idTransaksi, result);
         },
         error : function(e) {
@@ -123,6 +144,7 @@ function ajaxCancelRequestPinjam(idTransaksi){
     });
 }
 
+//soft delete transaksi (permintaan pinjaman)
 function editTransaksiNotExist(idTransaksi, result) {
     $.ajax({
         type : "PUT",
@@ -144,6 +166,7 @@ function editTransaksiNotExist(idTransaksi, result) {
     });
 }
 
+//soft delete detail transaksi dan ubah status subBarang jadi "menunggu"
 function editDetailTransaksiNotExistAndStatusSubBarangReady(idTransaksi){
     $.ajax({
         type : "GET",
@@ -161,6 +184,7 @@ function editDetailTransaksiNotExistAndStatusSubBarangReady(idTransaksi){
     });
 }
 
+//soft delete detail transaksi
 function editDetailTransaksiNotExist(detailTransaksi) {
     $.ajax({
         type : "PUT",
@@ -176,6 +200,7 @@ function editDetailTransaksiNotExist(detailTransaksi) {
     });
 }
 
+//ubah status sub barang jadi ready (true)
 function editStatusSubBarangReady(subBarang) {
     $.ajax({
         type : "PUT",

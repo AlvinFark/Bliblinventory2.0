@@ -1,18 +1,26 @@
 $(document).ready(function(){
+    //inisialisasi elemen yang ada
     $('.tabs').tabs();
+
+    //cek tab yang aktif untuk load data sesuai dengan tabnya
     checkActiveTab();
 
+    //ketika klik tab, cek tab yang aktif untuk load data sesuai dengan tabnya
     $("#tabOrderList").click(function (){
         checkActiveTab();
     });
 
+    //ketika klik tombol batal, cancel permintaan pembelian
     $( document ).on("click",".btnBatalPermintaanBeli",function () {
         var idPermintaanPembelian = (this.id).substring(3);
-        ajaxCancelRequestBeli(idPermintaanPembelian);
+        if(confirm("Yakin akan membatalkan permintaan pembelian ini?")) {
+            ajaxCancelRequestBeli(idPermintaanPembelian);
+        }
     });
 
 });
 
+//cek tab yang aktif untuk load data sesuai dengan tabnya
 function checkActiveTab() {
     var url;
     if($("#tabMenunggu").hasClass("active")){
@@ -24,6 +32,7 @@ function checkActiveTab() {
     ajaxGetDaftarPermintaanPembelian(url);
 }
 
+//get daftar permintaan pembelian sesuai dengan tab yang aktif
 function ajaxGetDaftarPermintaanPembelian(url) {
     $.ajax({
         type : "GET",
@@ -81,6 +90,7 @@ function ajaxGetDaftarPermintaanPembelian(url) {
     });
 }
 
+//meng-cancel permintaan pembelian barang
 function ajaxCancelRequestBeli(idPermintaanPembelian) {
     $.ajax({
         type : "GET",

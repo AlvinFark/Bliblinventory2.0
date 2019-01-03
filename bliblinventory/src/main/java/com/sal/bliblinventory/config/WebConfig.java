@@ -27,6 +27,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         registry.addViewController("/pengembalianBarang.html").setViewName("pengembalianBarang.html");
         registry.addViewController("/permintaanPembelianKaryawan.html").setViewName("permintaanPembelianKaryawan.html");
         registry.addViewController("/permintaanPembelianList.html").setViewName("permintaanPembelianList.html");
+        registry.addViewController("/daftarKategori.html").setViewName("daftarKategori.html");
 
         registry.setOrder(Ordered.HIGHEST_PRECEDENCE);
     }

@@ -1,15 +1,17 @@
 $( document ).ready(function() {
+    //get semua permintaan pembelian employee dan superior
     ajaxGetAllPermintaanPembelian();
 
+    //inisialisasi elemen yang ada
     $('select').formSelect();
     $('.modal').modal();
 
-    //ketika merubah dropdown urutkan
+    //ketika merubah dropdown urutkan, load daftar dengan urutan sesuai dropdown yang dipilih
     $( document ).on("change","#selectSortBy",function (){
         ajaxGetRequestListBySortAndSearch();
     });
 
-    //ketika klik icon search
+    //ketika ketik keyword, load hasil search
     $( document ).on("keyup","#inputCari",function (){
         ajaxGetRequestListBySortAndSearch();
     });
@@ -54,19 +56,19 @@ $( document ).ready(function() {
             $("#btnSudahDibeli").addClass("disabled");
     });
 
-    //ketika klik button detail
+    //ketika klik button detail, tampilkan detail request order
     $( document ).on("click",".btnDetail",function (){
         var idPermintaanPembelian = (this.id).substring(6);
         ajaxGetDetailRequestOrder(idPermintaanPembelian);
     });
 
-    //pencet tombol Sudah Dibeli pada detail transaksi (popup)
+    //ketika tekan tombol Sudah Dibeli pada detail transaksi (popup), update status permintaan beli
     $( document ).on("click","#buttonSudahBeliFromDetail",function (){
         var idPermintaanPembelian = $("#detailIdTransaksi").text();
         ajaxUpdateIsBoughtPermintaanBeli(idPermintaanPembelian);
     });
 
-    //pencet tombol Sudah Dibeli secara bulk
+    //ketika tekan tombol Sudah Dibeli secara bulk, update status permintaan beli sekaligus banyak
     $( document ).on("click","#btnSudahDibeli",function (){
         $('.cbx').filter(':checked').each(function() {
             if (this.id!="cbxAll"){
@@ -77,6 +79,7 @@ $( document ).ready(function() {
     });
 });
 
+//buat tampilan daftar permintaan pinjam
 function createContentListPermintaanPembelian(result) {
     $("#listPermintaanPembelian").html('');
     for(var i=0; i<result.length; i++){
@@ -95,6 +98,7 @@ function createContentListPermintaanPembelian(result) {
     }
 }
 
+//get semua daftar permintaan pinjam
 function ajaxGetAllPermintaanPembelian() {
     $.ajax({
         type : "GET",
@@ -110,6 +114,7 @@ function ajaxGetAllPermintaanPembelian() {
     });
 }
 
+//get daftar permintaan beli dengan filter urutan dan seaching sesuai keyword
 function ajaxGetRequestListBySortAndSearch(){
     var keyword = $("#inputCari").val();
     var indexSortSelected = $("#selectSortBy").prop('selectedIndex');
@@ -131,6 +136,7 @@ function ajaxGetRequestListBySortAndSearch(){
     $("#btnSudahDibeli").addClass("disabled");
 }
 
+//get detail permintaan beli berdasarkan id transaksi sekaligus buat tampilannya
 function ajaxGetDetailRequestOrder(idPermintaanPembelian) {
     $.ajax({
         type : "GET",
@@ -155,6 +161,7 @@ function ajaxGetDetailRequestOrder(idPermintaanPembelian) {
     });
 }
 
+//update status permintaan beli berdasar id permintaan pembelian
 function ajaxUpdateIsBoughtPermintaanBeli(idPermintaanPembelian) {
     $.ajax({
         type : "GET",

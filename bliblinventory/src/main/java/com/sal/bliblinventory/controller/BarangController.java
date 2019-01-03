@@ -75,7 +75,7 @@ public class BarangController {
     @PutMapping("/api/barang/{categoryName}")
     public Barang editBarang(@PathVariable String categoryName, @Valid @RequestBody Barang barangRequest) {
 
-      Category category = categoryRepository.findByName(categoryName);
+      Category category = categoryRepository.findByNameAndIsExist(categoryName, true);
       barangRequest.setGambar(barangRequest.getKode()+"."+barangRequest.getGambar());
       barangRequest.setCategory(category);
       barangRepository.save(barangRequest);
@@ -101,7 +101,7 @@ public class BarangController {
           barangRequest.setKode(kodeHead + kodeTail);
         }
 
-        Category category = categoryRepository.findByName(categoryName);
+        Category category = categoryRepository.findByNameAndIsExist(categoryName, true);
         barangRequest.setCategory(category);
         barangRequest.setGambar(barangRequest.getKode() + "." + barangRequest.getGambar());
         barangRepository.save(barangRequest);
@@ -122,4 +122,8 @@ public class BarangController {
       }
   }
 
+  @GetMapping("api/getTotalBarangWithCategory/{idKategori}")
+  public int getTotalBarangWithCategory(@PathVariable Long idKategori){
+      return barangRepository.countAllByCategory_IdAndIsExist(idKategori, true);
+  }
 }

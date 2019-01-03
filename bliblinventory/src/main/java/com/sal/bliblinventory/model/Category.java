@@ -14,34 +14,45 @@ import javax.validation.constraints.NotBlank;
 @Table(name = "Category")
 public class Category {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @NotBlank
-  private String name;
+    @NotBlank
+    private String name;
 
-  //constructor
-  public Category(){}
+    private boolean isExist=true;
 
-  public Category(String name){
+    //constructor
+    public Category(){}
+
+    public Category(String name){
       this.name = name;
-  }
+      this.isExist = true;
+    }
 
-  //getter setter
-  public void setId(Long id) {
+    //getter setter
+    public void setId(Long id) {
     this.id = id;
-  }
+    }
 
-  public Long getId() {
+    public Long getId() {
     return id;
-  }
+    }
 
-  public String getName() {
+    public String getName() {
     return name;
-  }
+    }
 
-  public void setName(String name) {
+    public void setName(String name) {
     this.name = name;
-  }
+    }
+
+    public boolean isExist() {
+        return isExist;
+    }
+
+    public void setExist(boolean exist) {
+        isExist = exist;
+    }
 }

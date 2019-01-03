@@ -46,84 +46,43 @@ public class UploadController {
 
     private String stringValue;
     private Long numericValue;
-    private int baris,kolom = 0;
+    private int baris,kolom;
 
     @PostMapping("/upload/bulk")
     public String singleFileUpload(@RequestParam("fileExcel") MultipartFile fileExcel, @RequestParam("fileGambar") MultipartFile fileGambar) throws Exception {
         stringValue = null;
         numericValue = null;
-        baris = 0;
-        kolom = 0;
+        baris = 0; //variabel untuk menandai posisi baris excel
+        kolom = 0; //variabel untuk menandai posisi kolom excel
 
-        //Cek apakah input file excel mengirimkan file excel
+        //Cek apakah input file excel mengirimkan file excel (.xlsx)
         int x = fileExcel.getOriginalFilename().lastIndexOf('.');
         if(!fileExcel.getOriginalFilename().substring(x).equals(".xlsx")){
             return "notExcel";
         }
 
-        //Cek apakah input file zip mengirimkan file zip
+        //Cek apakah input file zip mengirimkan file zip (.zip)
         int z = fileGambar.getOriginalFilename().lastIndexOf('.');
         if(!fileGambar.getOriginalFilename().substring(z).equals(".zip")){
             return "notZip";
         }
 
-
-//        if (file.isEmpty()) {
-////            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
-////        }
-////
-////        try {
-////            // Get the file and save it somewhere
-////            byte[] bytes = file.getBytes();
-////            filename = UPLOADED_FOLDER + file.getOriginalFilename();
-////            Path path = Paths.get(filename);
-////
-////            Files.write(path, bytes);
-////
-////            redirectAttributes.addFlashAttribute("message",
-////                    "You successfully uploaded '" + file.getOriginalFilename() + "'");
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        }
-        
+        //Menyimpan file excel yang diupload secara temporary
         File excel = File.createTempFile(UUID.randomUUID().toString(), "temp");
         FileOutputStream fos = new FileOutputStream(excel);
         IOUtils.copy(fileExcel.getInputStream(), fos);
         fos.close();
 
-
-//        File uploadedFile = new File("tambahBulk/" + fileExcel.getOriginalFilename());
-//        uploadedFile.createNewFile();
-//        FileOutputStream fos = new FileOutputStream(uploadedFile);
-//        fos.write(fileExcel.getBytes());
-//        fos.close();
-
-        /**
-         * save file to temp
-         */
+        //Menyimpan file zip yang diupload secara temporary
         File zip = File.createTempFile(UUID.randomUUID().toString(), "temp");
         FileOutputStream o = new FileOutputStream(zip);
         IOUtils.copy(fileGambar.getInputStream(), o);
         o.close();
 
-        /**
-         * unizp file from temp by zip4j
-         */
+        //
         String destination = "D:/bliblinventory/images/barang/";
-//        try {
-//            ZipFile zipFile = new ZipFile(zip);
-//            zipFile.extractAll(destination);
-//        } catch (ZipException e) {
-//            e.printStackTrace();
-//        } finally {
-//            /**
-//             * delete temp file
-//             */
-//            zip.delete();
-//        }
 
-
-        //membaca isi dari dokumen excel
+        //Membaca isi dari dokumen excel yang diupload
         try {
             FileInputStream excelFile = new FileInputStream(excel);
             Workbook workbook = new XSSFWorkbook(excelFile);
@@ -137,40 +96,43 @@ public class UploadController {
             double kuantitas = 0;
             Long harga = 0L;
             String kategori = " ";
-            boolean isSuccess = true;
+
+            boolean isSuccess = true; //variabel untuk menandai status dari proses tambah bulk
 
             ArrayList<Barang> barangList = new ArrayList<Barang>();
             ArrayList<SubBarang> subBarangList = new ArrayList<SubBarang>();
 
             while (iterator.hasNext()) {
-                if(!isSuccess)
+                if(!isSuccess) //Jika proses tambah bulk terjadi error
                     break;
 
-                Row currentRow = iterator.next();
+                Row currentRow = iterator.next(); //Saat baris selanjutnya tidak kosong
                 Iterator<Cell> cellIterator = currentRow.iterator();
                 kolom = 0;
 
-                while (cellIterator.hasNext()) {
-
+                while (cellIterator.hasNext()) { //Saat sel selanjutnya tidak kosong
                     Cell currentCell = cellIterator.next();
                     //getCellTypeEnum shown as deprecated for version 3.15
                     //getCellTypeEnum ill be renamed to getCellType starting from version 4.0
+
+                    //Saat sel tersebut berisi String dan kolom tidak berada di posisi 2
                     if (currentCell.getCellTypeEnum() == CellType.STRING && kolom != 2) {
                         System.out.print(currentCell.getStringCellValue() + "--");
                         stringValue = currentCell.getStringCellValue();
-                    } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC && (kolom == 2 || kolom == 4)) {
+                    }
+                    //Saat sel tersebut berisi numeric dan kolom berada di posisi 2 dan 4
+                    else if (currentCell.getCellTypeEnum() == CellType.NUMERIC && (kolom == 2 || kolom == 4)) {
                         System.out.print(currentCell.getNumericCellValue() + "--");
                         numericValue = Double.valueOf(currentCell.getNumericCellValue()).longValue();
                     }
-                    else{
-                        if(baris != 0){
-                            System.out.print("--------------------------Masuk else----------------------");
-                            kolom = 0;
-                            isSuccess = false;
+                    else{ //Kondisi saat sel tersebut tidak berisi String atau numeric
+                        if(baris != 0){ //Saat baris tidak di posisi pertama
+                            kolom = 0; //Dan kolom berada di posisi pertama di baris tersebut
+                            isSuccess = false; //Proese tambah bulk gagal
                             break;
                         }
                     }
-                    if(baris != 0){
+                    if(baris != 0){ //Memasukkan data yang didapat dari file excel ke variabel yang sesuai
                         switch (kolom){
                             case 0 : nama = stringValue;break;
                             case 1 : deskripsi = stringValue;break;
@@ -180,18 +142,25 @@ public class UploadController {
                             case 5 : kategori = stringValue;break;
                         }
                     }
-                    if(kolom == 5 && baris != 0){
-                        Category category = categoryRepository.findByName(kategori);
 
-                        //barangRepository.save(barang);
+                    //Saat kolom di posisi ke 5 (terakhir) dan baris tidak di posisi pertama
+                    //Lakukan proses penambahan untuk tiap barang
+                    if(kolom == 5 && baris != 0){
+                        //Mengambil object kategori berdasarkan kategori yang didapatkan dari file excel
+                        Category category = categoryRepository.findByNameAndIsExist(kategori, true);
+
+                        //Membatasi hasil query yang didapatkan menjadi 1 hasil
                         Pageable limit = new PageRequest(0, 1);
-                        String kodeHead = kategori.substring(0,3).toUpperCase();    //PER
+
+                        //Mengambil 3 karakter awal dari kategori sebagai bagian depan
+                        String kodeHead = kategori.substring(0,3).toUpperCase();
 
                         //Cek apakah barang sudah ada di database
                         List<Barang> lastBarang = barangRepository.findByCategory_NameContainingOrderByKodeDesc(kodeHead,limit);
-                        if (lastBarang.isEmpty()){
-                            kode = kodeHead+"0001";  //PER0001
-                        } else {
+                        if (lastBarang.isEmpty()){ //Jika barang belum ada di database
+                            kode = kodeHead + "0001"; //Kode barang dimulai dari 0001
+                        } else { //Jika sudah ada barang dengan kategori sama di database
+                            //Mengambil 4 karakter terakhir untuk digunakan bagi kode barang selanjutnya
                             String lastIndexString = lastBarang.get(0).getKode().substring(3,7);
                             int lastIndex = Integer.parseInt(lastIndexString);
                             lastIndex++;
@@ -202,6 +171,7 @@ public class UploadController {
 
                         List<SubBarang> listSubBarangInDatabase = subBarangRepository.findAllByBarang_KodeAndIsExistOrderByKodeSubBarangDesc(kode, limit,true);
 
+                        //variabel untuk menandai apakah barang sudah ada di database atau belum
                         boolean isNotExist = listSubBarangInDatabase.isEmpty();
 
                         int lastIdSubBarang = 1;
@@ -210,8 +180,8 @@ public class UploadController {
                         try{
                             ZipFile zipFile = new ZipFile(zip);
                             zipFile.extractFile(gambar,destination);
-                        } catch (ZipException e){
-                            e.printStackTrace();
+                        } catch (ZipException e){ //Jika terjadi error, maka proses tambah bulk gagal
+                            //e.printStackTrace();
                             isSuccess = false;
                         }
 
@@ -221,22 +191,23 @@ public class UploadController {
                         String ext = gambar.substring(p);
                         File newFile = new File(destination+kode+ext);
                         f.renameTo(newFile);
+                        gambar = kode + ext; //Set variabel gambar dengan kode dan ekstensi dari gambar, agar data gambar di database sama
 
-                        gambar = kode + ext;
-
-
+                        //Melakukan pembentukan object barang berdasarkan data yang didapat dari excel
                         Barang barang = new Barang(kode,nama,gambar,deskripsi,harga,true,category);
-                        if(isNotExist){
+                        if(isNotExist){ //Jika barang belum ada di database, barang tersebut dimasukkan ke database
                             barangRepository.save(barang);
+                            //Menambahkan barang yang baru saja ditambahkan ke ArrayList barang
+                            //Untuk jaga-jaga seandainya proses tambah bulk tidak berhasil sepenuhnya
                             barangList.add(barang);
                         }
                         else{
+                            //Mengambil kode terakhir dari sub barang yang sudah ada
                             lastIdSubBarang = Integer.parseInt(listSubBarangInDatabase.get(0).getKodeSubBarang().substring(3,7));
                         }
 
-                        // Menambah sub barang berdasarkan kuantitas
+                        // Menambahkan sub barang berdasarkan kuantitas
                         for(int i=1;i<=kuantitas;i++){
-
                             String kodeTail = "0000" + lastIdSubBarang;
                             kodeTail = kodeTail.substring(kodeTail.length()-4);
 
@@ -244,9 +215,11 @@ public class UploadController {
 
                             SubBarang subBarang = new SubBarang(kodeSubBarang, barang);
                             subBarangRepository.save(subBarang);
+
+                            //Menambahkan sub barang yang baru saja ditambahkan ke ArrayList subBarang
+                            //Untuk jaga-jaga seandainya proses tambah bulk tidak berhasil sepenuhnya
                             subBarangList.add(subBarang);
                             lastIdSubBarang++;
-                            //System.out.print("------------------" + i + "----------------------------");
                         }
                     }
                     if(kolom == 5){
@@ -255,7 +228,6 @@ public class UploadController {
                             isSuccess = false;
                             System.out.print("-------------------kena error------------------");
                         }
-
                         break;
                     }
                     kolom++;
@@ -263,6 +235,8 @@ public class UploadController {
                 System.out.println();
             }
 
+            //Jika proses tambah bulk tidak berhasil sepenuhnya
+            //Hapus sebagian data yang berhasil ditambahkan pada proses diatas
             if(!isSuccess){
                 if(!subBarangList.isEmpty()){
                     for(SubBarang sb : subBarangList){
@@ -282,16 +256,6 @@ public class UploadController {
             e.printStackTrace();
         }
 
-
-        //MENGHAPUS FILE
-//        try{
-//            Path p = Paths.get(UPLOADED_FOLDER+file.getOriginalFilename());
-//            Files.delete(p);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
         zip.delete();
         return "success";
     }

@@ -37,6 +37,10 @@ $( document ).ready(function() {
         page5();
     });
 
+    $("#klikDaftarKategori").click(function(){
+        page6();
+    });
+
     $(".imgLogo").click(function(){
         page1();
     });
@@ -112,9 +116,9 @@ $( document ).ready(function() {
                 if(data == "success")
                     alert("Berhasil menambahkan barang secara bulk");
                 else if(data == "notExcel")
-                    alert("File excel yang diinputkan salah");
+                    alert("Periksa kembali file excel yang diinputkan");
                 else if(data == "notZip")
-                    alert("File zip yang diinputkan salah");
+                    alert("Periksa kembali file zip yang diinputkan");
                 else alert("Gagal menambahkan barang secara bulk");
             },
             error: function(data){
@@ -204,6 +208,10 @@ function page4(){
 
 function page5(){
     $("#includePageContent").load("permintaanPembelianKaryawan.html");
+}
+
+function page6(){
+    $("#includePageContent").load("daftarKategori.html");
 }
 
 function cekInput() {

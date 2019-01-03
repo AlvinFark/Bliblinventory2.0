@@ -324,7 +324,7 @@ public class PrintController {
             FileInputStream fis = new FileInputStream("D:/bliblinventory/file-to-print/format-tambah-barang-bulk.xlsx");
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             Sheet sheet = workbook.getSheetAt(1);
-            List<Category> categoryList = categoryRepository.findAll();
+            List<Category> categoryList = categoryRepository.findAllByIsExist(true);
             int idxRow = 0;
             int idxCell = 0;
             Row row;

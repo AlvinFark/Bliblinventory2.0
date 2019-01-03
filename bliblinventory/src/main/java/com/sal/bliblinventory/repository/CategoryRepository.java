@@ -8,8 +8,8 @@ import java.util.List;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<Category, String> {
-  List<Category> findAll();
+    List<Category> findAllByIsExist(boolean isExist);
 
-  Category findByName(String categoryName);
-  Category getCategoryById(Long idCategory);
+    Category findByNameAndIsExist(String categoryName, boolean isExist);
+    Category getCategoryById(Long idCategory);
 }

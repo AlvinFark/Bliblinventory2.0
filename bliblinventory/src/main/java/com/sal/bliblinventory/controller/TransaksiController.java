@@ -37,7 +37,6 @@ public class TransaksiController {
         Transaksi transaksi = new Transaksi(userRepository.getUserById(1L), tgPinjam, barangRepository.findBarangByKode(kodeBarang), jumlahBarang, keteranganPinjam, StatusTransaksi.menunggu);
         transaksiRepository.save(transaksi);
         return transaksi.getIdTransaksi();
-        //return "Permintaan peminjaman "+barangRepository.findBarangByKode(kodeBarang).getNama()+" sejumlah "+ jumlahBarang+ " unit berhasil";
     }
 
     //superior mengirim request pinjam
@@ -47,7 +46,6 @@ public class TransaksiController {
         Transaksi transaksi = new Transaksi(userRepository.getUserById(1L), tgPinjam, barangRepository.findBarangByKode(kodeBarang), jumlahBarang, keteranganPinjam, StatusTransaksi.disetujui);
         transaksiRepository.save(transaksi);
         return transaksi.getIdTransaksi();
-        //return "Permintaan peminjaman "+barangRepository.findBarangByKode(kodeBarang).getNama()+" sejumlah "+ jumlahBarang+ " unit berhasil";
     }
 
     //mendapatkan list transaksi

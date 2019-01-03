@@ -4,12 +4,14 @@ $( document ).ready(function() {
     $('.modal').modal();
     $('select').formSelect();
 
+    //jika isi dropdown berubah, maka me-load ulang tampilan dropdown-nya
     $('select').on('contentChanged', function() {
         $(this).formSelect();
     });
 
-    //session penanda tiap page, supaya kalau refresh, tetap berada di page-nya
+    //mendapatkan session
     var page = $.session.get('page');
+    //supaya kalau refresh, tetap berada di page-nya
     if(page == null || page == 1) {
         page1();
     }
@@ -20,43 +22,52 @@ $( document ).ready(function() {
         page3();
     }
 
+    //menu Daftar Barang, me-load kontennya menjadi halaman daftar barang
     $("#klikDaftarBarang").click(function(){
         $.session.set('page','1');
        page1();
     });
 
+    //menu Daftar Order, me-load kontennya menjadi halaman daftar peminjaman yang pernah dilakukan
     $("#klikDaftarOrder").click(function(){
         $.session.set('page','2');
         page2();
     });
 
+    //menu Daftar Permintaan Pembelian, me-load kontennya menjadi halaman daftar permintaan pembelian yang pernah dilakukan
     $("#klikDaftarPermintaanPembelian").click(function(){
         $.session.set('page','3');
         page3();
     });
 
+    //klik logo Bliblinventory, me-load kontennya menjadi halaman awal (daftar barang)
     $(".imgLogo").click(function(){
         $.session.set('page','1');
         page1();
     });
 
+    //menu Logout untuk menghapus session
     $("#klikLogout").click(function(){
         $.session.remove('page');
     });
 
+    //menu Permintaan Pembelian untuk membuat form untuk permintaan pembelian
     $("#klikPermintaanPembelian").click(function(){
         buatFormPemintaanPembelian();
     });
 
+    //tombol kirim pada form permintaan pembelian untuk mengirim permintaan pembelian
     $("#btnKirimRequestBeli").click(function(){
         var namaBarang = $('#namaBarangRequestBeli').val();
         var idKategori = $("#selectKategoryRequestBeli option:selected").val();
         var jumlah = $('#jumlahBarangRequestBeli').val();
         var keterangan = $('#keteranganRequestBeli').val();
 
+        //pengecekan jika inputan nama barang masih kosong
         if (namaBarang == ""){
             window.alert("Nama barang masih kosong");
         }
+        //jika data sudah valid (nama barang sudah tidak kosong), buat permintaan pembelian
         else{
             if(keterangan == "")
                 url = "api/createPermintaanPembelian/"+namaBarang+"/"+idKategori+"/"+jumlah+"/"+null;
@@ -68,30 +79,36 @@ $( document ).ready(function() {
     });
 });
 
+//menampilkan page daftar barang
 function page1(){
     $("#includePageContent").load("daftarBarangCard.html");
     $("#inputSearch").show();
     $("#iconSearch").show();
 }
 
+//menampilkan page daftar permintaan pinjaman barang
 function page2(){
     $("#includePageContent").load("orderList.html");
     $("#inputSearch").hide();
     $("#iconSearch").hide();
 }
 
+//menampilkan page daftar permintaan pembelian barang
 function page3(){
     $("#includePageContent").load("permintaanPembelianList.html");
     $("#inputSearch").hide();
     $("#iconSearch").hide();
 }
 
+//menginisialisasi form permintaan pembelian
 function buatFormPemintaanPembelian() {
     $('#jumlahBarangRequestBeli').val(1);
     $('#keteranganRequestBeli').val("");
     $('#namaBarangRequestBeli').val("");
     $("#tgOrderRequestBeli").html(changeDateFormat(getDateNow()));
     ajaxGetDropDownKategori();
+
+    //keperluan untuk error handling pengisian form permintaan pembelian
     $(":input").bind('keyup mouseup blur focusout', function () {
         if($('#jumlahBarangRequestBeli').val() < 1){
             window.alert("Minimal jumlah barang 1");
@@ -100,6 +117,7 @@ function buatFormPemintaanPembelian() {
     });
 }
 
+//mendapatkan kategori untuk diisi ke dropdown yang ada
 function ajaxGetDropDownKategori() {
     $.ajax({
         type : "GET",
@@ -122,6 +140,7 @@ function ajaxGetDropDownKategori() {
     });
 }
 
+//membuat permintaan pembelian ke DB
 function ajaxCreatePermintaanPembelian(url, namaBarang) {
     $.ajax({
         type : "POST",

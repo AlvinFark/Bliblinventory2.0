@@ -242,7 +242,7 @@ function createFormBeli() {
     $("#inputCatatanBeli").val("");
     $.ajax({
         type : "GET",
-        url : window.location + "/getAllCategory",
+        url : "/api/getAllCategory",
         success: function(result){
             $("#selectKategoriBeli").html('');
             //tampilkan semua kategori dalam dropdown

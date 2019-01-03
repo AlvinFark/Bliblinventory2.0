@@ -98,7 +98,7 @@ $( document ).ready(function() {
 function ajaxGetSelectKategori(){
     $.ajax({
         type : "GET",
-        url : window.location + "/getAllCategory",
+        url : "/api/getAllCategory",
         success: function(result){
             $("#selectKategori").html('<option value="0">Semua Kategori</option>');
             //tampilkan semua kategori dalam dropdown

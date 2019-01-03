@@ -25,16 +25,19 @@ public class BarangController {
     @Autowired
     CategoryRepository categoryRepository;
 
+    //mendapatkan semua barang yang ada di db
     @RequestMapping(value = {"employee/getAllProduct", "superior/getAllProduct"}, method = RequestMethod.GET)
     public List<Barang> listBarangAll(){
         return barangRepository.findAllByIsExistOrderByNama(true);
     }
 
+    //mendapatkan semua barang, urutkan berdasar nama barang
     @RequestMapping(value = {"employee/sortByName"}, method = RequestMethod.GET)
     public List<Barang> listBarangSortByName(){
         return barangRepository.findAllByIsExistOrderByNama(true);
     }
 
+    //mendapatkan semua barang, urutkan berdasar nama barang dan filter dengan kategori barang tertentu
     @RequestMapping(value = {"employee/sortByName/{idKategori}", "superior/sortByName/{idKategori}"}, method = RequestMethod.GET)
     public List<Barang> listBarangSortByNameAndFilterByCategory(@PathVariable(value = "idKategori") Long idKategori){
         if(idKategori==0)
@@ -43,6 +46,7 @@ public class BarangController {
             return barangRepository.findAllByIsExistAndCategory_IdOrderByNama(true, idKategori);
     }
 
+    //mendapatkan semua barang, urutkan berdasar kode barang dan filter dengan kategori tertentu
     @RequestMapping(value = {"employee/sortByCode/{idKategori}", "superior/sortByCode/{idKategori}"}, method = RequestMethod.GET)
     public List<Barang> listBarangSortByCodeAndFilterByCategory(@PathVariable(value = "idKategori") Long idKategori){
         if(idKategori==0)
@@ -51,6 +55,7 @@ public class BarangController {
             return barangRepository.findAllByIsExistAndCategory_IdOrderByKode(true, idKategori);
     }
 
+    //mendapatkan semua barang, urutkan berdasar nama barang, filter dengan kategori barang tertentu, dan cari dengan keyword tertentu
     @RequestMapping(value = {"employee/sortByName/{idKategori}/{keyword}", "superior/sortByName/{idKategori}/{keyword}"}, method = RequestMethod.GET)
     public List<Barang> listBarangByKeywordAndSortByNameAndFilterByCategory(@PathVariable(value = "idKategori") Long idKategori, @PathVariable(value = "keyword") String keyword){
         if(idKategori==0)
@@ -59,6 +64,7 @@ public class BarangController {
             return barangRepository.findByNamaContainingAndIsExistAndCategory_IdOrderByNama(keyword, true, idKategori);
     }
 
+    //mendapatkan semua barang, urutkan berdasar kode barang, filter dengan kategori barang tertentu, dan cari dengan keyword tertentu
     @RequestMapping(value = {"employee/sortByCode/{idKategori}/{keyword}", "superior/sortByCode/{idKategori}/{keyword}"}, method = RequestMethod.GET)
     public List<Barang> listBarangByKeywordAndSortByCodeAndFilterByCategory(@PathVariable(value = "idKategori") Long idKategori, @PathVariable(value = "keyword") String keyword){
         if(idKategori==0)
@@ -67,14 +73,15 @@ public class BarangController {
             return barangRepository.findByNamaContainingAndIsExistAndCategory_IdOrderByKode(keyword, true, idKategori);
     }
 
-    @RequestMapping(value = {"employee/getDetailProduct/{param1}", "superior/getDetailProduct/{param1}"}, method = RequestMethod.GET)
-    public Barang getDetailBarang(@PathVariable(value = "param1") String param1){
-        return barangRepository.findBarangByKode(param1);
+    //dapatkan detail barang berdasar kode barang
+    @RequestMapping(value = {"employee/getDetailProduct/{kodeBarang}", "superior/getDetailProduct/{kodeBarang}"}, method = RequestMethod.GET)
+    public Barang getDetailBarang(@PathVariable(value = "kodeBarang") String kodeBarang){
+        return barangRepository.findBarangByKode(kodeBarang);
     }
 
+    //edit barang
     @PutMapping("/api/barang/{categoryName}")
     public Barang editBarang(@PathVariable String categoryName, @Valid @RequestBody Barang barangRequest) {
-
       Category category = categoryRepository.findByNameAndIsExist(categoryName, true);
       barangRequest.setGambar(barangRequest.getKode()+"."+barangRequest.getGambar());
       barangRequest.setCategory(category);
@@ -82,11 +89,9 @@ public class BarangController {
       return barangRequest;
     }
 
+    //menambah barang baru ke db
     @PutMapping("/api/barang/tambah/{categoryName}")
     public Barang tambahBarang(@PathVariable String categoryName, @Valid @RequestBody Barang barangRequest) {
-
-//      Barang tmp = barangRepository.findBarangByNama(barangRequest.getNama());
-//      if (tmp!=null) {
         Pageable limit = new PageRequest(0, 1);
         String kodeHead = categoryName.substring(0, 3).toUpperCase();    //PER
         List<Barang> lastBarang = barangRepository.findByCategory_NameContainingOrderByKodeDesc(kodeHead, limit);
@@ -105,25 +110,26 @@ public class BarangController {
         barangRequest.setCategory(category);
         barangRequest.setGambar(barangRequest.getKode() + "." + barangRequest.getGambar());
         barangRepository.save(barangRequest);
-      //}
       return barangRequest;
     }
 
-  @PutMapping("/api/barang/delete/{kodeBarang}")
-  public String hapusBarang(@PathVariable String kodeBarang) {
-      Barang barang = barangRepository.findBarangByKode(kodeBarang);
-      int count = subBarangRepository.countSubBarangByBarangKodeAndIsExist(barang.getKode(), true);
-      if (count==0){
-        barang.setIsExist(false);
-        barangRepository.save(barang);
+    //soft delete barang
+    @PutMapping("/api/barang/delete/{kodeBarang}")
+    public String hapusBarang(@PathVariable String kodeBarang) {
+        Barang barang = barangRepository.findBarangByKode(kodeBarang);
+        int count = subBarangRepository.countSubBarangByBarangKodeAndIsExist(barang.getKode(), true);
+        if (count==0){
+            barang.setIsExist(false);
+            barangRepository.save(barang);
         return "Barang " + barang.getNama() + " berhasil dihapus";
-      } else {
-        return "Barang" + barang.getNama() + " tidak berhasil dihapus sepenuhnya, terdapat sub barang yang masih dipinjam";
-      }
-  }
+        } else {
+            return "Barang" + barang.getNama() + " tidak berhasil dihapus sepenuhnya, terdapat sub barang yang masih dipinjam";
+        }
+    }
 
-  @GetMapping("api/getTotalBarangWithCategory/{idKategori}")
-  public int getTotalBarangWithCategory(@PathVariable Long idKategori){
-      return barangRepository.countAllByCategory_IdAndIsExist(idKategori, true);
-  }
+    //dapatkan total barang yang memiliki kategori tertentu
+    @GetMapping("api/getTotalBarangWithCategory/{idKategori}")
+    public int getTotalBarangWithCategory(@PathVariable Long idKategori){
+        return barangRepository.countAllByCategory_IdAndIsExist(idKategori, true);
+    }
 }

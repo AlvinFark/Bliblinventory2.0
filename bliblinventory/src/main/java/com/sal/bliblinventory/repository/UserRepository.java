@@ -23,6 +23,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
   List<User> getAllUserByName(String name);
   List<User> getAllUserByRoles(Long roleId);
 
+  User getUserByUsernameOrEmail(String username, String email);
+
   User getFirstByOrderByIdDesc();
 
   Boolean deleteUserById(Long userId);

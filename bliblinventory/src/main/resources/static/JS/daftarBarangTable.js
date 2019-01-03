@@ -7,7 +7,7 @@ $( document ).ready(function() {
     //panggil fungsi list barang
     ajaxGetBarangTable('',0);
 
-    //get list semua kategori untuk dipakai di filter dan ubah/tambah barang
+    //get list semua kategori untuk dipakai di filter dan ubah,tambah barang
     $.ajax({
       type: "GET",
       url: "/category",
@@ -25,7 +25,7 @@ $( document ).ready(function() {
     });
 
   $( document ).on("click",".cbxBarang",function (){
-    //kalau checkbox All di klik, semua ikut checked / unchecked
+    //kalau checkbox All di klik, semua ikut checked, unchecked
     if(this.id == "cbxAllBarang"){
       if ($("#cbxAllBarang").is(':checked'))
         $(".cbxBarang").prop('checked', true);
@@ -54,13 +54,16 @@ $( document ).ready(function() {
     }
   });
 
+  //fungsi delete barang
   function deleteBarang(kode) {
+    //ambil semua sub barang dari barang yang mau dihapus
     $.ajax({
       type : "GET",
       async : false,
       url : "/api/barang/"+kode+"/subbarang",
       success: function (result1) {
         for (var i=0; i<result1.length; i++){
+          //setiap sub barang diperintah untuk dihapus, handling barang dipinjam/tidak ada di back end
           var kodeSubBarang = result1[i].kodeSubBarang;
           var jsonSubBarang = {
             "kodeSubBarang" : kodeSubBarang,
@@ -73,24 +76,25 @@ $( document ).ready(function() {
             contentType: 'application/json',
             data: JSON.stringify(jsonSubBarang),
             complete: function(result3) {
-              console.log(kodeSubBarang);
             }
           });
         }
+        //hapus barang, handling dilakukan di backend
         $.ajax({
           async: false,
           type : "PUT",
           url : "/api/barang/delete/" + kode,
           complete: function(result2) {
             alert(result2.responseText);
-            console.log(kode);
           }
         });
       }
     });
   }
 
+  //
   function ajaxGetBarangTable(keyword, filter) {
+    //mengosongkan form barang baru
     $(".tambahKategoriBaru").hide();
     $("#kategoriBarangBaru").val("");
     $("#gambarBarangBaru").val(null);
@@ -99,6 +103,7 @@ $( document ).ready(function() {
     $("#deskripsiBarangBaru").val("");
     $("#formTambahKategoriBaru").val("");
     $("#jumlahBarangBaru").val(0);
+    //get all employee according to filter and keyword
     $.ajax({
       type : "GET",
       url : "employee/sortByName/"+ filter + "/" +keyword,
@@ -111,7 +116,7 @@ $( document ).ready(function() {
             '<tr style="height: 61px;">\n' +
             '  <td class="checkboxTd"><p><label><input type="checkbox" id="cbxbarang'+result[i].kode+'" class="cbxBarang cbxBarangBody" /><span></span></label></p></td>\n' +
             '  <td id="kodeBarang'+i+'" class="kodeBarangTable">' + result[i].kode + '</td>\n' +
-            '  <td>' + result[i].nama + '</td>\n' +
+            '  <td class="namaBarangTabel">' + result[i].nama + '</td>\n' +
             '  <td>' + kategoriBarang + '</td>\n' +
             '  <td class="totalUnitTable"></td>\n' +
             '  <td class="unitTersediaTable"></td>\n' +
@@ -123,6 +128,7 @@ $( document ).ready(function() {
             '  </td>\n' +
             '</tr>\n';
         }
+        //fungsi hide button button
         $(".clickTambahSatuan").click(function(){
           $("#editBarangTable").hide();
           $("#tambahSatuanTable").show();
@@ -145,7 +151,6 @@ $( document ).ready(function() {
           $("#tombolTambahSatuan").show();
           $("#tombolHapusBarang").show();
         });
-
         $(".clickEditTable").click(function(){
           $("#editBarangTable").show();
           $("#tambahSatuanTable").hide();
@@ -157,6 +162,8 @@ $( document ).ready(function() {
           $("#tombolTambahSatuan").hide();
           $("#tombolHapusBarang").hide();
         });
+
+        //menghitung total barang dan barang yang tersedia per row
         $( ".kodeBarangTable" ).each(function() {
           var kode = $(this).text();
           $.ajax({
@@ -180,29 +187,35 @@ $( document ).ready(function() {
     }),async=false;
   }
 
+  //ubah list setiap keyword diketik dan diubah filternya
   $( document ).on("change","#selectorKategoriTable",function (){
     ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
   });
-
   $("#searchTabelBarang").keyup(function(e) {
       ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
   });
 
+  //delete barang yang terpilih
   $( document ).on("click","#btnDeleteSelectedBarang",function (){
     $('.cbxBarang').filter(':checked').each(function() {
       if (this.id!="cbxAllBarang"){
         var kode = (this.id).substring(9);
-        var c = confirm("Delete Barang dengan kode "+kode+" ?");
+        var nama = jQuery(this).parent("label").parent("p").parent("td").parent("tr").children(".namaBarangTabel").text();
+        var c = confirm("Delete Barang " + nama + " dan sub-barangnya?");
+        //konfirmasi delete
         if (c){
           deleteBarang(kode);
         }
       }
     });
+    //reload
     ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
   });
 
+  //inisialisasi gambar barang, itu maksunya gambar detail
   var barangDetail;
 
+  //simpan ditan
   $("#tombolSimpanEditan").click(function () {
     var keyword = $("#ubahKategoriBarang").val();
     var path = $("#fileUploadGantiFotoBarang").val();
@@ -231,28 +244,7 @@ $( document ).ready(function() {
         async : false
       })
     }
-    $('#formGantiFotoBarang').on('submit',(function(e) {
-      e.preventDefault();
-      var formData = new FormData(this);
-      $.ajax({
-        type:'POST',
-        url: "/api/upload/barang/" + kode + "." + gambar,
-        data:formData,
-        cache:false,
-        contentType: false,
-        processData: false,
-        async: false,
-        success:function(data){
-          console.log("success");
-          console.log(data);
-        },
-        error: function(data){
-          console.log("error");
-          console.log(data);
-        }
-      });
-    }));
-    $('#formGantiFotoBarang').submit();
+    $("#formGantiFotoBarang").ajaxSubmit({url: "/api/upload/barang/" + kode + "." + gambar, type: 'post'});
     $.ajax({
       type : "PUT",
       async : false,
@@ -271,12 +263,11 @@ $( document ).ready(function() {
 
   $("#tombolHapusBarang").click(function () {
     var kode = $("#kodeBarangTable").text();
-    var c = confirm("Delete Barang?");
+    var c = confirm("Delete Barang " + $("#namaBarangTable").text()+" dan sub-barangnya?");
     if (c){
       deleteBarang(kode);
       ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
     }
-
   });
 
   $(document).on("click", ".triggerModalTable", function(){
@@ -290,7 +281,7 @@ $( document ).ready(function() {
       url : "employee/getDetailProduct/"+kode,
       success: function(result) {
         $("#imgModalBarang").css({
-          'background-image': 'url("http://127.0.0.1:8000/images/barang/'+result.gambar+'")'
+          'background-image': 'url("http://127.0.0.1:8000/images/barang/'+result.gambar+'?'+ new Date().getTime() +'")'
         });
 
         barangDetail = result.gambar;
@@ -403,7 +394,10 @@ $( document ).ready(function() {
     }
   });
 
+  var resultNewBarang;
+
     $(document).on("click", "#submitBarangBaru", function(){
+      resultNewBarang="";
       var keyword = $("#kategoriBarangBaru").val();
       var path = $("#gambarBarangBaru").val();
       var fileGambar = path.split('.').pop();
@@ -435,28 +429,8 @@ $( document ).ready(function() {
         contentType: 'application/json',
         data: JSON.stringify(jsonBarangBaru),
         success: function(result) {
-          $('#formGambarBarangBaru').on('submit',(function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            $.ajax({
-              type:'POST',
-              url: "/api/upload/barang/" + result.gambar,
-              data:formData,
-              cache:false,
-              contentType: false,
-              processData: false,
-              async : false,
-              success:function(data){
-                console.log("success");
-                console.log(data);
-              },
-              error: function(data){
-                console.log("error");
-                console.log(data);
-              }
-            });
-          }));
-          $('#formGambarBarangBaru').submit();
+          resultNewBarang=result;
+          $("#formGambarBarangBaru").ajaxSubmit({url: "/api/upload/barang/" + resultNewBarang.gambar, type: 'post'});
           var kodeBarang = result.kode;
           for (var i=1; i<=$("#jumlahBarangBaru").val(); i++){
             var str = "" + i;

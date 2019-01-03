@@ -112,9 +112,9 @@ $( document ).ready(function() {
                 if(data == "success")
                     alert("Berhasil menambahkan barang secara bulk");
                 else if(data == "notExcel")
-                    alert("File excel yang diinputkan salah");
+                    alert("Periksa kembali file excel yang diinputkan");
                 else if(data == "notZip")
-                    alert("File zip yang diinputkan salah");
+                    alert("Periksa kembali file zip yang diinputkan");
                 else alert("Gagal menambahkan barang secara bulk");
             },
             error: function(data){

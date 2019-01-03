@@ -15,12 +15,12 @@ public class CategoryController {
 
     @RequestMapping(value = {"employee/getAllCategory", "superior/getAllCategory", "admin/getAllCategory"}, method = RequestMethod.GET)
     public List<Category> getAllCategory(){
-        return categoryRepository.findAll();
+        return categoryRepository.findAllByIsExist(true);
     }
 
     @GetMapping("/category")
     public List<Category> listAllCategory(){
-      return categoryRepository.findAll();
+      return categoryRepository.findAllByIsExist(true);
     }
 
     @RequestMapping(value = {"/api/category"}, method = RequestMethod.POST)

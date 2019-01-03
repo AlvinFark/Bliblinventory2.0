@@ -244,28 +244,7 @@ $( document ).ready(function() {
         async : false
       })
     }
-    $('#formGantiFotoBarang').on('submit',(function(e) {
-      e.preventDefault();
-      var formData = new FormData(this);
-      $.ajax({
-        type:'POST',
-        url: "/api/upload/barang/" + kode + "." + gambar,
-        data:formData,
-        cache:false,
-        contentType: false,
-        processData: false,
-        async: false,
-        success:function(data){
-          console.log("success");
-          console.log(data);
-        },
-        error: function(data){
-          console.log("error");
-          console.log(data);
-        }
-      });
-    }));
-    $('#formGantiFotoBarang').submit();
+    $("#formGantiFotoBarang").ajaxSubmit({url: "/api/upload/barang/" + kode + "." + gambar, type: 'post'});
     $.ajax({
       type : "PUT",
       async : false,
@@ -302,7 +281,7 @@ $( document ).ready(function() {
       url : "employee/getDetailProduct/"+kode,
       success: function(result) {
         $("#imgModalBarang").css({
-          'background-image': 'url("http://127.0.0.1:8000/images/barang/'+result.gambar+'")'
+          'background-image': 'url("http://127.0.0.1:8000/images/barang/'+result.gambar+'?'+ new Date().getTime() +'")'
         });
 
         barangDetail = result.gambar;
@@ -450,30 +429,8 @@ $( document ).ready(function() {
         contentType: 'application/json',
         data: JSON.stringify(jsonBarangBaru),
         success: function(result) {
-          resultNewBarang=result
-          $('#formGambarBarangBaru').on('submit',(function(e) {
-            e.preventDefault();
-            var formData = new FormData(this);
-            console.log(result);
-            $.ajax({
-              type:'POST',
-              url: "/api/upload/barang/" + resultNewBarang.gambar,
-              data:formData,
-              cache:false,
-              contentType: false,
-              processData: false,
-              async : false,
-              success:function(data){
-                console.log("success");
-                console.log(data);
-              },
-              error: function(data){
-                console.log("error");
-                console.log(data);
-              }
-            });
-          }));
-          $('#formGambarBarangBaru').submit();
+          resultNewBarang=result;
+          $("#formGambarBarangBaru").ajaxSubmit({url: "/api/upload/barang/" + resultNewBarang.gambar, type: 'post'});
           var kodeBarang = result.kode;
           for (var i=1; i<=$("#jumlahBarangBaru").val(); i++){
             var str = "" + i;

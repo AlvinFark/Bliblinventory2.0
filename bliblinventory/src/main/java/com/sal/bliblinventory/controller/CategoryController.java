@@ -44,4 +44,10 @@ public class CategoryController {
         Category categoryNew = new Category(namaKategoriBaru);
         categoryRepository.save(categoryNew);
     }
+
+    @PutMapping("/api/hapusKategori")
+    public Category hapusKategori(@Valid @RequestBody Category categoryRequest) {
+        categoryRequest.setExist(false);
+        return categoryRepository.save(categoryRequest);
+    }
 }

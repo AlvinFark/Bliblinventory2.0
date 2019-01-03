@@ -122,4 +122,8 @@ public class BarangController {
       }
   }
 
+  @GetMapping("api/getTotalBarangWithCategory/{idKategori}")
+  public int getTotalBarangWithCategory(@PathVariable Long idKategori){
+      return barangRepository.countAllByCategory_IdAndIsExist(idKategori, true);
+  }
 }

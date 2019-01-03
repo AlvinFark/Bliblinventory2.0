@@ -28,21 +28,25 @@ public class SubBarangController {
     @Autowired
     DetailTransaksiRepository detailTransaksiRepository;
 
+    //hitung semua sub barang berdasar kode barang
     @RequestMapping(value = {"employee/countAllSubBarang/{kodeBarang}", "superior/countAllSubBarang/{kodeBarang}"}, method = RequestMethod.GET)
     public int countSubBarang(@PathVariable(value = "kodeBarang") String kodeBarang){
         return subBarangRepository.countSubBarangByBarangKodeAndIsExist(kodeBarang, true);
     }
 
+    //hitung sub barang yang tersedia berdasar kode barang
     @RequestMapping(value = {"employee/countReadySubBarang/{kodeBarang}", "superior/countReadySubBarang/{kodeBarang}"}, method = RequestMethod.GET)
     public int countReadySubBarang(@PathVariable(value = "kodeBarang") String kodeBarang){
         return subBarangRepository.countSubBarangByBarangKodeAndStatusSubBarangAndIsExist(kodeBarang, true, true);
     }
 
+    //hitung semua sub barang berdasar kode barang
     @RequestMapping(value = {"employee/countTotalSubBarang/{kodeBarang}", "superior/countTotalSubBarang/{kodeBarang}"}, method = RequestMethod.GET)
     public int countTotalSubBarang(@PathVariable(value = "kodeBarang") String kodeBarang){
       return subBarangRepository.countSubBarangByBarangKode(kodeBarang);
     }
 
+    //ubah status sub barang menjadi dipinjam
     @RequestMapping(value = {"superior/changeStateSubBarangToBorrowed"}, method = RequestMethod.PUT)
     public SubBarang changeStateSubBarangToBorrowed(@Valid @RequestBody SubBarang subBarangRequest){
         subBarangRequest.setStatusSubBarang(false);

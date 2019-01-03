@@ -1,15 +1,18 @@
 $( document ).ready(function() {
 
+  //inisialisasi dependency
   $('.modal').modal();
-
   $('select').on('contentChanged', function() {
     $(this).formSelect();
   });
 
+  //panggil fungsi untuk menampilkan semua karyawan
+  ajaxGetUsers("",0);
+
+  //inisialisasi hide and show untuk button
   $("#ubahDetailKaryawan").hide();
   $("#buttonBackToDetailKaryawan").hide();
   $("#buttonSimpanUbahanKaryawan").hide();
-
   $(".triggerDetailKaryawan, #buttonBackToDetailKaryawan").click(function(){
     $("#detailKaryawan").fadeIn();
     $("#ubahDetailKaryawan").hide();
@@ -18,7 +21,6 @@ $( document ).ready(function() {
     $("#buttonBackToDetailKaryawan").hide();
     $("#buttonSimpanUbahanKaryawan").hide();
   });
-
   $("#buttonUbahDetailKaryawan").click(function(){
     $("#detailKaryawan").hide();
     $("#ubahDetailKaryawan").fadeIn();
@@ -31,6 +33,7 @@ $( document ).ready(function() {
     $('#buttonYaGanti').show();
   });
 
+  //ketika card karyawan di klik
   $( document ).on("click",".triggerDetailKaryawan",function () {
     $("#detailKaryawan").fadeIn();
     $("#ubahDetailKaryawan").hide();
@@ -42,6 +45,7 @@ $( document ).ready(function() {
     ajaxGetDetailKaryawan(idKaryawan);
   });
 
+  //setting form superior untuk perubahan role user
   $( document ).on("change","#ubahRole",function (){
     var role=$("#ubahRole").prop('selectedIndex');
     if (role==0){
@@ -50,40 +54,45 @@ $( document ).ready(function() {
     }
   });
 
+  //setting form untuk opsi ganti password
   $( document ).on("click","#buttonYaGanti",function () {
     $('.hideGantiPassword').show();
     $('#buttonYaGanti').hide();
   });
-
   $( document ).on("click","#buttonCancelGanti",function () {
     $('.hideGantiPassword').hide();
     $('#gantiPassword').val('');
     $('#buttonYaGanti').show();
   });
 
-  var passworddetail;
+  //membuat password dan gambar global untuk keperluan pemanggilan fungsi
   var gambardetail;
 
+  //action menyimpan hasil ubahan detail karyawan ketika di klik button simpan
   $("#buttonSimpanUbahanKaryawan").click(function(){
+    //ambil data input detail baru
     var id=$('#detailIdKaryawan').text();
+    console.log(id);
     var name=$('#ubahNamaKaryawan').val();
     var gender=$("#ubahGenderKaryawan").val();
     var address=$("#alamatKaryawan").val();
     var dob=$("#ubahTanggalLahir").val();
     var roleId=$("#ubahRole").val();
     var superiorId=$("#selectUbahSuperior").val();
+    //set superiorid ke default jika role bukan staff
     if (roleId!=2||superiorId=="undefined"){superiorId="0"};
     var hp=$("#hpKaryawan").val();
     var email=$("#emailKaryawan").val();
     var uname=$("#detailUsernameKaryawan").text();
+    //ambil ekstensi input gambar
     var path = $("#gantiFotoKaryawan").val();
     var gambar = path.split('.').pop();
-    if (gambar=="") {
-      gambar = gambardetail
-    };
+    //nilai variabel gambar jika tidak ada input
+    if (gambar=="") {gambar = gambardetail.split('.').pop();};
     var password = $('#gantiPassword').val();
-    var passbaru;
+    var passbaru;   //pointer untuk backend, memberitahu password diubah/tidak
     if (password=="") {
+      //password mock yang tidak digunakan
       password = "password";
       passbaru = false;
     } else {
@@ -104,11 +113,15 @@ $( document ).ready(function() {
       "gambar" : gambar,
       "passwordBaru" : passbaru
     };
-    $('#formGantiGambarKaryawan').on('submit',(function(e) {
+    //fungsi upload gambar karyawan
+    $('.formGantiGambarKaryawan').attr("id","formGantiGambarKaryawan"+id);
+    $('form[id="formGantiGambarKaryawan'+id+'"]').on('submit',(function(e) {
+      console.log(gambar);
       e.preventDefault();
       var formData = new FormData(this);
       $.ajax({
         type:'POST',
+        async:false,
         url: "/api/upload/users/" + id + "." + gambar,
         data:formData,
         cache:false,
@@ -124,20 +137,25 @@ $( document ).ready(function() {
         }
       });
     }));
-    $('#formGantiGambarKaryawan').submit();
+    $('form[id="formGantiGambarKaryawan'+id+'"]').submit();
+    //send ubahan detail karyawan
     $.ajax({
       type: "PUT",
       url: "/api/users/id/" + id,
+      async: false,
       contentType: 'application/json',
       data: JSON.stringify(jsonUbahDetail),
       success: function(result) {
         alert('detail karyawan berhasil diubah');
+        //reset tampilan
         ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
       }
     });
   });
 
+  //fungsi hapus karyawan
   $("#buttonHapusKaryawan").click(function(){
+    //ambil detail karyawan, walaupun tidak terpakai untuk memenuhi syarat not null
     var id=$('#detailIdKaryawan').text();
     var name=$('#ubahNamaKaryawan').val();
     var gender=$("#ubahGenderKaryawan").val();
@@ -162,11 +180,12 @@ $( document ).ready(function() {
       "roleId" : roleId,
       "isActive" : false
     };
-    var c = confirm("Hapus karyawan "+ name + "?");
+    var c = confirm("Hapus karyawan "+ name + "?"); //konfirmasi hapus
     if (c) {
       $.ajax({
         type: "PUT",
         url: "/api/users/id/" + id,
+        async: false,
         contentType: 'application/json',
         data: JSON.stringify(jsonUbahDetail),
         success: function (result) {
@@ -177,8 +196,9 @@ $( document ).ready(function() {
     }
   });
 
+  //meminta detail karyawan dari modal yang di klik
   function ajaxGetDetailKaryawan(id) {
-    $('#detailIdKaryawan').html("");
+    //kosongkan form dari detail karyawan sebelumnya
     $('#ubahNamaKaryawan').val("");
     $("#ubahGenderKaryawan").val("");
     $("#alamatKaryawan").val("");
@@ -195,9 +215,7 @@ $( document ).ready(function() {
       type: "GET",
       url: "/api/users/id/" + id,
       success: function (result) {
-        console.log(result);
         var roleuser, roleid;
-        passworddetail = result.password;
         gambardetail = result.gambar;
         var roleapi=((result || {}).roles[0] || {}).name;
         if (roleapi=="ROLE_EMPLOYEE"){
@@ -212,6 +230,7 @@ $( document ).ready(function() {
         };
         var usersuperiorid=result.superiorId;
         var usersuperior;
+        //ambil nama superior
         $.ajax({
           async : false,
           type: "GET",
@@ -220,10 +239,11 @@ $( document ).ready(function() {
             usersuperior = result1.name;
           }
         });
+        //ambil foto karyawan
         $("#detailFotoKaryawan").css({
           'background-image': 'url("http://127.0.0.1:8000/images/users/'+result.gambar+'")'
         });
-
+        //tampilkan data ke tabel detail karyawan
         $("#detailIdKaryawan").html(result.id);
         $("#detailUsernameKaryawan").html(result.username);
         $("#detailNamaKaryawan").html(result.name);
@@ -231,6 +251,7 @@ $( document ).ready(function() {
         $("#detailAlamatKaryawan").html(result.address);
         $("#detailDoBKaryawan").html(result.dateOfBirth);
         $("#detailRoleKaryawan").html(roleuser);
+        //tampilkan nama superior jika rolenya staff
         if (roleuser=="Staff"){
           $(".superior").attr("hidden",false);
           $(".ubahSuperior").attr("hidden",false);
@@ -242,8 +263,9 @@ $( document ).ready(function() {
         $("#detailHpKaryawan").html(result.phoneNumber);
         $("#detailEmailKaryawan").html(result.email);
 
+        //masukkan data ke form supaya tidak perlu tulis ulang, jika hanya ingin ubah sedikit
         $("#ubahNamaKaryawan").val(result.name);
-        $('#ubahGenderKaryawan option[value="'+result.gender+'"]').prop('selected', true);
+        $('#ubahGenderKaryawan option[value="'+result.gender+'"]').prop('selected', true); //buat gender otomatis ter select sesuai data sebelumnya
         $("#alamatKaryawan").val(result.address);
         $("#ubahTanggalLahir").val(result.dateOfBirth);
         $('#ubahRole option[value="'+roleid+'"]').prop('selected', true);
@@ -259,21 +281,13 @@ $( document ).ready(function() {
     });
   };
 
-  ajaxGetUsers("",0);
-
-  $('select').formSelect();
-  $('.modal').modal();
-
+  //efek depth ketika kursor kearah card karyawan
   $(".card").hover(function(){
       $(this).addClass('z-depth-3');}, function(){$(this).removeClass('z-depth-3');
   });
 
-  var roleawalkb=$("#roleKaryawanBaru").prop('selectedIndex');
-  if (roleawalkb==0){
-    $(".tambahSuperior").show();} else {
-    $(".tambahSuperior").hide();
-  }
-
+  //ketika role karyawan baru diubah, form superior muncul/hilang
+  $(".tambahSuperior").show();
   $( document ).on("change","#roleKaryawanBaru",function (){
     var rolekb=$("#roleKaryawanBaru").prop('selectedIndex');
     if (rolekb==0){
@@ -282,13 +296,16 @@ $( document ).ready(function() {
     }
   });
 
+  //fungsi menampilkan list karyawan berdasarkan keyword search dan filter role
   function ajaxGetUsers(keyword, filter){
-    passworddetail = "";
+    //kosongkan nilai variabel global
     gambardetail = "";
+    //ajax untuk ambil
     $.ajax({
       type : "GET",
       url : "/api/users/"+keyword,
       success: function(result){
+        //kosongkan daftar sebelumnya, kosongkan list superior
         $("#daftarKaryawan").html('');
         $("#selectUbahSuperior").html('');
         $("#IdSuperiorKaryawanBaru").html('');
@@ -299,6 +316,7 @@ $( document ).ready(function() {
             roleuser="Staff";
             filterRole=1;
           } else if (roleapi=="ROLE_SUPERIOR"){
+            //jika role nya superior, masukkan ke pilihan superior
             roleuser="Superior";
             filterRole=2;
             $("#selectUbahSuperior").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
@@ -307,6 +325,7 @@ $( document ).ready(function() {
             roleuser="Admin";
             filterRole=3;
           };
+          //jika sesuai dengan filter dan keyword, buar card nya
           if ((filter==0||filterRole==filter)&&result[i].isActive==1){
             $("#daftarKaryawan").append('' +
               '<a class="col s6 l2 m3 modal-trigger triggerDetailKaryawan" id="" href="#modalDetailKaryawan">\n' +
@@ -331,6 +350,7 @@ $( document ).ready(function() {
         window.alert("error");
       }
     });
+    //kosongkan value untuk karyawan baru
     $('#namaKaryawanBaru').val('');
     $("#genderKaryawanBaru").val('');
     $("#alamatKaryawanBaru").val('');
@@ -342,18 +362,15 @@ $( document ).ready(function() {
     $("#gambarKaryawanBaru").val(null);
   }
 
+  //update list ketika : 1. keyword di ketik, 2. filter diubah
   $("#searchKaryawan").keyup(function(e) {
       ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
   });
-
   $( document ).on("change","#filterKaryawan",function (){
     ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
   });
 
-  $("#btnRefreshListKaryawan").click(function() {
-    ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
-  });
-
+  //fungsi ketika button untuk submit karyawan baru di klik
   $("#btnKirimKaryawanBaru").click(function(){
     var nname=$('#namaKaryawanBaru').val();
     var ngender=$("#genderKaryawanBaru").val();
@@ -381,6 +398,7 @@ $( document ).ready(function() {
       "roleId" : nroleId,
       "gambar" :fileGambar
     };
+    //post karyawan baru
     $.ajax({
       type: "POST",
       url: "/api/auth/signup",
@@ -391,11 +409,13 @@ $( document ).ready(function() {
         $('#formGambarKaryawanBaru').on('submit',(function(e) {
           e.preventDefault();
           var formData = new FormData(this);
+          //ambil data karyawan yang dibuat tadi
           $.ajax({
             async: false,
             type: "PUT",
             url: "/api/users/usernameforgambar/" + nuname,
             success: function (result1) {
+              //upload gambar dengan parameter dari data tadi
               $.ajax({
                 async:false,
                 type:'POST',
@@ -416,7 +436,7 @@ $( document ).ready(function() {
             }
           });
         }));
-        $('#formGambarKaryawanBaru').submit();
+        $('#formGambarKaryawanBaru').submit(); //submit
         alert('karyawan baru berhasil ditambahkan');
         ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
       },

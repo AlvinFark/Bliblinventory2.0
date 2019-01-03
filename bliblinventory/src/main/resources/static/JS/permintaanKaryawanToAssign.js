@@ -65,18 +65,22 @@ $( document ).ready(function() {
 
     //tekan tombol Assign pada detail transaksi (popup), maka assign barang ke permintaan pinjam itu
     $( document ).on("click","#buttonAssignFromDetail",function (){
-        var idTransaksi = $("#detailIdTransaksi").text();
-        ajaxAssignPermintaanPinjam(idTransaksi);
+        if(confirm("Assign permintaan pinjaman ini?")) {
+            var idTransaksi = $("#detailIdTransaksi").text();
+            ajaxAssignPermintaanPinjam(idTransaksi);
+        }
     });
 
     //tekan tombol Assign secara bulk, untuk me-assign sekaligus banyak
     $( document ).on("click","#btnAssign",function (){
-        $('.cbx').filter(':checked').each(function() {
-            if (this.id!="cbxAll"){
-                var idTransaksi = (this.id).substring(3);
-                ajaxAssignPermintaanPinjam(idTransaksi);
-            }
-        });
+        if(confirm("Assign semua permintaan pinjaman yang dipilih?")) {
+            $('.cbx').filter(':checked').each(function () {
+                if (this.id != "cbxAll") {
+                    var idTransaksi = (this.id).substring(3);
+                    ajaxAssignPermintaanPinjam(idTransaksi);
+                }
+            });
+        }
     });
 });
 

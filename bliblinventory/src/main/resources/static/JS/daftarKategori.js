@@ -69,8 +69,10 @@ function getAllCategory() {
             });
 
             $(".clickHapusKategori").click(function(){
-                var idKategori = (this.id).substring(19);
-                deleteKategori(idKategori);
+                if(confirm("Hapus kategori ini?")) {
+                    var idKategori = (this.id).substring(19);
+                    deleteKategori(idKategori);
+                }
             });
         }
     });

@@ -518,7 +518,6 @@ $( document ).ready(function() {
             },
             error : function(e) {
                 console.log("ERROR: ", e);
-                window.alert("error printDaftarBarang");
             },
             async:false
         });

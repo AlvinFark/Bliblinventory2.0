@@ -53,6 +53,7 @@ public class SubBarangController {
         return subBarangRepository.save(subBarangRequest);
     }
 
+    //tambahkan sub barang
     @RequestMapping(value = {"/api/barang/{kodebarang}/{kodesubbarang}"}, method = RequestMethod.POST)
     public SubBarang addSubBarang(@PathVariable("kodebarang") String kodebarang, @PathVariable("kodesubbarang") String kodesubbarang) {
 
@@ -62,12 +63,14 @@ public class SubBarangController {
       return subBarangRepository.save(subBarangRequest);
     }
 
+    //get semua sub barang berdasar kode barang
     @GetMapping("/api/barang/{kodebarang}/subbarang")
     public List<SubBarang> listSubBarang(@PathVariable String kodebarang){
       Barang barang = barangRepository.findBarangByKode(kodebarang);
       return subBarangRepository.findAllByBarangAndIsExistOrderByStatusSubBarangDesc(barang,true);
     }
 
+    //hapus sub barang
     @PutMapping("/api/subbarang/{kodeSubBarang}")
     public String hapusSubBarang(@PathVariable String kodeSubBarang, @Valid @RequestBody SubBarang subBarang) {
       SubBarang sub = subBarangRepository.getSubBarangByKodeSubBarang(kodeSubBarang);
@@ -84,11 +87,13 @@ public class SubBarangController {
       }
     }
 
+    //get sub barang berdasar kode sub barang
     @GetMapping("/api/getSubBarangByKodeSubBarang/{kodeSubBarang}")
     public SubBarang getSubBarangByKodeSubBarang(@PathVariable String kodeSubBarang){
         return subBarangRepository.getSubBarangByKodeSubBarang(kodeSubBarang);
     }
 
+    //edit status sub barang menjadi readay (bollean o)
     @PutMapping("api/editStatusSubBarangReady")
     public SubBarang editStatusSubBarangReady(@Valid @RequestBody SubBarang subBarangRequest) {
         subBarangRequest.setStatusSubBarang(true);

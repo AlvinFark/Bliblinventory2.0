@@ -1,10 +1,13 @@
 $( document ).ready(function() {
 
+    //inisialisasi dependency
     $('.modal').modal();
     $('.datepicker').datepicker();
 
+    //panggil fungsi list barang
     ajaxGetBarangTable('',0);
 
+    //get list semua kategori untuk dipakai di filter dan ubah/tambah barang
     $.ajax({
       type: "GET",
       url: "/category",
@@ -15,6 +18,7 @@ $( document ).ready(function() {
         for (var i=0; i<result.length; i++){
           $("#selectorKategoriTable").append('<option value="'+result[i].id+'">'+result[i].name+'</option>')
         }
+        //tambah opsi untuk tambah kategori baru
         $("#ubahKategoriBarang").append('<option value="tambahKategoriBaru">tambah kategori...</option>')
         $("#kategoriBarangBaru").append('<option value="tambahKategoriBaru">tambah kategori...</option>')
       }
@@ -33,7 +37,6 @@ $( document ).ready(function() {
       if( !$(this).is(':checked') && $("#cbxAllBarang").is(':checked'))
         $("#cbxAllBarang").prop('checked', false);
     }
-
     //kalau ada yang di check, tombol setujui dan tolak bisa diklik
     if ($('.cbxBarang').filter(':checked').length > 0) {
       $("#btnDeleteSelectedBarang").removeClass("disabled");
@@ -51,139 +54,139 @@ $( document ).ready(function() {
     }
   });
 
-    function deleteBarang(kode) {
-      $.ajax({
-        type : "GET",
-        async : false,
-        url : "/api/barang/"+kode+"/subbarang",
-        success: function (result1) {
-          for (var i=0; i<result1.length; i++){
-            var kodeSubBarang = result1[i].kodeSubBarang;
-            var jsonSubBarang = {
-              "kodeSubBarang" : kodeSubBarang,
-              "isExist" : false
-            };
-            $.ajax({
-              async: false,
-              type: "PUT",
-              url: "/api/subbarang/" + kodeSubBarang,
-              contentType: 'application/json',
-              data: JSON.stringify(jsonSubBarang),
-              complete: function(result3) {
-                console.log(kodeSubBarang);
-              }
-            });
-          }
+  function deleteBarang(kode) {
+    $.ajax({
+      type : "GET",
+      async : false,
+      url : "/api/barang/"+kode+"/subbarang",
+      success: function (result1) {
+        for (var i=0; i<result1.length; i++){
+          var kodeSubBarang = result1[i].kodeSubBarang;
+          var jsonSubBarang = {
+            "kodeSubBarang" : kodeSubBarang,
+            "isExist" : false
+          };
           $.ajax({
             async: false,
-            type : "PUT",
-            url : "/api/barang/delete/" + kode,
-            complete: function(result2) {
-              alert(result2.responseText);
-              console.log(kode);
+            type: "PUT",
+            url: "/api/subbarang/" + kodeSubBarang,
+            contentType: 'application/json',
+            data: JSON.stringify(jsonSubBarang),
+            complete: function(result3) {
+              console.log(kodeSubBarang);
             }
           });
         }
-      });
-    }
-
-    function ajaxGetBarangTable(keyword, filter) {
-      $(".tambahKategoriBaru").hide();
-      $("#kategoriBarangBaru").val("");
-      $("#gambarBarangBaru").val(null);
-      $("#namaBarangBaru").val("");
-      $("#hargaBarangBaru").val(0);
-      $("#deskripsiBarangBaru").val("");
-      $("#formTambahKategoriBaru").val("");
-      $("#jumlahBarangBaru").val(0);
-      $.ajax({
-        type : "GET",
-        url : "employee/sortByName/"+ filter + "/" +keyword,
-        success: function(result) {
-          count=result.length;
-          $("#tabelDaftarBarang").html('');
-          for (var i = 0; i < result.length; i++) {
-            var kategoriBarang = ((result[i] || {}).category || {}).name;
-            document.getElementById("tabelDaftarBarang").innerHTML += '' +
-              '<tr style="height: 61px;">\n' +
-              '  <td class="checkboxTd"><p><label><input type="checkbox" id="cbxbarang'+result[i].kode+'" class="cbxBarang cbxBarangBody" /><span></span></label></p></td>\n' +
-              '  <td id="kodeBarang'+i+'" class="kodeBarangTable">' + result[i].kode + '</td>\n' +
-              '  <td>' + result[i].nama + '</td>\n' +
-              '  <td>' + kategoriBarang + '</td>\n' +
-              '  <td class="totalUnitTable"></td>\n' +
-              '  <td class="unitTersediaTable"></td>\n' +
-              '  <td>' + result[i].hargaBeli + '</td>\n' +
-              '  <td width=100px>\n' +
-              '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickTambahSatuan" href="#modalDetailBarangTable"><i class="material-icons">add</i></a>\n' +
-              '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickEditTable" href="#modalDetailBarangTable"><i class="material-icons">edit</i></a>\n' +
-              '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickDetailTable" href="#modalDetailBarangTable"><i class="material-icons">search</i></a>\n' +
-              '  </td>\n' +
-              '</tr>\n';
+        $.ajax({
+          async: false,
+          type : "PUT",
+          url : "/api/barang/delete/" + kode,
+          complete: function(result2) {
+            alert(result2.responseText);
+            console.log(kode);
           }
-          $(".clickTambahSatuan").click(function(){
-            $("#editBarangTable").hide();
-            $("#tambahSatuanTable").show();
-            $("#detailBarangTable").hide();
-            $("#backToDetailTable").show();
-            $("#tombolSimpanEditan").hide();
-            $("#tombolSimpanSatuan").show();
-            $("#tombolEditBarang").hide();
-            $("#tombolTambahSatuan").hide();
-            $("#tombolHapusBarang").hide();
-          });
-          $(".clickDetailTable").click(function(){
-            $("#editBarangTable").hide();
-            $("#tambahSatuanTable").hide();
-            $("#detailBarangTable").show();
-            $("#backToDetailTable").hide();
-            $("#tombolSimpanEditan").hide();
-            $("#tombolSimpanSatuan").hide();
-            $("#tombolEditBarang").show();
-            $("#tombolTambahSatuan").show();
-            $("#tombolHapusBarang").show();
-          });
+        });
+      }
+    });
+  }
 
-          $(".clickEditTable").click(function(){
-            $("#editBarangTable").show();
-            $("#tambahSatuanTable").hide();
-            $("#detailBarangTable").hide();
-            $("#backToDetailTable").show();
-            $("#tombolSimpanEditan").show();
-            $("#tombolSimpanSatuan").hide();
-            $("#tombolEditBarang").hide();
-            $("#tombolTambahSatuan").hide();
-            $("#tombolHapusBarang").hide();
-          });
-          $( ".kodeBarangTable" ).each(function() {
-            var kode = $(this).text();
-            $.ajax({
-              type: "GET",
-              url: "/employee/countAllSubBarang/" + kode,
-              success: function (result1) {
-                $("td:contains(" + kode + ")").parent("tr").children("td.totalUnitTable").html(result1);
-                $.ajax({
-                  type: "GET",
-                  url: "/employee/countReadySubBarang/" + kode,
-                  success: function (result2) {
-                    $("td:contains(" + kode + ")").parent("tr").children("td.unitTersediaTable").html(result2);
-                    if ($("td:contains(" + kode + ")").parent("tr").children("td.totalUnitTable").text()!=$("td:contains(" + kode + ")").parent("tr").children("td.unitTersediaTable").text()){
-                    };
-                  }
-                });
-              }
-            })
-          });
+  function ajaxGetBarangTable(keyword, filter) {
+    $(".tambahKategoriBaru").hide();
+    $("#kategoriBarangBaru").val("");
+    $("#gambarBarangBaru").val(null);
+    $("#namaBarangBaru").val("");
+    $("#hargaBarangBaru").val(0);
+    $("#deskripsiBarangBaru").val("");
+    $("#formTambahKategoriBaru").val("");
+    $("#jumlahBarangBaru").val(0);
+    $.ajax({
+      type : "GET",
+      url : "employee/sortByName/"+ filter + "/" +keyword,
+      success: function(result) {
+        count=result.length;
+        $("#tabelDaftarBarang").html('');
+        for (var i = 0; i < result.length; i++) {
+          var kategoriBarang = ((result[i] || {}).category || {}).name;
+          document.getElementById("tabelDaftarBarang").innerHTML += '' +
+            '<tr style="height: 61px;">\n' +
+            '  <td class="checkboxTd"><p><label><input type="checkbox" id="cbxbarang'+result[i].kode+'" class="cbxBarang cbxBarangBody" /><span></span></label></p></td>\n' +
+            '  <td id="kodeBarang'+i+'" class="kodeBarangTable">' + result[i].kode + '</td>\n' +
+            '  <td>' + result[i].nama + '</td>\n' +
+            '  <td>' + kategoriBarang + '</td>\n' +
+            '  <td class="totalUnitTable"></td>\n' +
+            '  <td class="unitTersediaTable"></td>\n' +
+            '  <td>' + result[i].hargaBeli + '</td>\n' +
+            '  <td width=100px>\n' +
+            '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickTambahSatuan" href="#modalDetailBarangTable"><i class="material-icons">add</i></a>\n' +
+            '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickEditTable" href="#modalDetailBarangTable"><i class="material-icons">edit</i></a>\n' +
+            '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickDetailTable" href="#modalDetailBarangTable"><i class="material-icons">search</i></a>\n' +
+            '  </td>\n' +
+            '</tr>\n';
         }
-      }),async=false;
-    }
+        $(".clickTambahSatuan").click(function(){
+          $("#editBarangTable").hide();
+          $("#tambahSatuanTable").show();
+          $("#detailBarangTable").hide();
+          $("#backToDetailTable").show();
+          $("#tombolSimpanEditan").hide();
+          $("#tombolSimpanSatuan").show();
+          $("#tombolEditBarang").hide();
+          $("#tombolTambahSatuan").hide();
+          $("#tombolHapusBarang").hide();
+        });
+        $(".clickDetailTable").click(function(){
+          $("#editBarangTable").hide();
+          $("#tambahSatuanTable").hide();
+          $("#detailBarangTable").show();
+          $("#backToDetailTable").hide();
+          $("#tombolSimpanEditan").hide();
+          $("#tombolSimpanSatuan").hide();
+          $("#tombolEditBarang").show();
+          $("#tombolTambahSatuan").show();
+          $("#tombolHapusBarang").show();
+        });
 
-    $( document ).on("change","#selectorKategoriTable",function (){
+        $(".clickEditTable").click(function(){
+          $("#editBarangTable").show();
+          $("#tambahSatuanTable").hide();
+          $("#detailBarangTable").hide();
+          $("#backToDetailTable").show();
+          $("#tombolSimpanEditan").show();
+          $("#tombolSimpanSatuan").hide();
+          $("#tombolEditBarang").hide();
+          $("#tombolTambahSatuan").hide();
+          $("#tombolHapusBarang").hide();
+        });
+        $( ".kodeBarangTable" ).each(function() {
+          var kode = $(this).text();
+          $.ajax({
+            type: "GET",
+            url: "/employee/countAllSubBarang/" + kode,
+            success: function (result1) {
+              $("td:contains(" + kode + ")").parent("tr").children("td.totalUnitTable").html(result1);
+              $.ajax({
+                type: "GET",
+                url: "/employee/countReadySubBarang/" + kode,
+                success: function (result2) {
+                  $("td:contains(" + kode + ")").parent("tr").children("td.unitTersediaTable").html(result2);
+                  if ($("td:contains(" + kode + ")").parent("tr").children("td.totalUnitTable").text()!=$("td:contains(" + kode + ")").parent("tr").children("td.unitTersediaTable").text()){
+                  };
+                }
+              });
+            }
+          })
+        });
+      }
+    }),async=false;
+  }
+
+  $( document ).on("change","#selectorKategoriTable",function (){
+    ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
+  });
+
+  $("#searchTabelBarang").keyup(function(e) {
       ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
-    });
-
-    $("#searchTabelBarang").keyup(function(e) {
-        ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
-    });
+  });
 
   $( document ).on("click","#btnDeleteSelectedBarang",function (){
     $('.cbxBarang').filter(':checked').each(function() {

@@ -1,15 +1,17 @@
 $( document ).ready(function() {
+    //get semua permintaan pinjam employee dan superior
     ajaxGetAllPermintaanPinjamToAssign();
 
+    //inisialisasi elemen yang ada
     $('select').formSelect();
     $('.modal').modal();
 
-    //ketika merubah dropdown urutkan
+    //ketika merubah dropdown urutkan, load daftar dengan urutan sesuai dropdown yang dipilih
     $( document ).on("change","#selectSortBy",function (){
         ajaxGetRequestListBySortAndSearch();
     });
 
-    //ketika klik icon search
+    //ketika ketik keyword, load hasil search
     $( document ).on("keyup","#inputCari",function (){
         ajaxGetRequestListBySortAndSearch();
     });
@@ -29,7 +31,7 @@ $( document ).ready(function() {
                 $("#cbxAll").prop('checked', false);
         }
 
-        //kalau ada yang di check, tombol assign diklik
+        //kalau ada yang di check, tombol assign bisa diklik
         if ($('.cbx').filter(':checked').length > 0) {
             if($('.cbx').filter(':checked').length == 1 && $("#cbxAll").is(':checked'))
                 $("#cbxAll").prop('checked', false);
@@ -54,20 +56,20 @@ $( document ).ready(function() {
             $("#btnAssign").addClass("disabled");
     });
 
-    //ketika klik button detail
+    //ketika klik button detail, get detail request order
     $( document ).on("click",".btnDetail",function (){
         var idTransaksi = (this.id).substring(6);
         ajaxGetDetailRequestOrder(idTransaksi);
     });
 
 
-    //pencet tombol Assign pada detail transaksi (popup)
+    //tekan tombol Assign pada detail transaksi (popup), maka assign barang ke permintaan pinjam itu
     $( document ).on("click","#buttonAssignFromDetail",function (){
         var idTransaksi = $("#detailIdTransaksi").text();
         ajaxAssignPermintaanPinjam(idTransaksi);
     });
 
-    //pencet tombol Assign secara bulk
+    //tekan tombol Assign secara bulk, untuk me-assign sekaligus banyak
     $( document ).on("click","#btnAssign",function (){
         $('.cbx').filter(':checked').each(function() {
             if (this.id!="cbxAll"){
@@ -78,6 +80,7 @@ $( document ).ready(function() {
     });
 });
 
+//buat tampilan untuk daftar permintaan pinjam superior dan employee
 function createContentListPermintaanPinjam(result) {
     $("#listPermintaanPinjam").html('');
     for(var i=0; i<result.length; i++){
@@ -96,6 +99,7 @@ function createContentListPermintaanPinjam(result) {
     }
 }
 
+//get semua permintaan pinjam superior dan employee
 function ajaxGetAllPermintaanPinjamToAssign() {
     $.ajax({
         type : "GET",
@@ -110,6 +114,7 @@ function ajaxGetAllPermintaanPinjamToAssign() {
     });
 }
 
+//get daftar request dengan filter urutan dan seaching sesuai keyword
 function ajaxGetRequestListBySortAndSearch(){
     var keyword = $("#inputCari").val();
     var indexSortSelected = $("#selectSortBy").prop('selectedIndex');
@@ -119,6 +124,7 @@ function ajaxGetRequestListBySortAndSearch(){
         type : "GET",
         url : url,
         success: function(result){
+            //buat tampilan daftar permintaan pinjam
             createContentListPermintaanPinjam(result);
         },
         error : function(e) {
@@ -131,6 +137,7 @@ function ajaxGetRequestListBySortAndSearch(){
     $("#btnAssign").addClass("disabled");
 }
 
+//get detail request order berdasarkan id transaksi sekaligus buat tampilannya
 function ajaxGetDetailRequestOrder(idTransaksi) {
     $.ajax({
         type : "GET",
@@ -156,6 +163,7 @@ function ajaxGetDetailRequestOrder(idTransaksi) {
     });
 }
 
+//meng-assign barang ke permintaan pinjam
 function ajaxAssignPermintaanPinjam(idTransaksi) {
     $.ajax({
         type : "GET",

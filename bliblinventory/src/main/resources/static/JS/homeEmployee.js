@@ -1,4 +1,5 @@
 $( document ).ready(function() {
+    //inisialisasi elemen-elemen pada awal homeEmployee.js di-load
     $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
     $('.datepicker').datepicker();
     $('.modal').modal();
@@ -13,13 +14,13 @@ $( document ).ready(function() {
     var page = $.session.get('page');
     //supaya kalau refresh, tetap berada di page-nya
     if(page == null || page == 1) {
-        page1();
+        page1(); //menampilkan page daftar barang
     }
     else if(page == 2){
-        page2();
+        page2(); //menampilkan page daftar permintaan pinjaman barang
     }
     else if(page == 3){
-        page3();
+        page3(); //menampilkan page daftar permintaan pembelian barang
     }
 
     //menu Daftar Barang, me-load kontennya menjadi halaman daftar barang

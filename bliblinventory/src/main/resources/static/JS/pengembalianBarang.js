@@ -107,7 +107,8 @@ $( document ).ready(function() {
       $("#cbxAllBarang").prop('checked', true);
     }
   });
-  
+
+  //update list setiap search query diketik atau
   $( document ).on("change",".refreshpermintaan-trigger",function (){
     refreshList($("#selectSortPengembalian").val(),$("#selectSearchPengembalian").val(),$("#selectKategoriPengembalian").val(),$("#searchInputPengembalian").val());
   });
@@ -115,6 +116,7 @@ $( document ).ready(function() {
       refreshList($("#selectSortPengembalian").val(),$("#selectSearchPengembalian").val(),$("#selectKategoriPengembalian").val(),$("#searchInputPengembalian").val());
   });
 
+  //terima barang yang dipinjam
   $( document ).on("click",".btnTerima",function (){
     var kode = (this.id).substring(6);
     var c = confirm("Barang sudah dikembalikan?");
@@ -122,6 +124,7 @@ $( document ).ready(function() {
     refreshList($("#selectSortPengembalian").val(),$("#selectSearchPengembalian").val(),$("#selectKategoriPengembalian").val(),$("#searchInputPengembalian").val());
   })
 
+  //terima semua barang yang dipilih
   $( document ).on("click","#terimaTerpilih",function (){
     $('.cbxBack').filter(':checked').each(function() {
       if (this.id!="cbxAllBack"){
@@ -132,6 +135,7 @@ $( document ).ready(function() {
     refreshList($("#selectSortPengembalian").val(),$("#selectSearchPengembalian").val(),$("#selectKategoriPengembalian").val(),$("#searchInputPengembalian").val());
   });
 
+  //fungsi terima barang
   function terimaTransaksi(kode) {
     $.ajax({
       type: "PUT",

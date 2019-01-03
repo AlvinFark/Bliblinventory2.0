@@ -88,8 +88,8 @@ public class BarangController {
     @PutMapping("/api/barang/tambah/{categoryName}")
     public Barang tambahBarang(@PathVariable String categoryName, @Valid @RequestBody Barang barangRequest) {
 
-      Barang tmp = barangRepository.findBarangByNama(barangRequest.getNama());
-      if (tmp!=null) {
+//      Barang tmp = barangRepository.findBarangByNama(barangRequest.getNama());
+//      if (tmp!=null) {
         Pageable limit = new PageRequest(0, 1);
         String kodeHead = categoryName.substring(0, 3).toUpperCase();    //PER
         List<Barang> lastBarang = barangRepository.findByCategory_NameContainingOrderByKodeDesc(kodeHead, limit);
@@ -108,7 +108,7 @@ public class BarangController {
         barangRequest.setCategory(category);
         barangRequest.setGambar(barangRequest.getKode() + "." + barangRequest.getGambar());
         barangRepository.save(barangRequest);
-      }
+      //}
       return barangRequest;
     }
 

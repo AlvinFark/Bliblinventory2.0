@@ -117,7 +117,8 @@ $( document ).ready(function() {
 
   $( document ).on("click",".btnTerima",function (){
     var kode = (this.id).substring(6);
-    terimaTransaksi(kode);
+    var c = confirm("Barang sudah dikembalikan?");
+    if (c) {terimaTransaksi(kode)};
     refreshList($("#selectSortPengembalian").val(),$("#selectSearchPengembalian").val(),$("#selectKategoriPengembalian").val(),$("#searchInputPengembalian").val());
   })
 
@@ -137,6 +138,7 @@ $( document ).ready(function() {
       url: "/api/detailtransaksi/kembali/" + kode,
       success: function(result) {
         alert(result);
+        refreshList($("#selectSortPengembalian").val(),$("#selectSearchPengembalian").val(),$("#selectKategoriPengembalian").val(),$("#searchInputPengembalian").val());
       }
     });
   }

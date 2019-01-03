@@ -18,6 +18,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.zeroturnaround.zip.commons.FilenameUtils;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
@@ -48,11 +49,24 @@ public class UploadController {
     private int baris,kolom = 0;
 
     @PostMapping("/upload/bulk")
-    public void singleFileUpload(@RequestParam("fileExcel") MultipartFile fileExcel, @RequestParam("fileGambar") MultipartFile fileGambar) throws Exception {
+    public String singleFileUpload(@RequestParam("fileExcel") MultipartFile fileExcel, @RequestParam("fileGambar") MultipartFile fileGambar) throws Exception {
         stringValue = null;
         numericValue = null;
         baris = 0;
         kolom = 0;
+
+        //Cek apakah input file excel mengirimkan file excel
+        int x = fileExcel.getOriginalFilename().lastIndexOf('.');
+        if(!fileExcel.getOriginalFilename().substring(x).equals(".xlsx")){
+            return "notExcel";
+        }
+
+        //Cek apakah input file zip mengirimkan file zip
+        int z = fileGambar.getOriginalFilename().lastIndexOf('.');
+        if(!fileGambar.getOriginalFilename().substring(z).equals(".zip")){
+            return "notZip";
+        }
+
 
 //        if (file.isEmpty()) {
 ////            redirectAttributes.addFlashAttribute("message", "Please select a file to upload");
@@ -96,17 +110,17 @@ public class UploadController {
          * unizp file from temp by zip4j
          */
         String destination = "D:/bliblinventory/images/barang/";
-        try {
-            ZipFile zipFile = new ZipFile(zip);
-            zipFile.extractAll(destination);
-        } catch (ZipException e) {
-            e.printStackTrace();
-        } finally {
-            /**
-             * delete temp file
-             */
-            zip.delete();
-        }
+//        try {
+//            ZipFile zipFile = new ZipFile(zip);
+//            zipFile.extractAll(destination);
+//        } catch (ZipException e) {
+//            e.printStackTrace();
+//        } finally {
+//            /**
+//             * delete temp file
+//             */
+//            zip.delete();
+//        }
 
 
         //membaca isi dari dokumen excel
@@ -123,29 +137,41 @@ public class UploadController {
             double kuantitas = 0;
             Long harga = 0L;
             String kategori = " ";
-            int countBarang = 0;
+            boolean isSuccess = true;
+
             ArrayList<Barang> barangList = new ArrayList<Barang>();
             ArrayList<SubBarang> subBarangList = new ArrayList<SubBarang>();
 
             while (iterator.hasNext()) {
+                if(!isSuccess)
+                    break;
 
                 Row currentRow = iterator.next();
                 Iterator<Cell> cellIterator = currentRow.iterator();
+                kolom = 0;
 
                 while (cellIterator.hasNext()) {
 
                     Cell currentCell = cellIterator.next();
                     //getCellTypeEnum shown as deprecated for version 3.15
                     //getCellTypeEnum ill be renamed to getCellType starting from version 4.0
-                    if (currentCell.getCellTypeEnum() == CellType.STRING) {
+                    if (currentCell.getCellTypeEnum() == CellType.STRING && kolom != 2) {
                         System.out.print(currentCell.getStringCellValue() + "--");
                         stringValue = currentCell.getStringCellValue();
-                    } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC) {
+                    } else if (currentCell.getCellTypeEnum() == CellType.NUMERIC && (kolom == 2 || kolom == 4)) {
                         System.out.print(currentCell.getNumericCellValue() + "--");
                         numericValue = Double.valueOf(currentCell.getNumericCellValue()).longValue();
                     }
+                    else{
+                        if(baris != 0){
+                            System.out.print("--------------------------Masuk else----------------------");
+                            kolom = 0;
+                            isSuccess = false;
+                            break;
+                        }
+                    }
                     if(baris != 0){
-                        switch (kolom % 6){
+                        switch (kolom){
                             case 0 : nama = stringValue;break;
                             case 1 : deskripsi = stringValue;break;
                             case 2 : kuantitas = numericValue;break;
@@ -154,17 +180,17 @@ public class UploadController {
                             case 5 : kategori = stringValue;break;
                         }
                     }
-                    if(kolom % 6 == 5 && baris != 0){
+                    if(kolom == 5 && baris != 0){
                         Category category = categoryRepository.findByName(kategori);
-                        boolean isSubBarangExist = false;
 
                         //barangRepository.save(barang);
                         Pageable limit = new PageRequest(0, 1);
                         String kodeHead = kategori.substring(0,3).toUpperCase();    //PER
+
+                        //Cek apakah barang sudah ada di database
                         List<Barang> lastBarang = barangRepository.findByCategory_NameContainingOrderByKodeDesc(kodeHead,limit);
                         if (lastBarang.isEmpty()){
                             kode = kodeHead+"0001";  //PER0001
-                            isSubBarangExist = false;
                         } else {
                             String lastIndexString = lastBarang.get(0).getKode().substring(3,7);
                             int lastIndex = Integer.parseInt(lastIndexString);
@@ -172,10 +198,7 @@ public class UploadController {
                             String kodeTail = "0000" + lastIndex;
                             kodeTail = kodeTail.substring(kodeTail.length()-4);
                             kode = kodeHead+kodeTail;
-                            isSubBarangExist = true;
                         }
-
-                        //Cek apakah barang sudah ada di database
 
                         List<SubBarang> listSubBarangInDatabase = subBarangRepository.findAllByBarang_KodeAndIsExistOrderByKodeSubBarangDesc(kode, limit,true);
 
@@ -183,10 +206,29 @@ public class UploadController {
 
                         int lastIdSubBarang = 1;
 
+                        //Mencoba meng-extract zip berdasarkan filename gambar di excel
+                        try{
+                            ZipFile zipFile = new ZipFile(zip);
+                            zipFile.extractFile(gambar,destination);
+                        } catch (ZipException e){
+                            e.printStackTrace();
+                            isSuccess = false;
+                        }
+
+                        //Mengubah filename gambar menjadi sama dengan id barang
+                        File f = new File(destination+gambar);
+                        int p = gambar.lastIndexOf('.');
+                        String ext = gambar.substring(p);
+                        File newFile = new File(destination+kode+ext);
+                        f.renameTo(newFile);
+
+                        gambar = kode + ext;
+
+
                         Barang barang = new Barang(kode,nama,gambar,deskripsi,harga,true,category);
                         if(isNotExist){
-                            //barangList.add(barang);
                             barangRepository.save(barang);
+                            barangList.add(barang);
                         }
                         else{
                             lastIdSubBarang = Integer.parseInt(listSubBarangInDatabase.get(0).getKodeSubBarang().substring(3,7));
@@ -201,25 +243,39 @@ public class UploadController {
                             String kodeSubBarang = barang.getKode() + kodeTail;
 
                             SubBarang subBarang = new SubBarang(kodeSubBarang, barang);
-                            //subBarangList.add(subBarang);
                             subBarangRepository.save(subBarang);
+                            subBarangList.add(subBarang);
                             lastIdSubBarang++;
-                            //subBarangRepository.save(subBarang);
                             //System.out.print("------------------" + i + "----------------------------");
                         }
                     }
-                    if(kolom == 5)
+                    if(kolom == 5){
                         baris++;
+                        if(cellIterator.hasNext() && !iterator.hasNext()){
+                            isSuccess = false;
+                            System.out.print("-------------------kena error------------------");
+                        }
+
+                        break;
+                    }
                     kolom++;
                 }
                 System.out.println();
             }
-//            for(Barang b : barangList){
-//                barangRepository.save(b);
-//            }
-//            for(SubBarang sb : subBarangList){
-//                subBarangRepository.save(sb);
-//            }
+
+            if(!isSuccess){
+                if(!subBarangList.isEmpty()){
+                    for(SubBarang sb : subBarangList){
+                        subBarangRepository.delete(sb);
+                    }
+                }
+                if(!barangList.isEmpty()){
+                    for(Barang b : barangList){
+                        barangRepository.delete(b);
+                    }
+                }
+                return "failed";
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -236,6 +292,8 @@ public class UploadController {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
+        zip.delete();
+        return "success";
     }
 
     @PostMapping("/upload/users/{fotoname}")

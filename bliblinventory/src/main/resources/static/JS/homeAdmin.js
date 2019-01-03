@@ -102,13 +102,20 @@ $( document ).ready(function() {
             async : false,
             cache : false,
             contentType : false,
+            dataType : "text",
             processData : false,
             success:function(data){
                 console.log("success");
                 console.log(data);
                 $('#modalTambahBulk').modal('close');
                 page1();
-                alert("Berhasil menambahkan barang secara bulk");
+                if(data == "success")
+                    alert("Berhasil menambahkan barang secara bulk");
+                else if(data == "notExcel")
+                    alert("File excel yang diinputkan salah");
+                else if(data == "notZip")
+                    alert("File zip yang diinputkan salah");
+                else alert("Gagal menambahkan barang secara bulk");
             },
             error: function(data){
                 console.log("error");

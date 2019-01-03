@@ -7,22 +7,14 @@ $( document ).ready(function() {
     $('.modal').modal();
     $('.datepicker').datepicker();
 
-    var kategoriDetail;
-
+    //simpan kategori hasil editan
     $("#tombolSimpanEditan").click(function () {
         simpanEditanKategori();
     });
 
+    //buat kategori baru ketika klik tambah kategori
     $(document).on("click", "#submitKategoriBaru", function(){
         createNewCategory();
-    });
-
-    $("#triggerTambahKategoriSatuan").click(function () {
-        $("#tambahKategoriSatuan").append('' +
-            '  <div class="valign-wrapper" style="margin-top: 5px">\n' +
-            '    <div class="tdAtrib" style="width:100px;">ID Satuan</div>\n' +
-            '    <textarea class="kategoriSatuan" name="satuan" cols="30" rows="1" style="height:30px; padding: 5px 0 0 5px;"></textarea>\n' +
-            '  </div>\n');
     });
 
     $("#btnTambahKategori").click(function (){
@@ -78,6 +70,7 @@ function getAllCategory() {
     });
 }
 
+//get detail kategori berdasar id kategori
 function getDetailKategory(idKategori) {
     $.ajax({
         type : "GET",
@@ -94,6 +87,7 @@ function getDetailKategory(idKategori) {
     });
 }
 
+//buat form untuk edit kategori
 function createFormEditKategori(idKategori) {
     $("#ubahNamaKategori").html("");
     $("#ubahKodeKategoriTable").html("");
@@ -113,6 +107,7 @@ function createFormEditKategori(idKategori) {
     });
 }
 
+//simpan hasil edit kategori
 function simpanEditanKategori() {
     var idKategori = $("#ubahKodeKategoriTable").html();
     var namaKategoriBaru = $("#ubahNamaKategori").val();
@@ -143,6 +138,7 @@ function simpanEditanKategori() {
     getAllCategory();
 }
 
+//buat kategori baru dan simpan ke database
 function createNewCategory() {
     var namaKategoriBaru = $("#namaKategoriBaru").val();
     $.ajax({
@@ -160,11 +156,13 @@ function createNewCategory() {
     getAllCategory();
 }
 
+//hapus kategori
 function deleteKategori(idKategori) {
     $.ajax({
         type : "GET",
         url : "api/getTotalBarangWithCategory/"+idKategori,
         success: function(result){
+            //kalau ada barang yang masih menggunakan kategori ini, tidak bisa dihapus
             if (result>0) {
                 window.alert("Tidak bisa menghapus. Masih ada barang yang menggunakan kategori ini");
             }

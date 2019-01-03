@@ -124,7 +124,7 @@ function buatFormPemintaanPembelian() {
 function ajaxGetDropDownKategori() {
     $.ajax({
         type : "GET",
-        url : window.location + "/getAllCategory",
+        url : "/api/getAllCategory",
         success: function(result){
             $("#selectKategoryRequestBeli").html('');
             //tampilkan semua kategori dalam dropdown

@@ -68,7 +68,7 @@ $( document ).ready(function() {
 
   $.ajax({
     type: "GET",
-    url: "/category",
+    url: "/api/getAllCategory",
     success: function (result) {
       $("#selectKategoriPengembalian").html('<option value="All">Semua Kategori</option>');
       for (var i=0; i<result.length; i++){

@@ -108,6 +108,16 @@ table td textarea.formLarge, table td input.formLarge{
   background-repeat: no-repeat;
   background-position: 50% 50%;
 }
+.kontainerImgOrderList{
+  margin: 10px 30px 10px 10px;
+  width: 220px;
+  padding-bottom: 130px;
+  border-radius:2px;
+  border: 1px solid rgb(212, 212, 212);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+}
 .cardOrderList{
   width: 98%;
   margin-left: 1%;

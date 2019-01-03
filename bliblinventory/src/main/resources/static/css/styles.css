@@ -57,12 +57,12 @@ table td textarea, table td input{
   padding: 5px 0 0 5px;
 }
 table td textarea.formLarge, table td input.formLarge{
-  height: 45px !important;
+  height: 70px !important;
   padding: 5px 0 0 5px;
 }
 
 /*CARDS*/
-.clickable, .card, button, a, input, select{
+.clickable, .card, button, a, select{
   cursor: pointer !important;
 }
 .card-content{

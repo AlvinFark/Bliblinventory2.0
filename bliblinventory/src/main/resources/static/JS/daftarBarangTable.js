@@ -87,7 +87,13 @@ $( document ).ready(function() {
 
     function ajaxGetBarangTable(keyword, filter) {
       $(".tambahKategoriBaru").hide();
-      var count=0;
+      $("#kategoriBarangBaru").val("");
+      $("#gambarBarangBaru").val(null);
+      $("#namaBarangBaru").val("");
+      $("#hargaBarangBaru").val(0);
+      $("#deskripsiBarangBaru").val("");
+      $("#formTambahKategoriBaru").val("");
+      $("#jumlahBarangBaru").val(0);
       $.ajax({
         type : "GET",
         url : "employee/sortByName/"+ filter + "/" +keyword,
@@ -121,6 +127,7 @@ $( document ).ready(function() {
             $("#tombolSimpanSatuan").show();
             $("#tombolEditBarang").hide();
             $("#tombolTambahSatuan").hide();
+            $("#tombolHapusBarang").hide();
           });
           $(".clickDetailTable").click(function(){
             $("#editBarangTable").hide();
@@ -131,6 +138,7 @@ $( document ).ready(function() {
             $("#tombolSimpanSatuan").hide();
             $("#tombolEditBarang").show();
             $("#tombolTambahSatuan").show();
+            $("#tombolHapusBarang").show();
           });
 
           $(".clickEditTable").click(function(){
@@ -142,6 +150,7 @@ $( document ).ready(function() {
             $("#tombolSimpanSatuan").hide();
             $("#tombolEditBarang").hide();
             $("#tombolTambahSatuan").hide();
+            $("#tombolHapusBarang").hide();
           });
           $( ".kodeBarangTable" ).each(function() {
             var kode = $(this).text();
@@ -164,7 +173,6 @@ $( document ).ready(function() {
           });
         }
       }),async=false;
-
     }
 
     $( document ).on("change","#selectorKategoriTable",function (){
@@ -179,7 +187,10 @@ $( document ).ready(function() {
     $('.cbxBarang').filter(':checked').each(function() {
       if (this.id!="cbxAllBarang"){
         var kode = (this.id).substring(9);
-        deleteBarang(kode);
+        var c = confirm("Delete Barang dengan kode "+kode+" ?");
+        if (c){
+          deleteBarang(kode);
+        }
       }
     });
     ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
@@ -244,71 +255,77 @@ $( document ).ready(function() {
       contentType: 'application/json',
       data: JSON.stringify(jsonUbahBarang),
       success: function(result) {
+        alert('data barang berhasil diubah');
+        ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
       },
       error: function (result) {
         alert(JSON.stringify(result))
       }
     });
-    alert('data barang berhasil diubah');
-    ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
   });
 
   $("#tombolHapusBarang").click(function () {
     var kode = $("#kodeBarangTable").text();
-    deleteBarang(kode);
-    ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
+    var c = confirm("Delete Barang?");
+    if (c){
+      deleteBarang(kode);
+      ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
+    }
 
   });
 
   $(document).on("click", ".triggerModalTable", function(){
-      $(".tambahKategoriEdit").hide();
-      kode = jQuery(this).parent("td").parent("tr"). children(".kodeBarangTable").text();
-      $.ajax({
-        type : "GET",
-        url : "employee/getDetailProduct/"+kode,
-        success: function(result) {
-          $("#imgModalBarang").css({
-            'background-image': 'url("http://127.0.0.1:8000/images/barang/'+result.gambar+'")'
-          });
+    $("#jumlahTambahSatuan").val(0);
+    $("#fileUploadGantiFotoBarang").val(null);
+    $("#formTambahKategoriEdit").val("");
+    $(".tambahKategoriEdit").hide();
+    kode = jQuery(this).parent("td").parent("tr"). children(".kodeBarangTable").text();
+    $.ajax({
+      type : "GET",
+      url : "employee/getDetailProduct/"+kode,
+      success: function(result) {
+        $("#imgModalBarang").css({
+          'background-image': 'url("http://127.0.0.1:8000/images/barang/'+result.gambar+'")'
+        });
 
-          barangDetail = result.gambar;
-          var kategoriBarang = ((result || {}).category || {}).name;
-          $("#kodeBarangTable").html(kode);
-          $("#namaBarangTable").html(result.nama);
-          $("#kategoriBarangTable").html(kategoriBarang);
-          $("#hargaBeliBarangTable").html(result.hargaBeli);
-          $("#deskripsiBarangTable").html(result.deskripsi);
-          $("#gambarBarangTable").html(result.gambar);
+        barangDetail = result.gambar;
+        var kategoriBarang = ((result || {}).category || {}).name;
+        $("#kodeBarangTable").html(kode);
+        $("#namaBarangTable").html(result.nama);
+        $("#kategoriBarangTable").html(kategoriBarang);
+        $("#hargaBeliBarangTable").html(result.hargaBeli);
+        $("#deskripsiBarangTable").html(result.deskripsi);
+        $("#gambarBarangTable").html(result.gambar);
 
-          $("#ubahNamaBarang").val(result.nama);
-          $("#ubahHargaBeliBarang").val(result.hargaBeli);
-          $("#ubahdeskripsiBarang").val(result.deskripsi);
-          $("#ubahKategoriBarang").val(kategoriBarang);
+        $("#ubahNamaBarang").val(result.nama);
+        $("#ubahHargaBeliBarang").val(result.hargaBeli);
+        $("#ubahdeskripsiBarang").val(result.deskripsi);
+        $("#ubahKategoriBarang").val(kategoriBarang);
 
-          $('#ubahKategoriBarang option[value="'+kategoriBarang+'"]').prop('selected', true);
+        $('#ubahKategoriBarang option[value="'+kategoriBarang+'"]').prop('selected', true);
 
-        }
-      });
-      $.ajax({
-        type: "GET",
-        url: "/employee/countAllSubBarang/" + kode,
-        success: function (result1) {
-          $("#totalUnitTable").html(result1);
-          $.ajax({
-            type: "GET",
-            url: "/employee/countReadySubBarang/" + kode,
-            success: function (result2) {
-              $("#unitTersediaTable").html(result2);
-              if ($("#totalUnitTable").text()!=0&&$("#unitTersediaTable").text()==0){
-                $("#tombolHapusBarang").hide();
-              } else {
-                $("#tombolHapusBarang").show();
-              }
+      }
+    });
+    $.ajax({
+      type: "GET",
+      url: "/employee/countAllSubBarang/" + kode,
+      success: function (result1) {
+        $("#totalUnitTable").html(result1);
+        $.ajax({
+          type: "GET",
+          url: "/employee/countReadySubBarang/" + kode,
+          success: function (result2) {
+            $("#unitTersediaTable").html(result2);
+            if ($("#totalUnitTable").text()!=0&&$("#unitTersediaTable").text()==0){
+              $("#tombolHapusBarang").hide();
+            } else {
+              $("#tombolHapusBarang").show();
             }
-          });
-        }
-      });
-      $.ajax({
+          }
+        });
+      }
+    });
+    $.ajax({
         type: "GET",
         url: "/api/barang/" + kode + "/subbarang",
         success: function (result3) {
@@ -482,10 +499,10 @@ $( document ).ready(function() {
               type: "POST",
               url: "/api/barang/" + kodeBarang + "/" + kodeSubBarang,
               success: function (result) {
-                alert('sub barang baru berhasil ditambahkan');
               }
             });
           }
+          alert('sub barang baru berhasil ditambahkan');
           ajaxGetBarangTable($("#searchTabelBarang").val(),$("#selectorKategoriTable").val());
         }
       });

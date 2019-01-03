@@ -46,7 +46,7 @@
 				<div class="valign-wrapper" style="margin-bottom: 15px">
           <div class="kontainerImgModalBarang" id="imgModalBarang">
           </div>
-					<div>
+					<div style="width: 280px !important;">
 						<table class="tableNoBorder smallPadding">
 							<tr>
 								<td class="tdAtrib" width="120">Kode</td>
@@ -103,9 +103,7 @@
 							<tr>
 								<td class="tdAtrib">Nama Barang</td>
                 <td class="tdInfo">
-                  <form>
-                    <input id="ubahNamaBarang" name="id" value="">
-                  </form>
+                   <input id="ubahNamaBarang" name="id" value="">
                 </td>
 							</tr>
 							<tr>
@@ -120,33 +118,27 @@
               <tr class="tambahKategoriEdit">
                 <td class="tambahKategoriEdit tdAtrib">Kategori Baru</td>
                 <td class="tambahKategoriEdit tdInfo">
-                  <form>
                     <input id="formTambahKategoriEdit" name="id" value="">
-                  </form>
                 </td>
               </tr>
 							<tr>
 								<td class="tdAtrib">Harga Beli</td>
                 <td class="tdInfo">
-                  <form>
-                    <input id="ubahHargaBeliBarang" name="id" value="">
-                  </form>
+                    <input id="ubahHargaBeliBarang" type="number" name="id" value="">
                 </td>
 							</tr>
 							<tr>
 								<td class="tdAtrib">Gambar Produk</td>
 								<td>
                   <form id="formGantiFotoBarang" name="formGantiFoto">
-                    <p> File : &ensp;<input id="fileUploadGantiFotoBarang" class="file-input" type="file" name="fotoBarang" style="padding:0"> </p>
+                    <p> File : &ensp;<input id="fileUploadGantiFotoBarang" class="file-input" type="file" name="fotoBarang" accept="image/*"  style="padding:0"> </p>
                   </form>
 								</td>
 							</tr>
 							<tr>
 								<td class="tdAtrib">Deskripsi</td>
                 <td class="tdInfo">
-                  <form>
-                    <input id="ubahdeskripsiBarang" name="id" value="">
-                  </form>
+                    <textarea class="formLarge" id="ubahdeskripsiBarang" name="id" value=""></textarea>
                 </td>
 							</tr>
 						</table>
@@ -180,17 +172,13 @@
 				<tr>
 					<td class="tdAtrib">Nama Barang</td>
           <td>
-            <form>
               <input id="namaBarangBaru" name="id" value="">
-            </form>
           </td>
 				</tr>
         <tr>
           <td class="tdAtrib">Jumlah</td>
           <td>
-            <form>
               <input id="jumlahBarangBaru" type="number" value="">
-            </form>
           </td>
         </tr>
 				<tr>
@@ -205,34 +193,28 @@
         <tr class="tambahKategoriBaru">
           <td class="tambahKategoriBaru tdAtrib">Kategori Baru</td>
           <td class="tambahKategoriBaru tdInfo">
-            <form>
               <input id="formTambahKategoriBaru" name="id" value="">
-            </form>
           </td>
         </tr>
 				<tr>
 					<td class="tdAtrib">Harga Beli</td>
           <td style="display: flex">
             <p>Rp&emsp;</p>
-            <form>
               <input type="number" id="hargaBarangBaru" name="id" value="">
-            </form>
           </td>
 				</tr>
 				<tr>
 					<td class="tdAtrib">Gambar Barang</td>
 					<td>
             <form id="formGambarBarangBaru" name="gambarBarang">
-              <p> File : &ensp;<input id="gambarBarangBaru" class="file-input" type="file" name="fotoBarang" style="padding:0"> </p>
+              <p> File : &ensp;<input id="gambarBarangBaru" class="file-input" type="file" name="fotoBarang" accept="image/*"  style="padding:0"> </p>
             </form>
 					</td>
 				</tr>
 				<tr>
 					<td class="tdAtrib">Deskripsi</td>
           <td>
-            <form>
-              <input id="deskripsiBarangBaru" name="id" value="">
-            </form>
+            <textarea class="formLarge" id="deskripsiBarangBaru" name="id" value=""></textarea>
           </td>
 				</tr>
 			</table>

@@ -215,7 +215,7 @@ $( document ).ready(function() {
   //inisialisasi gambar barang, itu maksunya gambar detail
   var barangDetail;
 
-  //simpan ditan
+  //simpan Editan
   $("#tombolSimpanEditan").click(function () {
     var keyword = $("#ubahKategoriBarang").val();
     var path = $("#fileUploadGantiFotoBarang").val();
@@ -231,6 +231,7 @@ $( document ).ready(function() {
       "gambar" : gambar,
       "isExist" : true
     };
+    //jika user request tambah kategori baru, add kategori
     if (keyword=="tambahKategoriBaru"){
       keyword = $("#formTambahKategoriEdit").val();
       var jsonKategoriBaru = {
@@ -244,6 +245,7 @@ $( document ).ready(function() {
         async : false
       })
     }
+    //submit
     $("#formGantiFotoBarang").ajaxSubmit({url: "/api/upload/barang/" + kode + "." + gambar, type: 'post'});
     $.ajax({
       type : "PUT",
@@ -261,6 +263,7 @@ $( document ).ready(function() {
     });
   });
 
+  //hapus barang
   $("#tombolHapusBarang").click(function () {
     var kode = $("#kodeBarangTable").text();
     var c = confirm("Delete Barang " + $("#namaBarangTable").text()+" dan sub-barangnya?");
@@ -270,6 +273,7 @@ $( document ).ready(function() {
     }
   });
 
+  //mengambil data barang yang di klik
   $(document).on("click", ".triggerModalTable", function(){
     $("#jumlahTambahSatuan").val(0);
     $("#fileUploadGantiFotoBarang").val(null);
@@ -302,6 +306,7 @@ $( document ).ready(function() {
 
       }
     });
+    //hitung banyak barang dan banyak yang tersedia dari barang yang di klik
     $.ajax({
       type: "GET",
       url: "/employee/countAllSubBarang/" + kode,
@@ -321,6 +326,7 @@ $( document ).ready(function() {
         });
       }
     });
+    //ambil semua sub barang untuk ditaruh ke tabel
     $.ajax({
         type: "GET",
         url: "/api/barang/" + kode + "/subbarang",
@@ -329,6 +335,7 @@ $( document ).ready(function() {
           for (var i=0; i<result3.length; i++){
             var status;
             var peminjam = '';
+            //kalo barang tersedia, peminjam jadi '-'
             if (result3[i].statusSubBarang){status="Tersedia"; peminjam='-'} else {status="Dipinjam"};
             $("#tabelDaftarBarangSatuan").append('' +
               '<tr class="rowDetailSubBarang">\n' +
@@ -341,6 +348,7 @@ $( document ).ready(function() {
               '  </td>\n' +
               '</tr>')
           }
+          //kalo barang dipinjam, get nama peminjam dan tgpinjamnya
           $( ".rowDetailSubBarang" ).each(function() {
             if ($(this).children(".namaPeminjam").text()!="-") {
               $(this).children(".tdDeleteSubBarang").children(".triggerDeleteSubBarang").hide();
@@ -360,6 +368,7 @@ $( document ).ready(function() {
       });
     });
 
+  //delete subbarang satuan
   $(document).on("click", ".triggerDeleteSubBarang", function(){
     var kodeSubBarang = $(this).parent("td").parent("tr.rowDetailSubBarang").children(".idDetailSubBarang").text();
     var jsonSubBarang = {
@@ -378,6 +387,7 @@ $( document ).ready(function() {
     });
   });
 
+  //kalo di klik tambah kategori baru, muncul form
   $( document ).on("change","#ubahKategoriBarang",function (){
     var selcategory=$("#ubahKategoriBarang").val();
     if (selcategory=="tambahKategoriBaru"){
@@ -385,7 +395,6 @@ $( document ).ready(function() {
       $(".tambahKategoriEdit").hide();
     }
   });
-
   $( document ).on("change","#kategoriBarangBaru",function (){
     var selcategory=$("#kategoriBarangBaru").val();
     if (selcategory=="tambahKategoriBaru"){
@@ -394,10 +403,11 @@ $( document ).ready(function() {
     }
   });
 
+  //variable global untuk hasil result ajax
   var resultNewBarang;
 
     $(document).on("click", "#submitBarangBaru", function(){
-      resultNewBarang="";
+      resultNewBarang=""; //init null
       var keyword = $("#kategoriBarangBaru").val();
       var path = $("#gambarBarangBaru").val();
       var fileGambar = path.split('.').pop();
@@ -409,6 +419,7 @@ $( document ).ready(function() {
         "gambar" : fileGambar,
         "isExist" : true
       };
+      //tambah kategori
       if (keyword=="tambahKategoriBaru"){
         keyword = $("#formTambahKategoriBaru").val();
         var jsonKategoriBaru = {
@@ -422,6 +433,7 @@ $( document ).ready(function() {
           async : false
         })
       }
+      //tambah barang baru
       $.ajax({
         async : false,
         type : "PUT",
@@ -429,6 +441,7 @@ $( document ).ready(function() {
         contentType: 'application/json',
         data: JSON.stringify(jsonBarangBaru),
         success: function(result) {
+          //isi resultnew dengan outputan ajax
           resultNewBarang=result;
           $("#formGambarBarangBaru").ajaxSubmit({url: "/api/upload/barang/" + resultNewBarang.gambar, type: 'post'});
           var kodeBarang = result.kode;
@@ -453,14 +466,7 @@ $( document ).ready(function() {
 
     });
 
-    $("#triggerTambahBarangSatuan").click(function () {
-      $("#tambahBarangSatuan").append('' +
-        '  <div class="valign-wrapper" style="margin-top: 5px">\n' +
-        '    <div class="tdAtrib" style="width:100px;">ID Satuan</div>\n' +
-        '    <textarea class="barangSatuan" name="satuan" cols="30" rows="1" style="height:30px; padding: 5px 0 0 5px;"></textarea>\n' +
-        '  </div>\n');
-    });
-
+    //generate sub barang kode berdasarkan barang, sesuai dengan kebutuhan
     $(document).on("click", "#tombolSimpanSatuan", function () {
       var kodeBarang = $("#kodeBarangTable").text();
       $.ajax({

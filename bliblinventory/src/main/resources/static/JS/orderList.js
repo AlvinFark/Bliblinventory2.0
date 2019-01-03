@@ -43,10 +43,10 @@ function ajaxGetOrderList(url) {
             $("#myOrderList").html("");
             for(var i=0; i<result.length; i++){
                 $("#myOrderList").append(
-                    '<div class="card cardOrderList">\n' +
-                        '<div class="card-image">\n' +
-                            '<img class="imageOrderList" src="http://127.0.0.1:8000/images/barang/'+result[i].barang.gambar+'">\n' +
-                        '</div>\n' +
+                    '<div class="card cardOrderList" style="cursor:default !important;">\n' +
+                        '<div class="kontainerImgOrderList" style="' +
+                        'background-image: url(http://127.0.0.1:8000/images/barang/'+result[i].barang.gambar+'">\n' +
+                        '</div>' +
                         '<table class="tableNoBorder infoOrderList">\n' +
                             '<tr>\n' +
                                 '<td class="tdAtrib" width="150">Kode</td>\n' +
@@ -73,8 +73,7 @@ function ajaxGetOrderList(url) {
                             '<br/><br/><br/>' +
                             '<p class="infoAssigned" style="display: none">Sudah di-assign</p>\n' +
                             '<a id="btn'+result[i].idTransaksi+'" class="waves-light btn btnBatal" style="display: none; width:100px; margin-left:50px;"> batal</a> </div>\n' +
-
-                    '</div>'
+                        '</div>'
                 );
                 var jumlahDikembalikan=0;
                 $.ajax({

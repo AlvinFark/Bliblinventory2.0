@@ -16,14 +16,6 @@ import java.util.*;
 @RequestMapping("/api")
 public class BackupRestoreController {
 
-    //properties relating to email config
-//    properties.setProperty(MysqlExportService.EMAIL_HOST, "smtp.mailtrap.io");
-//    properties.setProperty(MysqlExportService.EMAIL_PORT, "25");
-//    properties.setProperty(MysqlExportService.EMAIL_USERNAME, "mailtrap-username");
-//    properties.setProperty(MysqlExportService.EMAIL_PASSWORD, "mailtrap-password");
-//    properties.setProperty(MysqlExportService.EMAIL_FROM, "test@smattme.com");
-//    properties.setProperty(MysqlExportService.EMAIL_TO, "backup@smattme.com");
-
     //set the outputs temp dir
 
     String savePath;

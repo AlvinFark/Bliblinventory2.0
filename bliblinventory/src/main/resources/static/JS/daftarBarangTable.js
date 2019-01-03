@@ -10,7 +10,7 @@ $( document ).ready(function() {
     //get list semua kategori untuk dipakai di filter dan ubah,tambah barang
     $.ajax({
       type: "GET",
-      url: "/category",
+      url: "/api/getAllCategory",
       success: function (result) {
         for (var i=0; i<result.length; i++){
           $(".kategoriSelectorTable").append('<option value="'+result[i].name+'">'+result[i].name+'</option>')
@@ -238,7 +238,7 @@ $( document ).ready(function() {
       };
       $.ajax({
         type : "POST",
-        url : "/api/category/",
+        url : "/api/addCategory",
         contentType : 'application/json',
         data : JSON.stringify(jsonKategoriBaru),
         async : false
@@ -416,7 +416,7 @@ $( document ).ready(function() {
         };
         $.ajax({
           type : "POST",
-          url : "/api/category/",
+          url : "/api/addCategory",
           contentType : 'application/json',
           data : JSON.stringify(jsonKategoriBaru),
           async : false

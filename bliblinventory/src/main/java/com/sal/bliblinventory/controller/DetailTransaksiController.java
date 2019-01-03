@@ -28,6 +28,7 @@ public class DetailTransaksiController {
     @Autowired
     TransaksiRepository transaksiRepository;
 
+    //buat detail transaksi
     @RequestMapping(value = {"employee/createDetailTransaksi/{kodeBarang}/{jumlahBarang}/{idTransaksi}", "superior/createDetailTransaksi/{kodeBarang}/{jumlahBarang}/{idTransaksi}"}, method = RequestMethod.POST)
     public List<SubBarang> createDetailTransaksi(@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "idTransaksi") Long idTransaksi){
         Pageable limit = new PageRequest(0, jumlahBarang);
@@ -41,6 +42,7 @@ public class DetailTransaksiController {
         return subBarangList;
     }
 
+    //get semua detail transaksi
     @GetMapping("/api/permintaan")
     public List<DetailTransaksi> getAllDetailTransaksi() {
       String str = "1970-01-01 00:00:00";
@@ -49,17 +51,20 @@ public class DetailTransaksiController {
       return detailTransaksiRepository.getAllByIsExistAndTgKembali(true, localDateTime);
     }
 
+    //get detail transaksi berdasar id
     @RequestMapping(value = "api/getDetailTransaksiByIdTransaksi/{idTransaksi}", method = RequestMethod.GET)
     public List<DetailTransaksi> getTransaksiByIdTransaksi(@PathVariable(value = "idTransaksi") Long idTransaksi) {
         return detailTransaksiRepository.findAllByTransaksi_IdTransaksi(idTransaksi);
     }
 
+    //ubah status detail transaksi menjadi not exist
     @PutMapping("api/editDetailTransaksiNotExist")
     public DetailTransaksi editDetailTransaksiNotExist(@Valid @RequestBody DetailTransaksi detailTransaksiRequest) {
         detailTransaksiRequest.setExist(false);
         return detailTransaksiRepository.save(detailTransaksiRequest);
     }
 
+    //ubah tg kembali pada detail transaksi (ketika sub barang dikembalikan)
     @PutMapping("/api/detailtransaksi/kembali/{id}")
     public String kembalikanBarang(@PathVariable Long id){
       DetailTransaksi detailTransaksi = detailTransaksiRepository.getDetailTransaksiByIdDetailTransaksi(id);
@@ -74,6 +79,7 @@ public class DetailTransaksiController {
       return "Barang berhasil dikembalikan";
     }
 
+    //hitung jumlah detail transaksi yang sudah dikembalikan berdasar id transaksi
     @GetMapping("/api/getJumlahDikembalikanByIdTransaksi/{idTransaksi}")
     public int getJumlahDikembalikanByIdTransaksi(@PathVariable(value = "idTransaksi") Long idTransaksi) {
         String str = "1970-01-01 00:00:00";

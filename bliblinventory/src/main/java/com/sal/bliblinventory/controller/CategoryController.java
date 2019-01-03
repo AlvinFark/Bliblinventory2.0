@@ -13,38 +13,39 @@ public class CategoryController {
     @Autowired
     CategoryRepository categoryRepository;
 
-    @RequestMapping(value = {"employee/getAllCategory", "superior/getAllCategory", "admin/getAllCategory"}, method = RequestMethod.GET)
+    //dapatkan semua kategori
+    @RequestMapping(value = {"/api/getAllCategory"}, method = RequestMethod.GET)
     public List<Category> getAllCategory(){
         return categoryRepository.findAllByIsExist(true);
     }
 
-    @GetMapping("/category")
-    public List<Category> listAllCategory(){
-      return categoryRepository.findAllByIsExist(true);
-    }
-
-    @RequestMapping(value = {"/api/category"}, method = RequestMethod.POST)
+    //tambah kategori baru
+    @RequestMapping(value = {"/api/addCategory"}, method = RequestMethod.POST)
     public Category addCategory(@Valid @RequestBody Category category) {
       return categoryRepository.save(category);
     }
 
+    //dapatkan detail kategori
     @GetMapping("api/getDetailCategory/{idKategori}")
     public Category getDetailCategory(@PathVariable(value = "idKategori") Long idKategori){
         return categoryRepository.getCategoryById(idKategori);
     }
 
+    //ubah/edit kategori
     @PutMapping("/api/editKategori/{namaKategoriBaru}")
     public Category editKategori(@PathVariable String namaKategoriBaru, @Valid @RequestBody Category categoryRequest) {
         categoryRequest.setName(namaKategoriBaru);
         return categoryRepository.save(categoryRequest);
     }
 
+    //buat kategori
     @RequestMapping(value = "api/createNewCategory/{namaKategoriBaru}", method = RequestMethod.POST)
     public void createNewCategory(@PathVariable(value = "namaKategoriBaru") String namaKategoriBaru){
         Category categoryNew = new Category(namaKategoriBaru);
         categoryRepository.save(categoryNew);
     }
 
+    //hapus kategori
     @PutMapping("/api/hapusKategori")
     public Category hapusKategori(@Valid @RequestBody Category categoryRequest) {
         categoryRequest.setExist(false);

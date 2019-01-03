@@ -41,6 +41,7 @@ public class PrintController {
     @Autowired
     DetailTransaksiRepository detailTransaksiRepository;
 
+    //print daftar barang beserta sub barangnya
     @RequestMapping(value = "api/printDaftarBarang", method = RequestMethod.GET)
     public void printDaftarBarang(){
         String FILE_NAME = "D:/bliblinventory/file-to-print/print-daftar-barang.xlsx";
@@ -146,6 +147,7 @@ public class PrintController {
         System.out.println("Done");
     }
 
+    //print request beli admin ke supplier (dengan catatan)
     @RequestMapping(value = "api/printRequestBeli/{namaBarang}/{namaBrand}/{namaSupplier}/{kuantitas}/{namaKategori}/{tanggal}/{catatan}", method = RequestMethod.GET)
     public void printRequestBeliDenganCatatan(@PathVariable(value = "namaBarang") String namaBarang, @PathVariable(value = "namaBrand") String namaBrand, @PathVariable(value = "namaSupplier") String namaSupplier,
                         @PathVariable(value = "kuantitas") String kuantitas, @PathVariable(value = "namaKategori") String namaKategori, @PathVariable(value = "tanggal") String tanggal, @PathVariable(value = "catatan") String catatan) {
@@ -232,6 +234,7 @@ public class PrintController {
         }
     }
 
+    //print request beli admin ke supplier (tanpa catatan)
     @RequestMapping(value = "api/printRequestBeli/{namaBarang}/{namaBrand}/{namaSupplier}/{kuantitas}/{namaKategori}/{tanggal}", method = RequestMethod.GET)
     public void printRequestBeliTanpaCatatan(@PathVariable(value = "namaBarang") String namaBarang, @PathVariable(value = "namaBrand") String namaBrand, @PathVariable(value = "namaSupplier") String namaSupplier,
                         @PathVariable(value = "kuantitas") String kuantitas, @PathVariable(value = "namaKategori") String namaKategori, @PathVariable(value = "tanggal") String tanggal) {
@@ -318,6 +321,7 @@ public class PrintController {
         }
     }
 
+    //untuk buat excel untuk format tambah barang secara bulk
     @RequestMapping(value = "api/downloadFormatTambahBarangBulk", method = RequestMethod.GET)
     public void downloadFormatTambahBarangBulk() {
         try {

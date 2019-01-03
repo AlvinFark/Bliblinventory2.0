@@ -84,7 +84,5 @@ public class UserController {
       return userRepository.save(u);
     }).orElseThrow(() -> new ResourceNotFoundException("user","id", id));
   }
-
-
 }
 

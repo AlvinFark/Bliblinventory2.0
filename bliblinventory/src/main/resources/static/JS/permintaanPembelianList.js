@@ -13,7 +13,9 @@ $(document).ready(function(){
     //ketika klik tombol batal, cancel permintaan pembelian
     $( document ).on("click",".btnBatalPermintaanBeli",function () {
         var idPermintaanPembelian = (this.id).substring(3);
-        ajaxCancelRequestBeli(idPermintaanPembelian);
+        if(confirm("Yakin akan membatalkan permintaan pembelian ini?")) {
+            ajaxCancelRequestBeli(idPermintaanPembelian);
+        }
     });
 
 });

@@ -22,7 +22,9 @@ $(document).ready(function(){
     //ketika tombol batal diklik, maka cancel reqeuest pinjam
     $( document ).on("click",".btnBatal",function () {
         var idTransaksi = (this.id).substring(3);
-        ajaxCancelRequestPinjam(idTransaksi);
+        if(confirm("Yakin akan membatalkan permintaan pinjaman ini?")){
+            ajaxCancelRequestPinjam(idTransaksi);
+        }
     });
 
 });

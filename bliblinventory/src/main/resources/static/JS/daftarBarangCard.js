@@ -48,20 +48,22 @@ $( document ).ready(function() {
         var jumlahBarang = $("#inputTotalOrder").val();
         var keteranganPinjam = $("#keteranganPinjam").val();
         var url;
-        if(keteranganPinjam=="")
-            url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + null;
-        else
-            url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + keteranganPinjam;
+        if(confirm("Kirim permintaan pinjam sejumlah "+jumlahBarang+" untuk tanggal "+changeDateFormat(tgPinjam)+"?")){
+            if(keteranganPinjam=="")
+                url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + null;
+            else
+                url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + keteranganPinjam;
 
-        //dapatkan id transaksi setelah membuat transaksi baru
-        var idTransaksi = ajaxSendRequestPinjam(url);
+            //dapatkan id transaksi setelah membuat transaksi baru
+            var idTransaksi = ajaxSendRequestPinjam(url);
 
-        //kalau superior dan request pinjamnya berhasil, requestnya langsung di-approve, dan sub barang langsung dipesankan
-        if(window.location.pathname == "/superior" && idTransaksi!=0){
-            ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi);
+            //kalau superior dan request pinjamnya berhasil, requestnya langsung di-approve, dan sub barang langsung dipesankan
+            if(window.location.pathname == "/superior" && idTransaksi!=0){
+                ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi);
+            }
+
+            $('#modalDetailPinjam').modal('close');
         }
-
-        $('#modalDetailPinjam').modal('close');
     });
 
     //ketika ada card barang yang diklik

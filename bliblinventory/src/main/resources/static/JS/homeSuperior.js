@@ -79,12 +79,14 @@ $( document ).ready(function() {
         }
         //jika data sudah valid (nama barang sudah tidak kosong), buat permintaan pembelian
         else{
-            if(keterangan == "")
-                url = "api/createPermintaanPembelian/"+namaBarang+"/"+idKategori+"/"+jumlah+"/"+null;
-            else
-                url = "api/createPermintaanPembelian/"+namaBarang+"/"+idKategori+"/"+jumlah+"/"+keterangan;
-            ajaxCreatePermintaanPembelian(url, namaBarang);
-            $("#modalPermintaanPembelian").modal("close");
+            if(confirm("Kirim permintaan pembelian "+namaBarang+"?")) {
+                if (keterangan == "")
+                    url = "api/createPermintaanPembelian/" + namaBarang + "/" + idKategori + "/" + jumlah + "/" + null;
+                else
+                    url = "api/createPermintaanPembelian/" + namaBarang + "/" + idKategori + "/" + jumlah + "/" + keterangan;
+                ajaxCreatePermintaanPembelian(url, namaBarang);
+                $("#modalPermintaanPembelian").modal("close");
+            }
         }
     });
 });

@@ -30,7 +30,7 @@ public class TransaksiController {
     @Autowired
     SubBarangRepository subBarangRepository;
 
-    //employee mengirim request pinjam
+    //membuat tranasaksi peminjaman dari employee
     @RequestMapping(value = {"employee/requestPinjam/{kodeBarang}/{tgPinjam}/{jumlahBarang}/{keteranganPinjam}"}, method = RequestMethod.POST)
     public Long sendRequestFromEmployee(@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "tgPinjam") String tgPinjam, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "keteranganPinjam") String keteranganPinjam){
         //sementara usernya masih static (pakai user dg id 1L)
@@ -39,7 +39,7 @@ public class TransaksiController {
         return transaksi.getIdTransaksi();
     }
 
-    //superior mengirim request pinjam
+    //membuat tranasaksi peminjaman dari superior
     @RequestMapping(value = {"superior/requestPinjam/{kodeBarang}/{tgPinjam}/{jumlahBarang}/{keteranganPinjam}"}, method = RequestMethod.POST)
     public Long sendRequestFromSuperior(@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "tgPinjam") String tgPinjam, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "keteranganPinjam") String keteranganPinjam){
         //sementara usernya masih static (pakai user dg id 1L)
@@ -48,7 +48,7 @@ public class TransaksiController {
         return transaksi.getIdTransaksi();
     }
 
-    //mendapatkan list transaksi
+    //mendapatkan list transaksi berdasarkan statusnya
     @RequestMapping(value = {"employee/getOrderList/{statusOrder}", "superior/getOrderList/{statusOrder}"}, method = RequestMethod.GET)
     public List<Transaksi> getOrderList(@PathVariable(value = "statusOrder") String status){
         if(status.equalsIgnoreCase("waiting")){
@@ -189,11 +189,13 @@ public class TransaksiController {
         }
     }
 
+    //get transaksi berdasarkan id transaksi
     @RequestMapping(value = "api/getTransaksiByIdTransaksi/{idTransaksi}", method = RequestMethod.GET)
     public Transaksi getTransaksiByIdTransaksi(@PathVariable(value = "idTransaksi") Long idTransaksi) {
         return transaksiRepository.findByIdTransaksi(idTransaksi);
     }
 
+    //get transaksi berdasar kode sub barang
     @GetMapping("api/transaksi/subbarang/{kodesubbarang}")
     public Transaksi transaksiPerSubBarang(@PathVariable String kodesubbarang){
       SubBarang subBarang = subBarangRepository.getSubBarangByKodeSubBarang(kodesubbarang);
@@ -205,6 +207,7 @@ public class TransaksiController {
       return transaksi;
     }
 
+    //edit status transaksi jadi ditolak
     @PutMapping("superior/tolakPermintaanPinjam")
     public Transaksi tolakPermintaanPinjam(@Valid @RequestBody Transaksi transaksiRequest) {
         transaksiRequest.setStatusTransaksi(StatusTransaksi.ditolak);
@@ -212,6 +215,7 @@ public class TransaksiController {
         return transaksiRepository.save(transaksiRequest);
     }
 
+    //edit status transaksi jadi disetujui
     @PutMapping("superior/setujuiPermintaanPinjam")
     public Transaksi setujuiPermintaanPinjam(@Valid @RequestBody Transaksi transaksiRequest) {
         transaksiRequest.setStatusTransaksi(StatusTransaksi.disetujui);
@@ -226,6 +230,7 @@ public class TransaksiController {
         return transaksiRepository.save(transaksiRequest);
     }
 
+    //edit isExis detail transaksi jadi false(soft delete detail transaksi)
     @PutMapping("api/editTransaksiNotExist")
     public Transaksi editTransaksiNotExist(@Valid @RequestBody Transaksi transaksiRequest) {
         transaksiRequest.setExist(false);

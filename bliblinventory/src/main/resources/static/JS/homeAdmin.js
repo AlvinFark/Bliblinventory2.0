@@ -37,6 +37,10 @@ $( document ).ready(function() {
         page5();
     });
 
+    $("#klikDaftarKategori").click(function(){
+        page6();
+    });
+
     $(".imgLogo").click(function(){
         page1();
     });
@@ -204,6 +208,10 @@ function page4(){
 
 function page5(){
     $("#includePageContent").load("permintaanPembelianKaryawan.html");
+}
+
+function page6(){
+    $("#includePageContent").load("daftarKategori.html");
 }
 
 function cekInput() {

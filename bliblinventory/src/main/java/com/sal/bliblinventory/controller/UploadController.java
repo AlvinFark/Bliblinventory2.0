@@ -147,7 +147,7 @@ public class UploadController {
                     //Lakukan proses penambahan untuk tiap barang
                     if(kolom == 5 && baris != 0){
                         //Mengambil object kategori berdasarkan kategori yang didapatkan dari file excel
-                        Category category = categoryRepository.findByName(kategori);
+                        Category category = categoryRepository.findByNameAndIsExist(kategori, true);
 
                         //Membatasi hasil query yang didapatkan menjadi 1 hasil
                         Pageable limit = new PageRequest(0, 1);

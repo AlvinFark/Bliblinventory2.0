@@ -74,7 +74,7 @@ $( document ).ready(function() {
         $("#buttonBackToDetailCard").hide();
         $("#buttonPinjam").show();
         $("#detailBarangCard").show();
-        ajaxGetProductDetail(idBarang);
+          ajaxGetProductDetail(idBarang);
         ajaxGetFormOrder(idBarang);
     });
 
@@ -143,8 +143,10 @@ function ajaxGetAllProduct(){
                 $("#daftarProduk").append('' +
                     '<a class="col s6 l2 m3 modal-trigger productCard" href="#modalDetailPinjam">\n' +
                     '<div class="card">\n' +
-                    '<div class="card-image">\n' +
-                    '<img src="http://127.0.0.1:8000/images/barang/'+result[i].gambar+'" style="height:203px; width:100%">\n' +
+                    '<div class="card-image" style="padding:10px">\n' +
+                    '<div class="kontainerImgCard" style="' +
+                    'background-image: url(http://127.0.0.1:8000/images/barang/'+result[i].gambar+');">' +
+                    '</div>' +
                     '</div>\n' +
                     '<div class="card-content">\n' +
                     '<p>'+result[i].kode+'</p>\n' +
@@ -266,10 +268,6 @@ function ajaxGetFormOrder(idBarang) {
                     window.alert("Barang yang tersedia hanya "+result.toString()+" unit");
                     $('#inputTotalOrder').val(result);
                 }
-                else if($('#inputTotalOrder').val() <= 0){
-                    window.alert("Jumlah minimal untuk dipinjam 1 unit");
-                    $('#inputTotalOrder').val(1);
-                }
 
                 if(new Date($('#inputDate').val()) < new Date(getDateNow())) {
                     window.alert("Tanggal peminjaman tidak bisa dilakukan sebelum hari ini (" + changeDateFormat(getDateNow())+ ")");
@@ -317,20 +315,25 @@ function ajaxGetProductCustom(url){
 //membuat dan menyimpan request pinjam ke db
 function ajaxSendRequestPinjam(url) {
     var idTransaksi=0;
-    $.ajax({
-        type : "POST",
-        url : url,
-        success: function(result){
-            idTransaksi = result;
-            window.alert("Permintaan pinjam berhasil");
+    if($('#inputTotalOrder').val() <= 0){
+        window.alert("Jumlah minimal untuk dipinjam 1 unit");
+        $('#inputTotalOrder').val(1);
+    } else {
+      $.ajax({
+        type: "POST",
+        url: url,
+        success: function (result) {
+          idTransaksi = result;
+          window.alert("Permintaan pinjam berhasil");
         },
-        error : function(e) {
-            console.log("ERROR: ", e);
-            window.alert("error");
+        error: function (e) {
+          console.log("ERROR: ", e);
+          window.alert("error");
         },
         async: false
-    });
-    return idTransaksi;
+      });
+      return idTransaksi;
+    }
 }
 
 //booking sub barang jika request peminjaman sudah disetujui

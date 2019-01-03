@@ -119,7 +119,7 @@ $( document ).ready(function() {
             '  <td width=100px>\n' +
             '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickTambahSatuan" href="#modalDetailBarangTable"><i class="material-icons">add</i></a>\n' +
             '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickEditTable" href="#modalDetailBarangTable"><i class="material-icons">edit</i></a>\n' +
-            '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickDetailTable" href="#modalDetailBarangTable"><i class="material-icons">search</i></a>\n' +
+            '    <a class="waves-effect waves-light btn right modal-trigger kotak-small triggerModalTable clickDetailTable" href="#modalDetailBarangTable"><i class="material-icons">info_outline</i></a>\n' +
             '  </td>\n' +
             '</tr>\n';
         }

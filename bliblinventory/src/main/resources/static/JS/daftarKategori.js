@@ -70,7 +70,7 @@ function getAllCategory() {
 
             $(".clickHapusKategori").click(function(){
                 var idKategori = (this.id).substring(19);
-                //deleteKategori(idKategori);
+                deleteKategori(idKategori);
             });
         }
     });
@@ -156,4 +156,49 @@ function createNewCategory() {
         async: false
     });
     getAllCategory();
+}
+
+function deleteKategori(idKategori) {
+    $.ajax({
+        type : "GET",
+        url : "api/getTotalBarangWithCategory/"+idKategori,
+        success: function(result){
+            if (result>0) {
+                window.alert("Tidak bisa menghapus. Masih ada barang yang menggunakan kategori ini");
+            }
+            else{
+                $.ajax({
+                    type : "GET",
+                    url : "api/getDetailCategory/"+idKategori,
+                    success: function(result2){
+                        $.ajax({
+                            type: "PUT",
+                            url: "/api/hapusKategori",
+                            contentType: 'application/json',
+                            data: JSON.stringify(result2),
+                            success: function(result3) {
+                                window.alert("Berhasil dihapus");
+                            },
+                            error : function(e) {
+                                console.log("ERROR: ", e);
+                                window.alert("error editKategori");
+                            },
+                            async:false
+                        });
+                    },
+                    error : function(e) {
+                        console.log("ERROR: ", e);
+                        window.alert("error getDetailCategory");
+                    },
+                    async:false
+                });
+                getAllCategory();
+            }
+        },
+        error : function(e) {
+            console.log("ERROR: ", e);
+            window.alert("error getDetailCategory");
+        },
+        async:false
+    });
 }

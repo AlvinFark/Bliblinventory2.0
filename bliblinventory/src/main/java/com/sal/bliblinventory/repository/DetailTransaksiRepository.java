@@ -23,4 +23,6 @@ public interface DetailTransaksiRepository extends JpaRepository<DetailTransaksi
   DetailTransaksi getDetailTransaksiByIdDetailTransaksi(Long idDetailTransaksi);
 
   DetailTransaksi getDetailTransaksiBySubBarang_KodeSubBarangAndTgKembaliAndIsExist(String kodeSubBarang, LocalDateTime tgKembali, boolean isExist);
+
+  int countByTransaksi_IdTransaksiAndTgKembaliNotAndIsExist(Long idTransaksi, LocalDateTime tgKembali, boolean isExist);
 }

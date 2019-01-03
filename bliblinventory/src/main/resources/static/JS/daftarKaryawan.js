@@ -114,30 +114,7 @@ $( document ).ready(function() {
       "passwordBaru" : passbaru
     };
     //fungsi upload gambar karyawan
-    $('.formGantiGambarKaryawan').attr("id","formGantiGambarKaryawan"+id);
-    $('form[id="formGantiGambarKaryawan'+id+'"]').on('submit',(function(e) {
-      console.log(gambar);
-      e.preventDefault();
-      var formData = new FormData(this);
-      $.ajax({
-        type:'POST',
-        async:false,
-        url: "/api/upload/users/" + id + "." + gambar,
-        data:formData,
-        cache:false,
-        contentType: false,
-        processData: false,
-        success:function(data){
-          console.log("success");
-          console.log(data);
-        },
-        error: function(data){
-          console.log("error");
-          console.log(data);
-        }
-      });
-    }));
-    $('form[id="formGantiGambarKaryawan'+id+'"]').submit();
+    $("#formGantiGambarKaryawan").ajaxSubmit({url: "/api/upload/users/" + id + "." + gambar, type: 'post'})
     //send ubahan detail karyawan
     $.ajax({
       type: "PUT",
@@ -242,7 +219,7 @@ $( document ).ready(function() {
         });
         //ambil foto karyawan
         $("#detailFotoKaryawan").css({
-          'background-image': 'url("http://127.0.0.1:8000/images/users/'+result.gambar+'")'
+          'background-image': 'url("http://127.0.0.1:8000/images/users/'+result.gambar+'?'+ new Date().getTime() +'")'
         });
         //tampilkan data ke tabel detail karyawan
         $("#detailIdKaryawan").html(result.id);
@@ -333,7 +310,7 @@ $( document ).ready(function() {
               '<div class="card">\n' +
               '<div class="card-image" style="padding:15px">\n' +
               '<div class="kontainerImgCard" style="' +
-              'background-image: url(http://127.0.0.1:8000/images/users/'+result[i].gambar+');">' +
+              'background-image: url(http://127.0.0.1:8000/images/users/'+result[i].gambar+'?' + new Date().getTime() +');">' +
               '</div>' +
               '</div>\n' +
               '<div class="card-content">\n' +
@@ -407,9 +384,6 @@ $( document ).ready(function() {
       async : false,
       data: JSON.stringify(jsonTambahKaryawan),
       success: function(result) {
-        $('#formGambarKaryawanBaru').on('submit',(function(e) {
-          e.preventDefault();
-          var formData = new FormData(this);
           //ambil data karyawan yang dibuat tadi
           $.ajax({
             async: false,
@@ -417,27 +391,9 @@ $( document ).ready(function() {
             url: "/api/users/usernameforgambar/" + nuname,
             success: function (result1) {
               //upload gambar dengan parameter dari data tadi
-              $.ajax({
-                async:false,
-                type:'POST',
-                url: "/api/upload/users/" + result1.gambar,
-                data:formData,
-                cache:false,
-                contentType: false,
-                processData: false,
-                success:function(data){
-                  console.log("success");
-                  console.log(data);
-                },
-                error: function(data){
-                  console.log("error");
-                  console.log(data);
-                }
-              });
+              $("#formGambarKaryawanBaru").ajaxSubmit({url: "/api/upload/users/" + result1.gambar, type: 'post'});//submit
             }
           });
-        }));
-        $('#formGambarKaryawanBaru').submit(); //submit
         alert('karyawan baru berhasil ditambahkan');
         ajaxGetUsers($("#searchKaryawan").val(),$("#filterKaryawan").prop('selectedIndex'));
       },

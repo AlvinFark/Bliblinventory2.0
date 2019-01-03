@@ -1,6 +1,5 @@
 package com.sal.bliblinventory.controller;
 
-import com.sal.bliblinventory.exception.ResourceNotFoundException;
 import com.sal.bliblinventory.model.Barang;
 import com.sal.bliblinventory.model.Category;
 import com.sal.bliblinventory.repository.BarangRepository;
@@ -9,11 +8,9 @@ import com.sal.bliblinventory.repository.SubBarangRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 
 @RestController

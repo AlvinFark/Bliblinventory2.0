@@ -1,19 +1,15 @@
 package com.sal.bliblinventory.controller;
 
-import com.sal.bliblinventory.exception.AppException;
-import com.sal.bliblinventory.exception.ResourceNotFoundException;
-import com.sal.bliblinventory.model.Gender;
-import com.sal.bliblinventory.model.Role;
 import com.sal.bliblinventory.model.User;
 import com.sal.bliblinventory.payload.SignUpRequest;
 import com.sal.bliblinventory.repository.RoleRepository;
 import com.sal.bliblinventory.repository.UserRepository;
+import com.sal.bliblinventory.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -28,6 +24,9 @@ public class UserController {
 
   @Autowired
   PasswordEncoder passwordEncoder;
+
+  @Autowired
+  UserService userService;
 
   @GetMapping
   public List<User> listAllUser(){
@@ -51,43 +50,12 @@ public class UserController {
 
   @PutMapping("/usernameforgambar/{username}")
   public User getUserByUsername(@PathVariable String username){
-    User user = userRepository.getUserByUsername(username);
-    if (user!=null) {
-      user.setGambar(user.getId() + "." + user.getGambar());
-      userRepository.save(user);
-    }
-    return user;
+    return userService.getUserByUsername(username);
   }
-
 
   @PutMapping("/id/{id}")
   public User editUser(@PathVariable Long id, @Valid @RequestBody SignUpRequest userRequest) {
-
-    Gender gender = Gender.valueOf(userRequest.getGender());
-
-    User user = new User(userRequest.getName(), userRequest.getUsername(),
-        userRequest.getEmail(), userRequest.getPassword(), gender,
-        userRequest.getAddress(), userRequest.getDateOfBirth(), userRequest.getPhoneNumber(), userRequest.getGambar());
-
-    Role userRole = roleRepository.findById(userRequest.getRoleId())
-        .orElseThrow(() -> new AppException("User Role not set."));
-
-    user.setRoles(Collections.singleton(userRole));
-    user.setSuperiorId(userRequest.getSuperiorId());
-    user.setId(id);
-    user.setIsActive(userRequest.getIsActive());
-    if (userRequest.getPasswordBaru()==true){
-      user.setPassword(passwordEncoder.encode(user.getPassword()));
-    } else {
-      User user1 = userRepository.getUserById(id);
-      user.setPassword(user1.getPassword());
-    }
-    user.setGambar(user.getId()+"."+user.getGambar());
-
-    return userRepository.findById(id).map(u -> {
-      u = user;
-      return userRepository.save(u);
-    }).orElseThrow(() -> new ResourceNotFoundException("user","id", id));
+    return userService.editUser(id,userRequest);
   }
 
   @GetMapping("/password/{password}")

@@ -1,7 +1,8 @@
-package com.sal.bliblinventory.service;
+package com.sal.bliblinventory.service.serviceImpl;
 
 import com.sal.bliblinventory.model.Category;
 import com.sal.bliblinventory.repository.CategoryRepository;
+import com.sal.bliblinventory.service.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

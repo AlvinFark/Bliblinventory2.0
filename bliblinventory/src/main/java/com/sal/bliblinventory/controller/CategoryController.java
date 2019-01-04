@@ -3,7 +3,6 @@ package com.sal.bliblinventory.controller;
 import com.sal.bliblinventory.model.Category;
 import com.sal.bliblinventory.repository.CategoryRepository;
 import com.sal.bliblinventory.service.CategoryService;
-import com.sal.bliblinventory.service.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 

@@ -12,11 +12,9 @@ import com.sal.bliblinventory.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import javax.validation.Valid;
 import java.util.Collections;
+import java.util.List;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
@@ -68,6 +66,31 @@ public class UserServiceImpl implements UserService {
       u = user;
       return userRepository.save(u);
     }).orElseThrow(() -> new ResourceNotFoundException("user","id", id));
+  }
+
+  @Override
+  public List<User> listAllUser(){
+    return userRepository.findAllByOrderByName();
+  }
+
+  @Override
+  public List<User> listSearchUser(String param){
+    return userRepository.findAllByNameContainingOrderByName(param);
+  }
+
+  @Override
+  public User getUserByUsernameOrEmail(String uname){
+    return userRepository.getUserByUsernameOrEmailAndIsActive(uname,uname,true);
+  }
+
+  @Override
+  public User getUserById(Long id){
+    return userRepository.getUserById(id);
+  }
+
+  @Override
+  public String encodePassword(String password){
+    return passwordEncoder.encode(password);
   }
 
 }

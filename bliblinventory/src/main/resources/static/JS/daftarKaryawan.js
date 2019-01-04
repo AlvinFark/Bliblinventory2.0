@@ -143,7 +143,7 @@ $( document ).ready(function() {
     if (roleId!=2||superiorId=="undefined"){superiorId="0"};
     var hp=$("#hpKaryawan").val();
     var email=$("#emailKaryawan").val();
-    var uname=$("#detailUsernameKaryawan").val();
+    var uname=$("#detailUsernameKaryawan").text();
     var jsonUbahDetail={
       "name" : name,
       "username" : uname,

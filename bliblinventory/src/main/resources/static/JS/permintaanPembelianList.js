@@ -24,10 +24,10 @@ $(document).ready(function(){
 function checkActiveTab() {
     var url;
     if($("#tabMenunggu").hasClass("active")){
-        url="api/getPermintaanPinjam/belumDibeli";
+        url="api/getPermintaanPinjam/belumDibeli/"+$.session.get('id');
     }
     else if ($("#tabSudahDibeli").hasClass("active")){
-        url="api/getPermintaanPinjam/sudahDibeli";
+        url="api/getPermintaanPinjam/sudahDibeli/"+$.session.get('id');
     }
     ajaxGetDaftarPermintaanPembelian(url);
 }
@@ -78,13 +78,12 @@ function ajaxGetDaftarPermintaanPembelian(url) {
                     '</div>'
                 );
             }
-            if(url=="api/getPermintaanPinjam/belumDibeli"){
+            if(url=="api/getPermintaanPinjam/belumDibeli/"+$.session.get('id')){
                 $(".btnBatalPermintaanBeli").css("display","block");
             }
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getPermintaanPinjam");
         },
         async:false
     });
@@ -106,13 +105,11 @@ function ajaxCancelRequestBeli(idPermintaanPembelian) {
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);
-                    window.alert("error deletePermintaanPembelian");
                 }
             });
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getPermintaanPembelianById");
         }
     });
 }

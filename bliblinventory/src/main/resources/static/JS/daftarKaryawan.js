@@ -254,7 +254,6 @@ $( document ).ready(function() {
       },
       error : function(e) {
         console.log("ERROR: ", e);
-        window.alert("error");
       }
     });
   };
@@ -325,7 +324,6 @@ $( document ).ready(function() {
       },
       error : function(e) {
         console.log("ERROR: ", e);
-        window.alert("error");
       }
     });
     //kosongkan value untuk karyawan baru

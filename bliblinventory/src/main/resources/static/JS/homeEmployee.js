@@ -91,9 +91,9 @@ $( document ).ready(function() {
         else{
             if(confirm("Kirim permintaan pembelian "+namaBarang+"?")) {
                 if (keterangan == "")
-                    url = "api/createPermintaanPembelian/" + namaBarang + "/" + idKategori + "/" + jumlah + "/" + null;
+                    url = "api/createPermintaanPembelian/" + $.session.get('id')+"/" + namaBarang + "/" + idKategori + "/" + jumlah + "/" + null;
                 else
-                    url = "api/createPermintaanPembelian/" + namaBarang + "/" + idKategori + "/" + jumlah + "/" + keterangan;
+                    url = "api/createPermintaanPembelian/" + $.session.get('id')+"/" + namaBarang + "/" + idKategori + "/" + jumlah + "/" + keterangan;
                 ajaxCreatePermintaanPembelian(url, namaBarang);
                 $("#modalPermintaanPembelian").modal("close");
             }
@@ -156,7 +156,6 @@ function ajaxGetDropDownKategori() {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error ajaxGetSelectKategori");
         },
         async:false
     });
@@ -172,7 +171,6 @@ function ajaxCreatePermintaanPembelian(url, namaBarang) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error ajaxCreatePermintaanPembelian");
         },
         async: false
     });

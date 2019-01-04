@@ -108,7 +108,6 @@ function ajaxGetAllPermintaanPembelian() {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error ajaxGetAllPermintaanPembelian");
         },
         async: false
     });
@@ -128,7 +127,6 @@ function ajaxGetRequestListBySortAndSearch(){
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         },
         async:false
     });
@@ -155,7 +153,6 @@ function ajaxGetDetailRequestOrder(idPermintaanPembelian) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         },
         async:false
     });
@@ -179,14 +176,12 @@ function ajaxUpdateIsBoughtPermintaanBeli(idPermintaanPembelian) {
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);
-                    window.alert("error updateIsBoughtPermintaanPembelian");
                 },
                 async: false
             });
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getDetail");
         },
         async: false
     });

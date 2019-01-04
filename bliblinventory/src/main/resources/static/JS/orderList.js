@@ -10,7 +10,7 @@ $(document).ready(function(){
     //jika superior, maka tab-nya ditiadakan (hidden), karena superior pasti permintaan pinjamannya disetujui
     else if(window.location.pathname == "/superior"){
         $("#tabOrderList").hide();
-        url=window.location + "/getOrderList/approved";
+        url=window.location + "/getOrderList/"+$.session.get('id')+"/approved";
         ajaxGetOrderList(url);
     }
 
@@ -33,13 +33,13 @@ $(document).ready(function(){
 function checkActiveTab() {
     var url;
     if($("#tabMenunggu").hasClass("active")){
-        url=window.location + "/getOrderList/waiting";
+        url=window.location + "/getOrderList/"+$.session.get('id')+"/waiting";
     }
     else if ($("#tabDisetujui").hasClass("active")){
-        url=window.location + "/getOrderList/approved";
+        url=window.location + "/getOrderList/"+$.session.get('id')+"/approved";
     }
     else if ($("#tabDitolak").hasClass("active")){
-        url=window.location + "/getOrderList/rejected";
+        url=window.location + "/getOrderList/"+$.session.get('id')+"/rejected";
     }
     ajaxGetOrderList(url);
 }
@@ -98,7 +98,6 @@ function ajaxGetOrderList(url) {
                     },
                     error: function(e) {
                         console.log("ERROR: ", e);
-                        window.alert("error getDetailTransaksiByIdTransaksi");
                     },
                     async:false
                 });
@@ -123,7 +122,6 @@ function ajaxGetOrderList(url) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error ajaxGetOrderList");
         }
     });
 }
@@ -139,7 +137,6 @@ function ajaxCancelRequestPinjam(idTransaksi){
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getDetail");
         }
     });
 }
@@ -161,7 +158,6 @@ function editTransaksiNotExist(idTransaksi, result) {
         },
         error: function (e) {
             console.log("ERROR: ", e);
-            window.alert("error editTransaksiNotExist");
         }
     });
 }
@@ -179,7 +175,6 @@ function editDetailTransaksiNotExistAndStatusSubBarangReady(idTransaksi){
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error editDetailTransaksiNotExistAndStatusSubBarangNotReady");
         }
     });
 }
@@ -195,7 +190,6 @@ function editDetailTransaksiNotExist(detailTransaksi) {
         },
         error: function (e) {
             console.log("ERROR: ", e);
-            window.alert("error editDetailTransaksiNotExist");
         }
     });
 }
@@ -214,13 +208,12 @@ function editStatusSubBarangReady(subBarang) {
             }
             else if(window.location.pathname == "/superior"){
                 $("#tabOrderList").hide();
-                url=window.location + "/getOrderList/approved";
+                url=window.location + "/getOrderList/"+$.session.get('id')+"/approved";
                 ajaxGetOrderList(url);
             }
         },
         error: function (e) {
             console.log("ERROR: ", e);
-            window.alert("error editStatusSubBarangReady");
         }
     });
 }

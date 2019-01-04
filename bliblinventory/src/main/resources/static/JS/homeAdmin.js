@@ -202,7 +202,6 @@ $( document ).ready(function() {
             },
             error : function(e) {
                 console.log("ERROR: ", e);
-                window.alert("error downloadFormatTambahBarangBulk");
             },
             async:false
         });
@@ -274,7 +273,6 @@ function createFormBeli() {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error ajaxGetSelectKategori");
         },
         async:false
     });
@@ -289,7 +287,6 @@ function printFormRequestBeli(namaBarang,namaBrand,namaSupplier,kuantitas, namaK
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error printRequestBeli");
         },
         async:false
     });

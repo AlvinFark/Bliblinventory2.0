@@ -23,7 +23,7 @@ $(document).ready(function() {
                     console.log(idLogin);
                     if(roleLogin == "ROLE_EMPLOYEE")
                       window.location.replace("http://localhost:8080/employee");
-                    else if(roleLogin = "ROLE_ADMIN")
+                    else if(roleLogin == "ROLE_ADMIN")
                       window.location.replace("http://localhost:8080/admin");
                     else
                       window.location.replace("http://localhost:8080/superior");

@@ -1,4 +1,6 @@
 $( document ).ready(function() {
+
+  
     //inisialisasi elemen-elemen pada awal homeEmployee.js di-load
     $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
     $('.datepicker').datepicker();

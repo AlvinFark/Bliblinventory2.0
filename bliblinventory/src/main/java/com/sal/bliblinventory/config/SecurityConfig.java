@@ -64,7 +64,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable().exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .authorizeRequests()
-                .antMatchers("/", "/LoginPage",
+                .antMatchers("/**", "/LoginPage",
                         "/api/auth/**",
                         "/api/user/checkUsernameAvailability",
                         "/api/user/checkEmailAvailability",

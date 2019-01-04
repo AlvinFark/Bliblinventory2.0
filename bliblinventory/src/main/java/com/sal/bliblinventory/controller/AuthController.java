@@ -60,10 +60,7 @@ public class AuthController {
 //      return
 //    }
 
-    SecurityContextHolder.getContext().setAuthentication(authentication);
-
-    String jwt = tokenProvider.generateToken(authentication);
-    return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+    return ResponseEntity.ok(authentication);
   }
 
   @PostMapping("/signup")
@@ -91,4 +88,6 @@ public class AuthController {
 
     return result;
   }
+
+
 }

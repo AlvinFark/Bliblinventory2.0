@@ -1,12 +1,12 @@
 $( document ).ready(function() {
+
+
     $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
     $('.sidenav').sidenav();
     $('select').formSelect();
     $('.modal').modal();
     $("#inputSearch").hide();
     $("#iconSearch").hide();
-
-    window.alert($.session.get('id'));
 
     $('select').on('contentChanged', function() {
         $(this).formSelect();
@@ -48,7 +48,7 @@ $( document ).ready(function() {
     });
 
     $("#klikLogout").click(function(){
-
+      $.session.remove('id');
     });
 
     $("#klikRequestBeliBarang").click(function(){

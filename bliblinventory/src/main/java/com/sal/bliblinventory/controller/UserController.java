@@ -89,5 +89,11 @@ public class UserController {
       return userRepository.save(u);
     }).orElseThrow(() -> new ResourceNotFoundException("user","id", id));
   }
+
+  @GetMapping("/password/{password}")
+  public String getUserById(@PathVariable String password){
+    return passwordEncoder.encode(password);
+  }
+
 }
 

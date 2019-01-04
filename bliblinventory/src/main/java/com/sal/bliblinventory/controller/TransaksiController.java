@@ -30,20 +30,18 @@ public class TransaksiController {
     @Autowired
     SubBarangRepository subBarangRepository;
 
-    //membuat tranasaksi peminjaman dari employee
-    @RequestMapping(value = {"employee/requestPinjam/{kodeBarang}/{tgPinjam}/{jumlahBarang}/{keteranganPinjam}"}, method = RequestMethod.POST)
-    public Long sendRequestFromEmployee(@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "tgPinjam") String tgPinjam, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "keteranganPinjam") String keteranganPinjam){
-        //sementara usernya masih static (pakai user dg id 1L)
-        Transaksi transaksi = new Transaksi(userRepository.getUserById(1L), tgPinjam, barangRepository.findBarangByKode(kodeBarang), jumlahBarang, keteranganPinjam, StatusTransaksi.menunggu);
+    //employee mengirim request pinjam
+    @RequestMapping(value = {"employee/requestPinjam/{idUser}/{kodeBarang}/{tgPinjam}/{jumlahBarang}/{keteranganPinjam}"}, method = RequestMethod.POST)
+    public Long sendRequestFromEmployee(@PathVariable(value = "idUser") Long idUser,@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "tgPinjam") String tgPinjam, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "keteranganPinjam") String keteranganPinjam){
+        Transaksi transaksi = new Transaksi(userRepository.getUserById(idUser), tgPinjam, barangRepository.findBarangByKode(kodeBarang), jumlahBarang, keteranganPinjam, StatusTransaksi.menunggu);
         transaksiRepository.save(transaksi);
         return transaksi.getIdTransaksi();
     }
 
-    //membuat tranasaksi peminjaman dari superior
-    @RequestMapping(value = {"superior/requestPinjam/{kodeBarang}/{tgPinjam}/{jumlahBarang}/{keteranganPinjam}"}, method = RequestMethod.POST)
-    public Long sendRequestFromSuperior(@PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "tgPinjam") String tgPinjam, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "keteranganPinjam") String keteranganPinjam){
-        //sementara usernya masih static (pakai user dg id 1L)
-        Transaksi transaksi = new Transaksi(userRepository.getUserById(1L), tgPinjam, barangRepository.findBarangByKode(kodeBarang), jumlahBarang, keteranganPinjam, StatusTransaksi.disetujui);
+    //superior mengirim request pinjam
+    @RequestMapping(value = {"superior/requestPinjam/{idUser}/{kodeBarang}/{tgPinjam}/{jumlahBarang}/{keteranganPinjam}"}, method = RequestMethod.POST)
+    public Long sendRequestFromSuperior(@PathVariable(value = "idUser") Long idUser, @PathVariable(value = "kodeBarang") String kodeBarang, @PathVariable(value = "tgPinjam") String tgPinjam, @PathVariable(value = "jumlahBarang") int jumlahBarang, @PathVariable(value = "keteranganPinjam") String keteranganPinjam){
+        Transaksi transaksi = new Transaksi(userRepository.getUserById(idUser), tgPinjam, barangRepository.findBarangByKode(kodeBarang), jumlahBarang, keteranganPinjam, StatusTransaksi.disetujui);
         transaksiRepository.save(transaksi);
         return transaksi.getIdTransaksi();
     }

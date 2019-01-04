@@ -46,7 +46,7 @@ public class TransaksiController {
         return transaksi.getIdTransaksi();
     }
 
-    //mendapatkan list transaksi
+    //mendapatkan list transaksi berdasarkan statusnya
     @RequestMapping(value = {"employee/getOrderList/{statusOrder}", "superior/getOrderList/{statusOrder}"}, method = RequestMethod.GET)
     public List<Transaksi> getOrderList(@PathVariable(value = "statusOrder") String status){
         if(status.equalsIgnoreCase("waiting")){
@@ -187,11 +187,13 @@ public class TransaksiController {
         }
     }
 
+    //get transaksi berdasarkan id transaksi
     @RequestMapping(value = "api/getTransaksiByIdTransaksi/{idTransaksi}", method = RequestMethod.GET)
     public Transaksi getTransaksiByIdTransaksi(@PathVariable(value = "idTransaksi") Long idTransaksi) {
         return transaksiRepository.findByIdTransaksi(idTransaksi);
     }
 
+    //get transaksi berdasar kode sub barang
     @GetMapping("api/transaksi/subbarang/{kodesubbarang}")
     public Transaksi transaksiPerSubBarang(@PathVariable String kodesubbarang){
       SubBarang subBarang = subBarangRepository.getSubBarangByKodeSubBarang(kodesubbarang);
@@ -203,6 +205,7 @@ public class TransaksiController {
       return transaksi;
     }
 
+    //edit status transaksi jadi ditolak
     @PutMapping("superior/tolakPermintaanPinjam")
     public Transaksi tolakPermintaanPinjam(@Valid @RequestBody Transaksi transaksiRequest) {
         transaksiRequest.setStatusTransaksi(StatusTransaksi.ditolak);
@@ -210,6 +213,7 @@ public class TransaksiController {
         return transaksiRepository.save(transaksiRequest);
     }
 
+    //edit status transaksi jadi disetujui
     @PutMapping("superior/setujuiPermintaanPinjam")
     public Transaksi setujuiPermintaanPinjam(@Valid @RequestBody Transaksi transaksiRequest) {
         transaksiRequest.setStatusTransaksi(StatusTransaksi.disetujui);
@@ -224,6 +228,7 @@ public class TransaksiController {
         return transaksiRepository.save(transaksiRequest);
     }
 
+    //edit isExis detail transaksi jadi false(soft delete detail transaksi)
     @PutMapping("api/editTransaksiNotExist")
     public Transaksi editTransaksiNotExist(@Valid @RequestBody Transaksi transaksiRequest) {
         transaksiRequest.setExist(false);

@@ -20,7 +20,6 @@ $(document).ready(function() {
                     idLogin = result1.id;
                     $.session.set('id',idLogin);
                     roleLogin = ((result1 || {}).roles[0] || {}).name;
-                    console.log(idLogin);
                     if(roleLogin == "ROLE_EMPLOYEE")
                       window.location.replace("http://localhost:8080/employee");
                     else if(roleLogin == "ROLE_ADMIN")
@@ -30,6 +29,11 @@ $(document).ready(function() {
                   },
                   async:false
                 });
+            },
+            error: function (result2) {
+              alert("username atau password yang anda masukkan salah, silahkan coba lagi");
+              $("#inputUsername").val("");
+              $("#inputPassword").val("");
             }
         });
     });

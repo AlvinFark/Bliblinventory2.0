@@ -1,22 +1,31 @@
 $( document ).ready(function() {
 
-  $.ajax({
-    type: "GET",
-    url: "/api/users/id/" + $.session.get('id'),
-    success: function (result9) {
-      var rolee = ((result9 || {}).roles[0] || {}).name;
-      if(rolee != "ROLE_SUPERIOR"){
-        $('body').html("");
-        alert("Anda tidak memiliki akses ke halaman ini, anda akan ter redirect ke halaman home anda");
-        if (rolee == "ROLE_ADMIN"){
-          window.location.replace("http://localhost:8080/admin");
-        } else {
-          window.location.replace("http://localhost:8080/employee");
+  if($.session.get('id')==null){
+    $('body').html("");
+    alert("Anda belum login, silahkan login terlebih dahulu");
+    window.location.replace("http://localhost:8080/");
+  } else {
+    $.ajax({
+      type: "GET",
+      url: "/api/users/id/" + $.session.get('id'),
+      success: function (result9) {
+        if (result9 == undefined) rolee = "not yet login";
+        rolee = ((result9 || {}).roles[0] || {}).name;
+        if (rolee != "ROLE_SUPERIOR") {
+          $('body').html("");
+          alert("Anda tidak memiliki akses ke halaman ini, anda akan ter redirect ke halaman anda");
+          if (rolee == "ROLE_EMPLOYEE") {
+            window.location.replace("http://localhost:8080/employee");
+          } else if (rolee == "ROLE_ADMIN") {
+            window.location.replace("http://localhost:8080/adminx");
+          } else {
+            window.location.replace("http://localhost:8080/");
+          }
         }
-      }
-    },
-    async:false
-  });
+      },
+      async: false
+    });
+  }
 
   //inisialisasi elemen-elemen pada awal homeSuperior.js di-load
     $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });

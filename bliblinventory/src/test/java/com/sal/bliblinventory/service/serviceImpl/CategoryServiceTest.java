@@ -3,6 +3,7 @@ package com.sal.bliblinventory.service.serviceImpl;
 import com.sal.bliblinventory.model.Category;
 import com.sal.bliblinventory.repository.CategoryRepository;
 import com.sal.bliblinventory.service.CategoryService;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,6 +16,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -48,6 +52,7 @@ public class CategoryServiceTest {
 
         when(categoryRepository.findAllByIsExist(true)).thenReturn(categoryList);
         categoryServiceImpl.getAllCategory();
+        verify(categoryRepository).findAllByIsExist(true);
     }
 
     @Test
@@ -59,6 +64,7 @@ public class CategoryServiceTest {
 
         when(categoryRepository.save(cat1)).thenReturn(cat1);
         categoryServiceImpl.addCategory(cat1);
+        verify(categoryRepository).save(cat1);
     }
 
     @Test
@@ -71,5 +77,58 @@ public class CategoryServiceTest {
 
         when(categoryRepository.getCategoryById(1L)).thenReturn(cat1);
         categoryServiceImpl.getDetailCategory(1L);
+        verify(categoryRepository).getCategoryById(1l);
+    }
+
+    @Test
+    public void editKategori_Test() {
+        Category cat1= Category.builder()
+                .id(1L)
+                .name("Elektronik")
+                .isExist(true)
+                .build();
+        cat1.setName("Alat Tulis");
+
+        Category cat2= Category.builder()
+                .id(1L)
+                .name("Elektronik")
+                .isExist(true)
+                .build();
+
+        when(categoryRepository.save(cat2)).thenReturn(cat1);
+        categoryServiceImpl.editKategori("Alat tulis", cat2);
+        verify(categoryRepository).save(cat2);
+    }
+
+    @Test
+    public void createNewCategory_Test() {
+        Category cat1= Category.builder()
+                .name("Elektronik")
+                .isExist(true)
+                .build();
+        when(categoryRepository.save(any())).thenReturn(cat1);
+        //Category hasil = categoryServiceImpl.createNewCategory("Elektronik");
+        verify(categoryRepository).save(any());
+        //Assert.assertEquals(hasil.getName(),"Elektronik");
+    }
+
+    @Test
+    public void hapusKategori_Test() {
+        Category cat1 = Category.builder()
+                .id(1L)
+                .name("Elektronik")
+                .isExist(true)
+                .build();
+        cat1.setExist(false);
+
+        Category cat2 = Category.builder()
+                .id(1L)
+                .name("Elektronik")
+                .isExist(false)
+                .build();
+
+        when(categoryRepository.save(cat2)).thenReturn(cat1);
+        categoryServiceImpl.hapusKategori(cat2);
+        verify(categoryRepository).save(cat2);
     }
 }

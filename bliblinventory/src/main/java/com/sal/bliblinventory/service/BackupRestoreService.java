@@ -5,5 +5,5 @@ import org.springframework.web.multipart.MultipartFile;
 public interface BackupRestoreService {
     public String backup() throws Exception;
 
-    public void restore(MultipartFile fileSQL);
+    public void restore(MultipartFile fileSQL) throws Exception;
 }

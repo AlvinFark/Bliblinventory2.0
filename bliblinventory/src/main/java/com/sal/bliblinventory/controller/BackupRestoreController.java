@@ -25,7 +25,7 @@ public class BackupRestoreController {
 
     @GetMapping("/backup")
     private String backup() throws Exception{
-        backupRestoreService.backup();
+        return backupRestoreService.backup();
     }
 
     @PostMapping("/restore")

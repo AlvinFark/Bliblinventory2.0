@@ -1,12 +1,10 @@
 package com.sal.bliblinventory.service.serviceImpl;
 
-
 import com.sal.bliblinventory.service.BackupRestoreService;
 import com.smattme.MysqlExportService;
 import com.smattme.MysqlImportService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -15,7 +13,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
-@Service("BackupRestoreService");
+@Service("BackupRestoreService")
 public class BackupRestoreServiceImpl implements BackupRestoreService {
     String savePath;
 
@@ -58,9 +56,8 @@ public class BackupRestoreServiceImpl implements BackupRestoreService {
     }
 
     @Override
-    public void restore(MultipartFile fileSQL) {
+    public void restore(MultipartFile fileSQL) throws Exception{
         String sql = new String(fileSQL.getBytes());
-
         MysqlImportService.builder()
                 .setDatabase("bliblirestore")
                 .setSqlString(sql)

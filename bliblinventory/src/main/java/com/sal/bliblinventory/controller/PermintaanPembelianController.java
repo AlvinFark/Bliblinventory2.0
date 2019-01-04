@@ -21,10 +21,9 @@ public class PermintaanPembelianController {
     @Autowired
     CategoryRepository categoryRepository;
 
-    @RequestMapping(value = "api/createPermintaanPembelian/{namaBarang}/{idKategori}/{jumlah}/{keterangan}", method = RequestMethod.POST)
-    public PermintaanPembelian createPermintaanPembelian(@PathVariable(value = "namaBarang") String namaBarang, @PathVariable(value = "idKategori") Long idKategori, @PathVariable(value = "jumlah") int jumlah, @PathVariable(value = "keterangan") String keterangan){
-        //sementara usernya masih static (pakai user dg id 1L)
-        PermintaanPembelian permintaanPembelian = new PermintaanPembelian(namaBarang, categoryRepository.getCategoryById(idKategori), jumlah, keterangan, userRepository.getUserById(1L));
+    @RequestMapping(value = "api/createPermintaanPembelian/{idUser}/{namaBarang}/{idKategori}/{jumlah}/{keterangan}", method = RequestMethod.POST)
+    public PermintaanPembelian createPermintaanPembelian(@PathVariable(value = "idUser") Long idUser, @PathVariable(value = "namaBarang") String namaBarang, @PathVariable(value = "idKategori") Long idKategori, @PathVariable(value = "jumlah") int jumlah, @PathVariable(value = "keterangan") String keterangan){
+        PermintaanPembelian permintaanPembelian = new PermintaanPembelian(namaBarang, categoryRepository.getCategoryById(idKategori), jumlah, keterangan, userRepository.getUserById(idUser));
         return permintaanPembelianRepository.save(permintaanPembelian);
     }
 
@@ -87,16 +86,14 @@ public class PermintaanPembelianController {
         return permintaanPembelianRepository.save(permintaanPembelianRequest);
     }
 
-    @RequestMapping(value = "api/getPermintaanPinjam/belumDibeli", method = RequestMethod.GET)
-    public List<PermintaanPembelian> getPermintaanPinjambelumDibeli() {
-        //sementara masih pakai user Id = 1L
-        return permintaanPembelianRepository.findAllByIsBoughtAndIsExistAndUser_Id(false,true,1L);
+    @RequestMapping(value = "api/getPermintaanPinjam/belumDibeli/{idUser}", method = RequestMethod.GET)
+    public List<PermintaanPembelian> getPermintaanPinjambelumDibeli(@PathVariable(value = "idUser") Long idUser) {
+        return permintaanPembelianRepository.findAllByIsBoughtAndIsExistAndUser_Id(false,true,idUser);
     }
 
-    @RequestMapping(value = "api/getPermintaanPinjam/sudahDibeli", method = RequestMethod.GET)
-    public List<PermintaanPembelian> getPermintaanPinjamSudahDibeli() {
-        //sementara masih pakai user Id = 1L
-        return permintaanPembelianRepository.findAllByIsBoughtAndIsExistAndUser_Id(true,true,1L);
+    @RequestMapping(value = "api/getPermintaanPinjam/sudahDibeli/{idUser}", method = RequestMethod.GET)
+    public List<PermintaanPembelian> getPermintaanPinjamSudahDibeli(@PathVariable(value = "idUser") Long idUser) {
+        return permintaanPembelianRepository.findAllByIsBoughtAndIsExistAndUser_Id(true,true,idUser);
     }
 
     @PutMapping("api/deletePermintaanPembelian")

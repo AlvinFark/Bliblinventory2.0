@@ -175,7 +175,7 @@ function createContentListPermintaanPinjam(result) {
 function ajaxGetAllPermintaanPinjam() {
     $.ajax({
         type : "GET",
-        url : window.location + "/getAllEmployeeRequest",
+        url : window.location + "/getAllEmployeeRequest/" + $.session.get('id'),
         success: function(result){
             createContentListPermintaanPinjam(result);
         },
@@ -190,7 +190,7 @@ function ajaxGetRequestListBySortAndSearch(){
     var keyword = $("#inputCari").val();
     var indexSortSelected = $("#selectSortBy").prop('selectedIndex');
     var indexSearchSelected = $("#selectSearchBy").prop('selectedIndex');
-    var url = window.location+"/filterEmployeeRequest/" + indexSortSelected + "/" + indexSearchSelected + "/" + keyword;
+    var url = window.location+"/filterEmployeeRequest/" +$.session.get('id')+"/" + indexSortSelected + "/" + indexSearchSelected + "/" + keyword;
     $.ajax({
         type : "GET",
         url : url,

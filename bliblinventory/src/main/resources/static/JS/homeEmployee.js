@@ -74,9 +74,9 @@ $( document ).ready(function() {
         else{
             if(confirm("Kirim permintaan pembelian "+namaBarang+"?")) {
                 if (keterangan == "")
-                    url = "api/createPermintaanPembelian/" + namaBarang + "/" + idKategori + "/" + jumlah + "/" + null;
+                    url = "api/createPermintaanPembelian/" + $.session.get('id')+"/" + namaBarang + "/" + idKategori + "/" + jumlah + "/" + null;
                 else
-                    url = "api/createPermintaanPembelian/" + namaBarang + "/" + idKategori + "/" + jumlah + "/" + keterangan;
+                    url = "api/createPermintaanPembelian/" + $.session.get('id')+"/" + namaBarang + "/" + idKategori + "/" + jumlah + "/" + keterangan;
                 ajaxCreatePermintaanPembelian(url, namaBarang);
                 $("#modalPermintaanPembelian").modal("close");
             }

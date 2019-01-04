@@ -1,46 +1,70 @@
 package com.sal.bliblinventory.controller;
 
-import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import com.sal.bliblinventory.model.Gender;
+import com.sal.bliblinventory.security.JwtTokenProvider;
+import com.sal.bliblinventory.exception.AppException;
+import com.sal.bliblinventory.model.Role;
+import com.sal.bliblinventory.model.User;
+import com.sal.bliblinventory.payload.JwtAuthenticationResponse;
+import com.sal.bliblinventory.payload.LoginRequest;
+import com.sal.bliblinventory.payload.SignUpRequest;
+import com.sal.bliblinventory.repository.RoleRepository;
+import com.sal.bliblinventory.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.Collection;
-import java.util.Map;
+import javax.validation.Valid;
+import java.net.URI;
+import java.util.Collections;
 
-@Controller
+@RestController
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
-    public ModelAndView loginPage(Map<String, Object> model) {
-        ModelAndView modelAndView = new ModelAndView();
+  @Autowired
+  AuthenticationManager authenticationManager;
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        boolean isLoggedIn = auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
+  @Autowired
+  UserRepository userRepository;
 
-        if(isLoggedIn){
+  @Autowired
+  RoleRepository roleRepository;
 
-            Authentication a = SecurityContextHolder.getContext().getAuthentication();
-            Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) a.getAuthorities();
-            String r = "EMPLOYEE";
-            for (GrantedAuthority authority : authorities) {
-                r = authority.getAuthority();
-            }
-            String role = r;
+  @Autowired
+  PasswordEncoder passwordEncoder;
 
-            if(role.equals("ADMIN"))
-                return new ModelAndView("redirect:/admin");
-            if(role.equals("SUPERIOR"))
-                return new ModelAndView("redirect:/superior");
-            return new ModelAndView("redirect:/employee");
-        }
+  @Autowired
+  JwtTokenProvider tokenProvider;
 
-        modelAndView.setViewName("loginPage");
-        return modelAndView;
-    }
+  @PostMapping("/signin")
+  public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+
+    Authentication authentication = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(
+            loginRequest.getUsernameOrEmail(),
+            loginRequest.getPassword()
+        )
+    );
+
+//    if(authentication.isAuthenticated() && authentication.getAuthorities().equals("ADMIN")){
+//      return
+//    }
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+    String jwt = tokenProvider.generateToken(authentication);
+    return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+  }
 
   @PostMapping("/signup")
   public User registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
@@ -67,6 +91,4 @@ public class AuthController {
 
     return result;
   }
-
 }
-

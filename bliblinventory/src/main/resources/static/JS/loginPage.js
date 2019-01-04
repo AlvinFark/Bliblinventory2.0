@@ -1,40 +1,40 @@
 $(document).ready(function() {
+  var idLogin;
+  var roleLogin;
     $("#btnLogin").click(function(){
-        var token;
         $username = $("#inputUsername").val();
         $password = $("#inputPassword").val();
-        console.log($username);
-        console.log($password);
         $.ajax({
             type: 'post',
             contentType: 'application/json',
             data: JSON.stringify({'usernameOrEmail': $username, 'password': $password}),
-            url: window.location+'api/auth/signin/',
-            success: function (response) {//response is value returned from php (for your example it's "bye bye"
-                //window.location.replace(window.location+'homeEmployee');
-                token = response.accessToken;
-                getUserDetail($username);
+            url: '/api/auth/signin/',
+            async: false,
+            success: function (response) {
+                console.log(response);
+                $.ajax({
+                  type: "GET",
+                  url: "/api/users/username/" + $username,
+                  success: function (result1) {
+                    idLogin = result1.id;
+                    $.session.set('id',idLogin);
+                    window.alert($.session.get('id'));
+                    roleLogin = ((result1 || {}).roles[0] || {}).name;
+                    console.log(idLogin);
+                    if(roleLogin == "ROLE_EMPLOYEE")
+                      window.location.replace("http://localhost:8080/employee");
+                    else if(roleLogin = "ROLE_ADMIN")
+                      window.location.replace("http://localhost:8080/admin");
+                    else
+                      window.location.replace("http://localhost:8080/superior");
+                  },
+                  async:false
+                });
             }
         });
     });
 });
 
 function getUserDetail(username) {
-    $.ajax({
-        type:'POST',
-        url: "/api/auth/userRole/" + username,
-        cache:false,
-        contentType: false,
-        processData: false,
-        async : false,
-        success:function(data){
-            console.log("success");
-            console.log(data);
 
-        },
-        error: function(data){
-            console.log("error");
-            console.log(data);
-        }
-    });
 }

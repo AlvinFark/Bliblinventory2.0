@@ -2,6 +2,8 @@ package com.sal.bliblinventory.controller;
 
 import com.sal.bliblinventory.model.Category;
 import com.sal.bliblinventory.repository.CategoryRepository;
+import com.sal.bliblinventory.service.CategoryService;
+import com.sal.bliblinventory.service.CategoryServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,42 +15,42 @@ public class CategoryController {
     @Autowired
     CategoryRepository categoryRepository;
 
+    @Autowired
+    CategoryService categoryService;
+
     //dapatkan semua kategori
     @RequestMapping(value = {"/api/getAllCategory"}, method = RequestMethod.GET)
     public List<Category> getAllCategory(){
-        return categoryRepository.findAllByIsExist(true);
+        return categoryService.getAllCategory();
     }
 
     //tambah kategori baru
     @RequestMapping(value = {"/api/addCategory"}, method = RequestMethod.POST)
     public Category addCategory(@Valid @RequestBody Category category) {
-      return categoryRepository.save(category);
+        return categoryService.addCategory(category);
     }
 
     //dapatkan detail kategori
     @GetMapping("api/getDetailCategory/{idKategori}")
     public Category getDetailCategory(@PathVariable(value = "idKategori") Long idKategori){
-        return categoryRepository.getCategoryById(idKategori);
+        return categoryService.getDetailCategory(idKategori);
     }
 
     //ubah/edit kategori
     @PutMapping("/api/editKategori/{namaKategoriBaru}")
     public Category editKategori(@PathVariable String namaKategoriBaru, @Valid @RequestBody Category categoryRequest) {
-        categoryRequest.setName(namaKategoriBaru);
-        return categoryRepository.save(categoryRequest);
+        return categoryService.editKategori(namaKategoriBaru, categoryRequest);
     }
 
     //buat kategori
     @RequestMapping(value = "api/createNewCategory/{namaKategoriBaru}", method = RequestMethod.POST)
     public void createNewCategory(@PathVariable(value = "namaKategoriBaru") String namaKategoriBaru){
-        Category categoryNew = new Category(namaKategoriBaru);
-        categoryRepository.save(categoryNew);
+        categoryService.createNewCategory(namaKategoriBaru);
     }
 
     //hapus kategori
     @PutMapping("/api/hapusKategori")
     public Category hapusKategori(@Valid @RequestBody Category categoryRequest) {
-        categoryRequest.setExist(false);
-        return categoryRepository.save(categoryRequest);
+        return categoryService.hapusKategori(categoryRequest);
     }
 }

@@ -10,7 +10,7 @@ $(document).ready(function(){
     //jika superior, maka tab-nya ditiadakan (hidden), karena superior pasti permintaan pinjamannya disetujui
     else if(window.location.pathname == "/superior"){
         $("#tabOrderList").hide();
-        url=window.location + "/getOrderList/approved";
+        url=window.location + "/getOrderList/"+$.session.get('id')+"/approved";
         ajaxGetOrderList(url);
     }
 
@@ -33,13 +33,13 @@ $(document).ready(function(){
 function checkActiveTab() {
     var url;
     if($("#tabMenunggu").hasClass("active")){
-        url=window.location + "/getOrderList/waiting";
+        url=window.location + "/getOrderList/"+$.session.get('id')+"/waiting";
     }
     else if ($("#tabDisetujui").hasClass("active")){
-        url=window.location + "/getOrderList/approved";
+        url=window.location + "/getOrderList/"+$.session.get('id')+"/approved";
     }
     else if ($("#tabDitolak").hasClass("active")){
-        url=window.location + "/getOrderList/rejected";
+        url=window.location + "/getOrderList/"+$.session.get('id')+"/rejected";
     }
     ajaxGetOrderList(url);
 }
@@ -214,7 +214,7 @@ function editStatusSubBarangReady(subBarang) {
             }
             else if(window.location.pathname == "/superior"){
                 $("#tabOrderList").hide();
-                url=window.location + "/getOrderList/approved";
+                url=window.location + "/getOrderList/"+$.session.get('id')+"/approved";
                 ajaxGetOrderList(url);
             }
         },

@@ -47,22 +47,18 @@ public class TransaksiController {
     }
 
     //mendapatkan list transaksi berdasarkan statusnya
-    @RequestMapping(value = {"employee/getOrderList/{statusOrder}", "superior/getOrderList/{statusOrder}"}, method = RequestMethod.GET)
-    public List<Transaksi> getOrderList(@PathVariable(value = "statusOrder") String status){
+    @RequestMapping(value = {"employee/getOrderList/{idUser}/{statusOrder}", "superior/getOrderList/{idUser}/{statusOrder}"}, method = RequestMethod.GET)
+    public List<Transaksi> getOrderList(@PathVariable(value = "idUser") Long idUser, @PathVariable(value = "statusOrder") String status){
         if(status.equalsIgnoreCase("waiting")){
-            //sementara user id nya statis pakai 1L
-            return transaksiRepository.findAllByUser_IdAndStatusTransaksiAndIsExist(1L, StatusTransaksi.menunggu, true);
+            return transaksiRepository.findAllByUser_IdAndStatusTransaksiAndIsExist(idUser, StatusTransaksi.menunggu, true);
         }
         else if(status.equalsIgnoreCase("approved")){ //terdiri dari transaksi yang berstatus diijinkan, dan diassign
-            //sementara user id nya statis pakai 1L
-            List<Transaksi> transaksiList = transaksiRepository.findAllByUser_IdAndStatusTransaksiAndIsExist(1L, StatusTransaksi.disetujui,true);
-            //sementara user id nya statis pakai 1L
-            transaksiList.addAll(transaksiRepository.findAllByUser_IdAndStatusTransaksiAndIsExist(1L, StatusTransaksi.diassign,true));
+            List<Transaksi> transaksiList = transaksiRepository.findAllByUser_IdAndStatusTransaksiAndIsExist(idUser, StatusTransaksi.disetujui,true);
+            transaksiList.addAll(transaksiRepository.findAllByUser_IdAndStatusTransaksiAndIsExist(idUser, StatusTransaksi.diassign,true));
             return transaksiList;
         }
         else{ //trasaksi yang ditolak
-            //sementara user id nya statis pakai 1L
-            return transaksiRepository.findAllByUser_IdAndStatusTransaksiAndIsExist(1L, StatusTransaksi.ditolak, true);
+            return transaksiRepository.findAllByUser_IdAndStatusTransaksiAndIsExist(idUser, StatusTransaksi.ditolak, true);
         }
     }
 

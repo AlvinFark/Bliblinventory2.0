@@ -36,32 +36,36 @@ public class AuthController {
   @Autowired
   UserRepository userRepository;
 
-  @RequestMapping(value={"/", "/login"}, method = RequestMethod.GET)
-  public ModelAndView loginPage(Map<String, Object> model) {
+  @RequestMapping(value={"/", "/loginPage"}, method = RequestMethod.GET)
+  public ModelAndView login(Map<String, Object> model) {
         ModelAndView modelAndView = new ModelAndView();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         boolean isLoggedIn = auth.isAuthenticated() && !(auth instanceof AnonymousAuthenticationToken);
 
+        System.out.print("----------------------------------" + auth + "----------------------------------");
+
+        System.out.print("----------------------------------" + auth.isAuthenticated() + "----------------------------------");
+
         if(isLoggedIn){
 
             Authentication a = SecurityContextHolder.getContext().getAuthentication();
             Collection<GrantedAuthority> authorities = (Collection<GrantedAuthority>) a.getAuthorities();
-            String r = "EMPLOYEE";
+            String r = "";
             for (GrantedAuthority authority : authorities) {
                 r = authority.getAuthority();
             }
             String role = r;
 
-            if(role.equals("ADMIN"))
+            if(role.equals("ROLE_ADMIN"))
                 return new ModelAndView("redirect:/admin");
-            if(role.equals("SUPERIOR"))
+            else if(role.equals("ROLE_SUPERIOR"))
                 return new ModelAndView("redirect:/superior");
-            return new ModelAndView("redirect:/employee");
+            else if(role.equals("ROLE_EMPLOYEE"))
+                return new ModelAndView("redirect:/employee");
         }
 
-        modelAndView.setViewName("loginPage");
-        return modelAndView;
+        return new ModelAndView("redirect:/loginPage");
     }
 
   @PostMapping("/signup")

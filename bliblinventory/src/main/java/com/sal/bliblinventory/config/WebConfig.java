@@ -7,11 +7,11 @@ import org.springframework.web.servlet.config.annotation.*;
 
 @Configuration
 @ComponentScan
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("loginPage");
+        registry.addViewController("/login").setViewName("loginPage.html");
         registry.addViewController("/employee").setViewName("basePage.html");
         registry.addViewController("/superior").setViewName("basePage.html");
         registry.addViewController("/admin").setViewName("basePage.html");

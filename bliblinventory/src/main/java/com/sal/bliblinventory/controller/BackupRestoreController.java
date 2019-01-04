@@ -25,8 +25,8 @@ public class BackupRestoreController {
         //required properties for exporting of db
         Properties properties = new Properties();
         properties.put(MysqlExportService.DB_NAME, "bliblinventory");
-        properties.setProperty(MysqlExportService.DB_USERNAME, "root");
-        properties.setProperty(MysqlExportService.DB_PASSWORD, "");
+        properties.setProperty(MysqlExportService.DB_USERNAME, "blibli");
+        properties.setProperty(MysqlExportService.DB_PASSWORD, "future");
         properties.setProperty(MysqlExportService.JDBC_DRIVER_NAME, "com.mysql.cj.jdbc.Driver");
 
         properties.setProperty(MysqlExportService.TEMP_DIR, new File("backup").getPath());

@@ -1,4 +1,5 @@
 $(document).ready(function() {
+  $.session.remove('id');
   var idLogin;
   var roleLogin;
     $("#btnLogin").click(function(){
@@ -18,7 +19,6 @@ $(document).ready(function() {
                   success: function (result1) {
                     idLogin = result1.id;
                     $.session.set('id',idLogin);
-                    window.alert($.session.get('id'));
                     roleLogin = ((result1 || {}).roles[0] || {}).name;
                     console.log(idLogin);
                     if(roleLogin == "ROLE_EMPLOYEE")

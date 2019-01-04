@@ -26,7 +26,7 @@ $( document ).ready(function() {
 function getAllCategory() {
     $.ajax({
         type: "GET",
-        url: window.location + "/getAllCategory",
+        url: "api/getAllCategory",
         success: function (result) {
             $("#tabelDaftarKategori").html("");
             for (var i=0; i<result.length; i++){

@@ -50,9 +50,9 @@ $( document ).ready(function() {
         var url;
         if(confirm("Kirim permintaan pinjam sejumlah "+jumlahBarang+" untuk tanggal "+changeDateFormat(tgPinjam)+"?")){
             if(keteranganPinjam=="")
-                url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + null;
+                url = window.location + "/requestPinjam/" + $.session.get('id') + "/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + null;
             else
-                url = window.location + "/requestPinjam/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + keteranganPinjam;
+                url = window.location + "/requestPinjam/" + $.session.get('id') + "/" + kodeBarang + "/" + tgPinjam + "/" + jumlahBarang + "/" + keteranganPinjam;
 
             //dapatkan id transaksi setelah membuat transaksi baru
             var idTransaksi = ajaxSendRequestPinjam(url);

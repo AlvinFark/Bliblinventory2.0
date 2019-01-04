@@ -84,7 +84,6 @@ function ajaxGetDaftarPermintaanPembelian(url) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getPermintaanPinjam");
         },
         async:false
     });
@@ -106,13 +105,11 @@ function ajaxCancelRequestBeli(idPermintaanPembelian) {
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);
-                    window.alert("error deletePermintaanPembelian");
                 }
             });
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getPermintaanPembelianById");
         }
     });
 }

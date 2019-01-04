@@ -111,7 +111,6 @@ function ajaxGetSelectKategori(){
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error ajaxGetSelectKategori");
         }
     });
 }
@@ -158,7 +157,6 @@ function ajaxGetAllProduct(){
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         }
     });
 }
@@ -179,7 +177,6 @@ function ajaxGetProductDetail(idBarang) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         },
         async:false
     });
@@ -193,7 +190,6 @@ function ajaxGetProductDetail(idBarang) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         },
         async:false
     });
@@ -242,7 +238,6 @@ function ajaxGetProductDetail(idBarang) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         }
     });
 }
@@ -277,7 +272,6 @@ function ajaxGetFormOrder(idBarang) {
         },
         error: function (e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         }
     });
 }
@@ -307,7 +301,6 @@ function ajaxGetProductCustom(url){
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         }
     });
 }
@@ -328,7 +321,6 @@ function ajaxSendRequestPinjam(url) {
         },
         error: function (e) {
           console.log("ERROR: ", e);
-          window.alert("error");
         },
         async: false
       });
@@ -352,7 +344,6 @@ function ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error createDetailTransaksi");
         },
         async: false
     });
@@ -373,13 +364,11 @@ function ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi) {
                         },
                         error: function (e) {
                             console.log("ERROR: ", e);
-                            window.alert("error ubah status sub barang");
                         }
                     });
                 },
                 error : function(e) {
                     console.log("ERROR: ", e);
-                    window.alert("error getSubBarang");
                 }
             });
         }

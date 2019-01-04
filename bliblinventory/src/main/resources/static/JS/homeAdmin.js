@@ -1,7 +1,24 @@
 $( document ).ready(function() {
 
+  $.ajax({
+    type: "GET",
+    url: "/api/users/id/" + $.session.get('id'),
+    success: function (result9) {
+      var rolee = ((result9 || {}).roles[0] || {}).name;
+      if(rolee != "ROLE_ADMIN"){
+        $('body').html("");
+        alert("Anda tidak memiliki akses ke halaman ini, anda akan ter redirect ke halaman home anda");
+        if (rolee == "ROLE_EMPLOYEE"){
+          window.location.replace("http://localhost:8080/employee");
+        } else {
+          window.location.replace("http://localhost:8080/superior");
+        }
+      }
+    },
+    async:false
+  });
 
-    $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
+  $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
     $('.sidenav').sidenav();
     $('select').formSelect();
     $('.modal').modal();

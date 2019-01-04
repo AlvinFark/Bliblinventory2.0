@@ -1,5 +1,24 @@
 $( document ).ready(function() {
-    //inisialisasi elemen-elemen pada awal homeSuperior.js di-load
+
+  $.ajax({
+    type: "GET",
+    url: "/api/users/id/" + $.session.get('id'),
+    success: function (result9) {
+      var rolee = ((result9 || {}).roles[0] || {}).name;
+      if(rolee != "ROLE_SUPERIOR"){
+        $('body').html("");
+        alert("Anda tidak memiliki akses ke halaman ini, anda akan ter redirect ke halaman home anda");
+        if (rolee == "ROLE_ADMIN"){
+          window.location.replace("http://localhost:8080/admin");
+        } else {
+          window.location.replace("http://localhost:8080/employee");
+        }
+      }
+    },
+    async:false
+  });
+
+  //inisialisasi elemen-elemen pada awal homeSuperior.js di-load
     $(".dropdown-trigger").dropdown({ hover: true, constrainWidth: false });
     $('.datepicker').datepicker();
     $('.modal').modal();

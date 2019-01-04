@@ -188,7 +188,6 @@ table td textarea.formLarge, table td input.formLarge{
 
 #tabOrderList{
   background-color: #0095da;
-  position: fixed;
   z-index: 1;
   height: auto;
   padding: 5px 0 10px 0;

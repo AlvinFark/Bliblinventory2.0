@@ -81,7 +81,6 @@ function getDetailKategory(idKategori) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getDetailCategory");
         },
         async:false
     });
@@ -101,7 +100,6 @@ function createFormEditKategori(idKategori) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getDetailCategory");
         },
         async:false
     });
@@ -124,14 +122,12 @@ function simpanEditanKategori() {
                 },
                 error : function(e) {
                     console.log("ERROR: ", e);
-                    window.alert("error editKategori");
                 },
                 async:false
             });
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getDetailCategory");
         },
         async:false
     });
@@ -149,7 +145,6 @@ function createNewCategory() {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         },
         async: false
     });
@@ -181,14 +176,12 @@ function deleteKategori(idKategori) {
                             },
                             error : function(e) {
                                 console.log("ERROR: ", e);
-                                window.alert("error editKategori");
                             },
                             async:false
                         });
                     },
                     error : function(e) {
                         console.log("ERROR: ", e);
-                        window.alert("error getDetailCategory");
                     },
                     async:false
                 });
@@ -197,7 +190,6 @@ function deleteKategori(idKategori) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getDetailCategory");
         },
         async:false
     });

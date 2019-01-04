@@ -140,14 +140,12 @@ function cekStokBarang(idTransaksi) {
                 },
                 error : function(e) {
                     console.log("ERROR: ", e);
-                    window.alert("error getJumlahStokBarang");
                 },
                 async: false
             });
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getTransaksiByIdTransaksi");
         },
         async: false
     });
@@ -181,7 +179,6 @@ function ajaxGetAllPermintaanPinjam() {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         }
     });
 }
@@ -199,7 +196,6 @@ function ajaxGetRequestListBySortAndSearch(){
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         },
         async:false
     });
@@ -227,7 +223,6 @@ function ajaxGetDetailRequestOrder(idTransaksi) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         }
     });
 }
@@ -249,13 +244,11 @@ function ajaxTolakPermintaanPinjam(idTransaksi) {
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);
-                    window.alert("error tolak");
                 }
             });
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getDetail");
         }
     });
 }
@@ -279,7 +272,6 @@ function ajaxSetujuiPermintaanPinjam(idTransaksi) {
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);
-                    window.alert("error setujui");
                 },
                 async: false
             });
@@ -288,7 +280,6 @@ function ajaxSetujuiPermintaanPinjam(idTransaksi) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getDetail");
         }
     });
 }
@@ -305,7 +296,6 @@ function ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error createDetailTransaksi");
         },
         async: false
     });
@@ -326,13 +316,11 @@ function ajaxBookingSubBarang(kodeBarang, jumlahBarang, idTransaksi) {
                         },
                         error: function (e) {
                             console.log("ERROR: ", e);
-                            window.alert("error ubah status sub barang");
                         }
                     });
                 },
                 error : function(e) {
                     console.log("ERROR: ", e);
-                    window.alert("error getSubBarang");
                 }
             });
         }

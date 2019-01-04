@@ -113,7 +113,6 @@ function ajaxGetAllPermintaanPinjamToAssign() {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         }
     });
 }
@@ -133,7 +132,6 @@ function ajaxGetRequestListBySortAndSearch(){
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         },
         async:false
     });
@@ -161,7 +159,6 @@ function ajaxGetDetailRequestOrder(idTransaksi) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error");
         },
         async:false
     });
@@ -185,14 +182,12 @@ function ajaxAssignPermintaanPinjam(idTransaksi) {
                 },
                 error: function (e) {
                     console.log("ERROR: ", e);
-                    window.alert("error assign");
                 },
                 async: false
             });
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error getDetail");
         }
     });
 }

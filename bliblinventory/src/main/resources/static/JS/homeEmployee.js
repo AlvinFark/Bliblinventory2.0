@@ -156,7 +156,6 @@ function ajaxGetDropDownKategori() {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error ajaxGetSelectKategori");
         },
         async:false
     });
@@ -172,7 +171,6 @@ function ajaxCreatePermintaanPembelian(url, namaBarang) {
         },
         error : function(e) {
             console.log("ERROR: ", e);
-            window.alert("error ajaxCreatePermintaanPembelian");
         },
         async: false
     });

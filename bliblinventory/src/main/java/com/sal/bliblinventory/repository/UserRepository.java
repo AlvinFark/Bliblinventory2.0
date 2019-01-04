@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
   User getUserById(Long userId);
   User getUserByUsername(String username);
+  User getUserByUsernameOrEmailAndIsActive(String username, String email, boolean isActive);
   List<User> findAllByOrderByName();
   List<User> findAllByNameContainingOrderByName(String partName);
   List<User> getAllUserByName(String name);

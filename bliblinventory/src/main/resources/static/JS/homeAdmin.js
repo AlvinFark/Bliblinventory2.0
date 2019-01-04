@@ -6,6 +6,8 @@ $( document ).ready(function() {
     $("#inputSearch").hide();
     $("#iconSearch").hide();
 
+    window.alert($.session.get('id'));
+
     $('select').on('contentChanged', function() {
         $(this).formSelect();
     });

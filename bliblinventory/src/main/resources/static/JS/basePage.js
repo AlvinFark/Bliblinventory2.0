@@ -1,11 +1,14 @@
 $( document ).ready(function() {
-    if(window.location.pathname == "/employee")
+    if(window.location.pathname == "/")
+        $("body").load("login.html");
+    else if(window.location.pathname == "/employee")
         $("body").load("homeEmployee.html");
     else if(window.location.pathname == "/admin")
         $("body").load("homeAdmin.html");
     else
         $("body").load("homeSuperior.html");
-
+    var id;
+    var role;
 });
 
 //dapatkan tanggal hari ini (yyyy-mm-dd)

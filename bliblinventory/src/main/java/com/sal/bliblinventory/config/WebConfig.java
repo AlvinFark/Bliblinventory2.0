@@ -11,11 +11,12 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/").setViewName("loginPage");
+        registry.addViewController("/").setViewName("login.html");
         registry.addViewController("/employee").setViewName("basePage.html");
         registry.addViewController("/superior").setViewName("basePage.html");
         registry.addViewController("/admin").setViewName("basePage.html");
-        registry.addViewController("/homeEmployee.html").setViewName("homeEmployee.html");
+      registry.addViewController("/login").setViewName("login.html");
+      registry.addViewController("/homeEmployee.html").setViewName("homeEmployee.html");
         registry.addViewController("/homeSuperior.html").setViewName("homeSuperior.html");
         registry.addViewController("/homeAdmin.html").setViewName("homeAdmin.html");
         registry.addViewController("/daftarBarangCard.html").setViewName("daftarBarangCard.html");

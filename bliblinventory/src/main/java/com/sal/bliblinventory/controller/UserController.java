@@ -39,6 +39,11 @@ public class UserController {
     return userRepository.findAllByNameContainingOrderByName(param);
   }
 
+  @GetMapping("/username/{uname}")
+  public User getUserByUsernameOrEmail(@PathVariable String uname){
+    return userRepository.getUserByUsernameOrEmailAndIsActive(uname,uname,true);
+  }
+
   @GetMapping("/id/{id}")
   public User getUserById(@PathVariable Long id){
     return userRepository.getUserById(id);
